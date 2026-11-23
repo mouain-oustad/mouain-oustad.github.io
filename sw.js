@@ -1,5 +1,5 @@
 /* يعمل التطبيق دون إنترنت: تخزين الملفات الأساسية عند التثبيت */
-const CACHE = 'mouin-v14';
+const CACHE = 'mouin-v15';
 const CORE = ['./', './index.html', './manifest.webmanifest', './privacy.html',
   './icon-192.png', './icon-512.png', './maskable-192.png', './maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); self.skipWaiting(); });
