@@ -4,11 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>معين الأستاذ – أدوات الأستاذ للتعليم الابتدائي</title>
-<meta name="theme-color" content="#1c2a44">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="معين الأستاذ: جذاذات وخطاطات ذهنية يومية وفروض ودعم لأساتذة التعليم الابتدائي بالمغرب">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef2f6;--paper:#fff;--ink:#1c2a44;--mute:#5b6b85;--line:#cfdcec;--red:#c8372d;--blue:#2d5fa8;--soft:#e3ecf7;
@@ -85,8 +80,7 @@ body.pio:not(.samep) .np,body.pio:not(.samep) #pick-l{display:none!important}bod
 .tt-h{display:flex;gap:6px;align-items:center;margin-bottom:6px}.tt-h b{flex:1;font-family:Cairo,Tahoma,sans-serif}
 .tt-h button,.tt-row button{font:600 13px Cairo,Tahoma,sans-serif;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;padding:2px 8px;cursor:pointer}
 .tt-row{display:flex;gap:4px;align-items:center;margin:4px 0}.form>*{min-width:0}.tt-row input{font:14px Tahoma,sans-serif;width:6.4em;flex:none;min-width:0;padding:3px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}.tt-row select{flex:1;min-width:0;width:auto;font-size:14px;padding:4px}.tt-row span{display:none}
-.sheet table.memo{min-width:640px}.memo td.lvh{background:var(--soft);font-weight:700;text-align:right}.memo tr.sep td{border-top:2px solid var(--line)}.paper{width:680px;max-width:none}@media print{
-#ad-slot{display:none!important}.paper{zoom:1!important;width:auto}}.sheet table.memo td{font-size:14px}.sheet table.memo tr.brk td{background:var(--soft);color:var(--mute)}
+.sheet table.memo{min-width:640px}.memo td.lvh{background:var(--soft);font-weight:700;text-align:right}.memo tr.sep td{border-top:2px solid var(--line)}.paper{width:680px;max-width:none}@media print{.paper{zoom:1!important;width:auto}}.sheet table.memo td{font-size:14px}.sheet table.memo tr.brk td{background:var(--soft);color:var(--mute)}
 #p-m .subj-l{display:none}
 .pf-pre{display:flex;flex-wrap:wrap;gap:6px}.pf-pre button,.pf-btn{font:600 13px Cairo,Tahoma,sans-serif;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:4px 10px;cursor:pointer}.pf-btn{margin-top:6px}
 .memo-ar .mh{font:600 15px Cairo,Tahoma,sans-serif;border:1px solid var(--line);padding:8px 10px;margin-bottom:6px;line-height:1.7}.memo-ar .mh2{font-size:14px;margin-bottom:6px}
@@ -96,7 +90,7 @@ body.pio:not(.samep) .np,body.pio:not(.samep) #pick-l{display:none!important}bod
 @media print{#p-ros>*:not(#ros-out){display:none!important}#ros-out.sheet{border:0!important;padding:0!important;margin:0!important}.panel .go,#fl-list,#bl-imp,#bl-bul,#bl-calc,#bl-clr{display:none!important}#bl-out.sheet{border:0!important;padding:0!important;border-radius:0!important;margin:0!important}.blp{font-size:10px!important;line-height:1.08!important;height:262mm;overflow:hidden;box-sizing:border-box;break-after:auto!important;page-break-after:auto!important}.blp+.blp{break-before:page;page-break-before:always}.blp td,.blp th{padding-top:0!important;padding-bottom:0!important;font-size:10px!important}.blp .tt{font-size:17px!important}}
 @media print{.sheet tr,.sheet li,.sheet img,.sheet figure,.sheet .box,.sheet .card{break-inside:avoid;page-break-inside:avoid}.sheet h2,.sheet h3,.sheet h4{break-after:avoid;page-break-after:avoid}.sheet thead{display:table-header-group}}
 @media print{.sheet div[style*="page-break-before"]:empty{break-before:auto!important;page-break-before:auto!important;height:0;margin:0;padding:0}.sheet div[style*="page-break-before"]:empty+*{break-before:page;page-break-before:always}}
-@media print{[id$=-out]{zoom:1!important;width:auto!important;max-width:none!important}.no-print{display:none!important}#ab-out.sheet,#gr-out.sheet,#f-out.sheet{border:0!important;padding:0!important;border-radius:0!important}}
+@media print{[id$=-out]{zoom:1!important;width:auto!important;max-width:none!important}.no-print{display:none!important}#ab-out.sheet,#gr-out.sheet,#f-out.sheet,#j-out.sheet{border:0!important;padding:0!important;border-radius:0!important}}
 @media print{
 @page{size:A4;margin:12mm}
 body{background:#fff;color:#000;font-size:14px}
@@ -210,7 +204,7 @@ nav button[aria-selected="true"]{background:var(--tt);color:#fff;font-weight:800
 <label class="full">اسم الدرس<input type="text" id="j-title" placeholder="مثال: الجملة المفيدة"></label>
 <label>مدة الحصة (دقيقة)<select id="j-dur"><option>30</option><option selected>45</option><option>60</option></select></label>
 <label>الأسبوع<input type="text" id="j-week" placeholder="مثال: الأسبوع 4"></label>
-<button class="go" id="j-go">أنشئ الجذاذة</button>
+<button class="go" id="j-gs" style="background:#2d6a4f">⚡ أنشئ جذاذة مختصرة</button><button class="go" id="j-go">📖 أنشئ جذاذة مفصلة</button>
 </div>
 <div class="sheet" id="j-out" contenteditable="true"></div>
 </section>
@@ -255,9 +249,7 @@ nav button[aria-selected="true"]{background:var(--tt);color:#fff;font-weight:800
 </section>
 
 <div class="bar" id="bar"><button id="copy">نسخ النص</button><button id="print">طباعة / PDF</button><button id="word">تنزيل ملف Word</button></div>
-<div id="ad-slot" style="margin-top:14px;text-align:center"></div>
 <p class="note">يمكنك تعديل أي وثيقة مباشرة داخل الورقة قبل طباعتها أو تنزيلها. راجع ما ينتجه التطبيق على ضوء التوجيهات الرسمية والكتاب المدرسي المعتمد.</p>
-<p class="note" style="text-align:center"><a href="privacy.html" style="color:var(--mute)">سياسة الخصوصية</a></p>
 </main>
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -311,7 +303,7 @@ show('f-out','<h2>فرض اللغة العربية – '+lv+'</h2><div>'+$('f-no
 '<h3>2. الظواهر اللغوية (3 نقط)</h3><div>الظاهرة: '+g+'</div>'+li(['تمرين تعرّف (1 ن)','تمرين إتمام أو تحويل (1 ن)','تمرين توظيف في جملة (1 ن)'])+
 '<h3>3. الإملاء (2 نقطتان)</h3><div>فقرة مملاة '+w+' (يُقترح) مع احتساب الأخطاء حسب سلّم تنقيط معتمد في القسم.</div>'+
 '<h3>4. التعبير الكتابي (2 نقطتان)</h3><div>اكتب من 3 إلى 5 جمل حول ………</div>'+
-'<h3>سلّم التنقيط والتصحيح</h3><div class="scroll"><table><tr><th>المجال</th><th>النقط</th><th>معيار التصحيح</th></tr><tr><td>القراءة</td><td>3</td><td>سلامة النطق والفهم</td></tr><tr><td>الظواهر</td><td>3</td><td>صحة الإجابة</td></tr><tr><td>الإملاء</td><td>2</td><td>عدد الأخطاء</td></tr><tr><td>التعبير</td><td>2</td><td>الانسجام والسلامة اللغوية</td></tr></table></div>')};
+'<div style="page-break-before:always;break-before:page"></div><h3>عناصر الإجابة</h3><div class="scroll"><table><tr><th>المجال</th><th>النقط</th><th>معيار التصحيح</th></tr><tr><td>القراءة</td><td>3</td><td>سلامة النطق والفهم</td></tr><tr><td>الظواهر</td><td>3</td><td>صحة الإجابة</td></tr><tr><td>الإملاء</td><td>2</td><td>عدد الأخطاء</td></tr><tr><td>التعبير</td><td>2</td><td>الانسجام والسلامة اللغوية</td></tr></table></div>')};
 
 var S={
 read:['قراءة ثنائية: كل متعلم متعثر مع زميل متمكن لمدة 5 دقائق','بطاقات مقاطع صوتية وكلمات قصيرة بوتيرة يومية','قراءة جماعية بصوت خافت ثم فردية'],
@@ -373,11 +365,12 @@ C['التواصل الشفهي']={o:['أن يستمع المتعلم إلى ال
 PK['التواصل الشفهي']=[['استماع نموذجي','أسئلة تمهيدية'],['حوار مشترك','إعادة الصياغة'],['تعبير فردي','تقييم الأقران']];
 C['التشكيل']={o:['أن يتعرف المتعلم المفهوم الفني موضوع الحصة','أن ينجز نشاطاً تطبيقياً (رسماً أو أداءً)','أن يعبّر عن ذوقه ويقيّم العمل'],s:['ملاحظة عمل فني أو أداء','اكتشاف المفهوم وتجريبه','إنجاز فردي أو جماعي','عرض الأعمال وتقييمها']};
 PK['التشكيل']=[['نموذج من المعلم','شرح التقنية'],['تجريب جماعي','توجيه مباشر'],['إنجاز فردي','عرض وتقييم']];
-SC['اللغة العربية']=['التواصل الشفهي','القراءة','التراكيب','الصرف والتحويل','الإملاء','التعبير الكتابي','المحفوظات'];
-al('اللغة الفرنسية',['Lecture','Grammaire','Conjugaison','Orthographe','Lexique','Production écrite'],'Lecture');
+SC['اللغة العربية']=['التواصل الشفهي','القراءة','التراكيب','الصرف والتحويل','الإملاء','التعبير الكتابي','المحفوظات','مشروع الوحدة'];
+C['Projet de classe']={o:['Participer à la réalisation du projet de classe','Mobiliser les acquis de la semaine dans une production concrète','Coopérer au sein du groupe et présenter son travail'],s:['Rappeler le projet et l’étape du jour','Répartir les rôles dans les groupes','Réaliser la tâche prévue (texte, dessin, collecte, mise en page…)','Présenter le travail de chaque groupe','Faire le point sur l’avancement du projet']};PK['Projet de classe']=[['Rappel du projet','Répartition des rôles'],['Réalisation en groupes','Guidage et conseils'],['Présentation','Bilan et suite']];C['Projet']=C['Projet de classe'];PK['Projet']=PK['Projet de classe'];
+al('اللغة الفرنسية',['Lecture','Grammaire','Conjugaison','Orthographe','Lexique','Production écrite','Projet de classe'],'Lecture');
 al('النشاط العلمي',['تصنيف المادة وخصائصها','صحة الإنسان والتفاعل مع البيئة','الكائنات الحية ووظائفها وتفاعلاتها مع البيئة','أشكال وطرق نقل الطاقة والقوى والحركة','دورات الحياة والتوالد والوراثة','الخصائص الطبيعية للأرض ومواردها','المعلوميات'],'الملاحظة والتجريب');
 al('التربية الإسلامية',['القرآن الكريم','العقيدة والعبادات','السيرة والأخلاق'],'القرآن الكريم');
-al('الاجتماعيات',['التاريخ','الجغرافيا','التربية المدنية'],'التاريخ');
+al('الاجتماعيات',['التاريخ','الجغرافيا','التربية المدنية','مشروع الأسدوس'],'التاريخ');
 al('التربية الفنية',['التشكيل','الموسيقي','المسرح'],'التشكيل');
 DS['التربية الفنية']=[['tec','صعوبة في التقنيات والأدوات',['تمرين قصير على استعمال الأداة','نموذج خطوة خطوة']],['exp','صعوبة في التعبير الفني',['اختيار موضوع بسيط','مناقشة العمل مع زملائه']],['aud','ضعف في الإيقاع أو الأداء',['تصفيق الإيقاع جماعياً','ترديد ثنائي']]];
 EX['التربية الفنية']=[['المعارف الفنية',3,['أسئلة قصيرة عن المفاهيم']],['التطبيق العملي',5,['إنجاز عمل تشكيلي أو أداء موسيقي أو مسرحي']],['التقويم الذاتي',2,['وصف العمل وإبداء الرأي']]];
@@ -1065,7 +1058,7 @@ function hex(c){var m=String(c||'').match(/rgba?\(([^)]+)\)/);if(!m)return null;
 function bd(cs,side){var w=parseFloat(cs['border'+side+'Width'])||0,st=cs['border'+side+'Style'];if(!w||st=='none'||st=='hidden')return null;var col=hex(cs['border'+side+'Color'])||'000000';return {sz:Math.max(2,Math.min(96,Math.round(w*6))),val:st=='dashed'?'dashed':st=='dotted'?'dotted':st=='double'?'double':'single',col:col}}
 function bdXml(tag,b){return b?'<w:'+tag+' w:val="'+b.val+'" w:sz="'+b.sz+'" w:space="0" w:color="'+b.col+'"/>':''}
 window.makeDocx=async function(root,opt){opt=opt||{};var land=!!opt.land,PXW=land?1043:714,PGW=land?16838:11906,PGH=land?11906:16838,MAR=land?480:600,AV=PGW-2*MAR;
- var old={w:root.style.width,m:root.style.maxWidth,z:root.style.zoom};root.style.width=PXW+'px';root.style.maxWidth='none';root.style.zoom='1';
+ var old={w:root.style.width,m:root.style.maxWidth,z:root.style.zoom};root.style.width=PXW+'px';root.style.maxWidth='none';root.style.zoom='1';var PPR=root.querySelector('.paper'),ppz=PPR?PPR.style.zoom:'';if(PPR){PPR.style.zoom='1';PPR.classList.add('docfit')}
  var RB=root.getBoundingClientRect(),TW=function(px){return Math.max(1,Math.round(px*(AV/PXW)))},imgs=[],rid=0,dpid=0,brk=false,started=false,pend=false;
  function vis(e){var cs=getComputedStyle(e);return !(cs.display=='none'||cs.visibility=='hidden'||e.classList.contains('no-print')||/^(STYLE|SCRIPT|NOSCRIPT|TEMPLATE|HEAD)$/.test(e.tagName))}
  function rtl(e){return getComputedStyle(e).direction=='rtl'}
@@ -1135,7 +1128,7 @@ window.makeDocx=async function(root,opt){opt=opt||{};var land=!!opt.land,PXW=lan
    if(cs.breakAfter=='page'||cs.pageBreakAfter=='always'){flush();o+=pb()}
   });flush();return o}
  var body=blocks(root,false);
- root.style.width=old.w;root.style.maxWidth=old.m;root.style.zoom=old.z;
+ root.style.width=old.w;root.style.maxWidth=old.m;root.style.zoom=old.z;if(PPR){PPR.style.zoom=ppz;PPR.classList.remove('docfit')}
  var NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document '+NS+'><w:body>'+body+'<w:sectPr><w:pgSz w:w="'+PGW+'" w:h="'+PGH+'"'+(land?' w:orient="landscape"':'')+'/><w:pgMar w:top="'+MAR+'" w:right="'+MAR+'" w:bottom="'+MAR+'" w:left="'+MAR+'" w:header="300" w:footer="300" w:gutter="0"/></w:sectPr></w:body></w:document>';
  var files=[{n:'[Content_Types].xml',d:u8('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Default Extension="jpg" ContentType="image/jpeg"/><Default Extension="gif" ContentType="image/gif"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>')},
@@ -2045,7 +2038,7 @@ function arParts(R){var L=R.les||[],out=[],sess=R.src=='sess'&&R.s=='اللغة 
 function hijriAr(d){try{var h=d.toLocaleDateString('ar-MA-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'}).replace(/\s*هـ\s*$/,'');var g=d.toLocaleDateString('ar-MA-u-nu-latn',{day:'numeric',month:'long',year:'numeric'});var wd=d.toLocaleDateString('ar-MA',{weekday:'long'});return wd+' '+g+' الموافق لـ '+h+' هـ'}catch(e){return d.toLocaleDateString('ar-MA',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}}
 
 function lvCellFr(cl){var M={'الأول':'1AP','الثاني':'2AP','الثالث':'3AP','الرابع':'4AP','الخامس':'5AP','السادس':'6AP'},n=function(x){return M[String(x||'').replace(' ابتدائي','')]||''},t=cl.lv2?n(cl.lv)+' / '+n(cl.lv2):n(cl.lv);return esc(t)+((TT.classes.length>1&&cl.n)?' ('+esc(cl.n)+')':'')}
-function lvCell(cl){var n=function(x){return String(x||'').replace(' ابتدائي','')},t=cl.lv2?n(cl.lv)+' و'+n(cl.lv2):n(cl.lv);return esc(t)+((TT.classes.length>1&&cl.n)?'<br><span style="font-size:.85em">'+esc(cl.n)+'</span>':'')}
+function lvCell(cl){var M=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],n=function(x){var i=M.indexOf(String(x||'').replace(' ابتدائي',''));return i<0?'':'م '+(i+1)},t=cl.lv2?n(cl.lv)+' و '+n(cl.lv2):n(cl.lv);return esc(t)}
 function sessObj(R,x){if(!(R.src=='sess'||R.src=='mix')||!R.obj||!R.obj.length||x.oi<0)return '';var O=R.obj.filter(Boolean),n=0,i;
   var s=(O.length==x.nR)?O[x.oi]:(x.oi==0?O.join('؛ '):'');
   if(!s)return '';s=String(s).replace(/[\s.؛]+$/,'');return /^أن\s/.test(s)?s:'أن يتمكن المتعلم من '+s}
@@ -2107,12 +2100,19 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
       if(B.brk){rows+='<tr class="brk"><td colspan="6">استراحة ………… '+(B.d||10)+' د …………</td></tr>';return}
       var cl=TT.classes[B.c]||TT.classes[0],nm=cl.n||('القسم '+(B.c+1));
       var parts=[];B.rows.forEach(function(R){arParts(R).forEach(function(x,j){x.first=j===0;x.R=R;parts.push(x)})});
-      parts.forEach(function(x,i){var R=x.R;R.__pi=R.__pi||0;R.__nP=R.__nP||parts.filter(function(y){return y.R===R&&!y.lv}).length;x.oi=x.lv?-1:R.__pi++;x.nR=R.__nP;rows+='<tr'+(x.first&&i?' class="sep"':'')+'>'+(i===0?'<td rowspan="'+parts.length+'" class="tm"><u>'+esc(B.f||'')+'</u><br><br><u>'+esc(B.t||'')+'</u></td>':'')+
-        (x.lv?'<td colspan="3" class="lvh">'+esc(x.t)+'</td>':'<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
-        '<td class="to"'+(R.fr?' dir="ltr" style="text-align:left"':'')+'>'+x.t.map(function(y,yi){var o=R.fr?'':sessObj(R,x)||(R.src=='sess'||R.src=='mix'?'':'')||'';if(!o)o=R.fr?'':objFor(R.s,x.c,y);return '<div>'+esc(y)+(o?'<div class="ob" style="font-size:.86em;color:#355;margin:1px 0 4px">◂ الهدف: '+esc(o)+'</div>':'')+'</div>'}).join('')+'</td>')+
-        (i===0?'<td rowspan="'+parts.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?'……':'')+'</td></tr>'})});
+      var LVN=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],tag='',mg=[],seenR=[];
+      parts.forEach(function(x){var R=x.R;R.__pi=R.__pi||0;R.__nP=R.__nP||parts.filter(function(y){return y.R===R&&!y.lv}).length;x.oi=x.lv?-1:R.__pi++;x.nR=R.__nP;
+        if(x.lv){var mm=String(x.t).match(/(الأول|الثاني|الثالث|الرابع|الخامس|السادس)/);tag=mm?'م '+(LVN.indexOf(mm[1])+1):'';return}
+        var tg=(R.s=='الدعم'||x.c=='الدعم')?'':tag,h=x.t.map(function(y,yi){var o=R.fr?'':sessObj(R,x)||'';if(!o)o=R.fr?'':objFor(R.s,x.c,y);return '<div>'+(tg?'<b>'+tg+':</b> ':'')+esc(y)+(o?'<div class="ob" style="font-size:.86em;color:#355;margin:1px 0 4px">◂ الهدف: '+esc(o)+'</div>':'')+'</div>'}).join('');
+        var k=R.s+'|'+x.c,ex=tg?mg.filter(function(m){return m.k==k})[0]:null;
+        if(ex){ex.h+=h;return}
+        mg.push({k:k,R:R,c:x.c,d:x.d,h:h,first:seenR.indexOf(R)<0});if(seenR.indexOf(R)<0)seenR.push(R)});
+      mg.forEach(function(x,i){var R=x.R;rows+='<tr'+(x.first&&i?' class="sep"':'')+'>'+(i===0?'<td rowspan="'+mg.length+'" class="tm"><u>'+esc(B.f||'')+'</u><br><br><u>'+esc(B.t||'')+'</u></td>':'')+
+        '<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
+        '<td class="to"'+(R.fr?' dir="ltr" style="text-align:left"':'')+'>'+x.h+'</td>'+
+        (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?'……':'')+'</td></tr>'})});
     show('m-out','<div class="paper"><div class="memo-ar">'+head+'<div class="scroll"><table class="memo m2"><tr><th>التوقيت</th><th>المدة</th><th>المكون</th><th>الموضوع / الهدف التعلمي</th><th>المستوى</th><th>رقم الجذاذة</th></tr>'+rows+
-      '<tr><td colspan="6" class="obs"><b>ملاحظات:</b><br>……………………………………………………………………</td></tr></table></div></div></div>'+note);fitPaper()}
+      '<tr><td colspan="6" class="obs"><b>ملاحظات:</b><br>……………………………………………………………………</td></tr></table></div></div></div>'+note);fitPaper();onePage()}
   else{
     var dt2=dIn?dIn.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'……………………';
     var th=(FTH[lv0]&&FTH[lv0][D.P-2])||'',sth='';D.blocks.forEach(function(B){(B.rows||[]).forEach(function(R){if(!sth&&R.sub)sth=R.sub})});
@@ -2128,6 +2128,8 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
         '<td>'+R.k+'</td><td></td><td>'+R.k+'</td></tr>'})});
     show('m-out','<div class="paper"><div class="memo-fr" dir="ltr">'+head+'<div class="scroll"><table class="memo m1"><tr><th>H</th><th>Niveau</th><th>Matière</th><th>D\'</th><th>Contenus</th><th>Objectifs d\'apprentissage</th><th>S°</th><th>P.V %</th><th>Carte mentale</th></tr>'+rows+'</table></div>'+
       '<div class="mnotes"><b>Notes et observations :</b><br>…………………………………………………………………………<br>…………………………………………………………………………</div>'+(I.name?'<div style="font-size:13px">Enseignant(e) : '+esc(I.name)+(I.school?' – '+esc(I.school):'')+'</div>':'')+'</div></div>'+note);fitPaper()}}
+function onePage(){var p=document.querySelector('#m-out .paper');if(!p)return;var z=p.style.zoom;p.style.zoom=1;p.style.width='680px';var h=p.offsetHeight;p.style.width='';p.style.zoom=z;var k=Math.max(.55,Math.min(1,880/h));p.style.setProperty('--pz',k.toFixed(3))}
+(function(){var s=document.createElement('style');s.textContent='@media print{#m-out .paper{zoom:var(--pz,1)!important}}.memo-ar td{padding:3px 5px}.paper.docfit table.memo td,.paper.docfit table.memo th{font-size:13px!important;padding:2px 4px!important;line-height:1.3!important}.paper.docfit .ob{font-size:.8em!important;margin:0!important}.paper.docfit .mh{font-size:15px!important}';document.head.appendChild(s)})();
 function fitPaper(){var p=document.querySelector('#m-out .paper');if(!p)return;p.style.zoom=1;var q=p.parentNode,cs=getComputedStyle(q),w=Math.min((q.clientWidth-parseFloat(cs.paddingLeft||0)-parseFloat(cs.paddingRight||0))||9999,document.documentElement.clientWidth-36);p.style.zoom=w&&w<680?(Math.floor(w/680*1000)/1000):1}
 window.addEventListener('resize',fitPaper);
 $('m-go').onclick=memo;
@@ -2364,9 +2366,9 @@ F.forEach(function(k){$('wi-'+k).addEventListener('input',function(){D[k]=this.v
 fillInfo();
 /* أنواع الوثائق */
 var ty=$('w-type');
-ty.insertAdjacentHTML('afterbegin','<optgroup label="التوزيعات"><option value="annual">التوزيعات السنوية والمرحلية (كل المواد)</option></optgroup><optgroup label="وثائق الأستاذ"><option value="tt">استعمال الزمن الأسبوعي</option><option value="list">لائحة التلاميذ</option><option value="att">ورقة الغياب الشهرية</option><option value="marks">جدول نتائج الفروض</option></optgroup>');
+ty.insertAdjacentHTML('afterbegin','<optgroup label="التوزيعات"><option value="annual">التوزيعات السنوية والمرحلية</option></optgroup><optgroup label="وثائق الأستاذ"><option value="tt">استعمال الزمن الأسبوعي</option><option value="list">لائحة التلاميذ</option><option value="att">ورقة الغياب الشهرية</option><option value="marks">جدول نتائج الفروض</option></optgroup>');
 var old=[].slice.call(ty.querySelectorAll(':scope > option'));var og=document.createElement('optgroup');og.label='التقويم والدعم والتخطيط';old.forEach(function(o){og.appendChild(o)});ty.appendChild(og);ty.value='annual';
-$('w-lvl').insertAdjacentHTML('beforebegin','<label id="w-subl" style="display:none">المادة<select id="w-sub"><option value="*">جميع المواد</option>'+['اللغة العربية','اللغة الفرنسية','الرياضيات','النشاط العلمي','التربية الإسلامية','الاجتماعيات','التربية الفنية','التربية البدنية'].map(function(x){return '<option>'+x+'</option>'}).join('')+'</select></label><label id="w-perl" style="display:none">نوع التوزيع<select id="w-per"><option value="a">سنوي</option><option value="p">مرحلي</option></select></label><label id="w-langl">لغة الوثيقة<select id="w-lang"><option value="ar">العربية</option><option value="fr">Français</option></select></label>');
+$('w-lvl').insertAdjacentHTML('beforebegin','<label id="w-subl" style="display:none">المادة<select id="w-sub">'+['اللغة العربية','اللغة الفرنسية','الرياضيات','النشاط العلمي','التربية الإسلامية','الاجتماعيات','التربية الفنية','التربية البدنية'].map(function(x){return '<option>'+x+'</option>'}).join('')+'</select></label><label id="w-perl" style="display:none">نوع التوزيع<select id="w-per"><option value="a">سنوي</option><option value="p">مرحلي</option></select></label><label id="w-langl">لغة الوثيقة<select id="w-lang"><option value="ar">العربية</option><option value="fr">Français</option></select></label>');
 $('w-lvl').insertAdjacentHTML('afterend','<label id="w-refl">المرجع / الكتاب المدرسي<select id="w-ref"></select></label><label id="w-monl">الشهر<select id="w-mon">'+['شتنبر','أكتوبر','نونبر','دجنبر','يناير','فبراير','مارس','أبريل','ماي','يونيو'].map(function(m){return '<option>'+m+'</option>'}).join('')+'</select></label>');
 function refs(s0){var s=s0||$('subj').value,lv=$('w-lv').value,R=[];
  Object.keys(LES).forEach(function(k){var p=k.split('|');if(p[0]!=s||p[1]!=lv)return;var v=LES[k];(Array.isArray(v)?[BK[s]||'الكتاب المدرسي']:Object.keys(v)).forEach(function(r){if(R.indexOf(r)<0)R.push(r)})});
@@ -3001,7 +3003,7 @@ $('p-w').insertAdjacentHTML('afterend','<section class="panel" id="p-s"><div cla
 '<label>المادة<select id="s-sub">'+SS.map(function(s){return '<option>'+s+'</option>'}).join('')+'</select></label>'+
 '<label>المستوى<select id="s-lv">'+LVS.map(function(l){return '<option>'+l+'</option>'}).join('')+'</select></label>'+
 '<label class="full">الدرس<select id="s-les"></select></label>'+
-'<button class="go" id="s-go">اعرض الملخص</button><button class="go" id="s-all" style="background:var(--blue)">كل ملخصات المادة في هذا المستوى</button>'+
+'<button class="go" id="s-go" style="background:#2d6a4f">⚡ أنشئ ملخصا مختصرا</button><button class="go" id="s-gd">📖 أنشئ ملخصا مفصلا</button><button class="go" id="s-all" style="display:none"></button>'+
 '</div><div class="sheet" id="s-out" contenteditable="true"></div></section>');
 var b=$('tab-s');b.onclick=function(){cur='s';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('on',p.id=='p-s')});$('bar').classList.toggle('on',!!$('s-out').innerHTML.trim());fill()};
 function list(){return SUM[$('s-sub').value+'|'+$('s-lv').value]||[]}
@@ -3011,8 +3013,11 @@ function fill(){var s=$('s-sub'),lv=$('s-lv').value,low=['الأول ابتدا�
 ['s-sub','s-lv'].forEach(function(i){$(i).addEventListener('change',fill)});
 function card(x){return '<div class="scard"><div class="su">'+esc(x.u||'')+'</div><h2>'+esc(x.t)+'</h2>'+(x.im||[]).map(function(k){var u=(window.SUMIMG||{})[k]||k;return /^data:image\//.test(u)?'<img src="'+u+'" alt="">':''}).join('')+(x.b||[]).map(function(p){return /^§/.test(p)?'<p class="ss">'+esc(p.replace(/^§\s*/,''))+'</p>':/^[-•]/.test(p)?'<div class="sb">'+esc(p.replace(/^[-•]\s*/,''))+'</div>':'<p style="margin:6px 0">'+esc(p)+'</p>'}).join('')+((x.k&&x.k.length)?'<div class="sk"><b>أتذكر:</b> '+x.k.map(esc).join(' – ')+'</div>':'')+'</div>'}
 function hd(){var s=$('s-sub').value,lv=$('s-lv').value;return (window.docHead?docHead('ملخصات '+s,lv):'<h2>ملخصات '+esc(s)+' – '+esc(lv)+'</h2>')}
-$('s-go').onclick=function(){var L=list(),i=$('s-les').value;if(!L.length||i===''){show('s-out','<div class="note">لا توجد ملخصات بعدُ لـ'+esc($('s-sub').value)+' في '+esc($('s-lv').value)+'.</div>');return}show('s-out',card(L[+i]))};
-$('s-all').onclick=function(){var L=list();if(!L.length){$('s-go').onclick();return}show('s-out',hd()+L.map(card).join(''))};
+function cut(p){p=String(p).replace(/^[-•]\s*/,'').replace(/^§\s*/,'');if(p.length<=130)return p;var k=p.slice(0,130),c=Math.max(k.lastIndexOf('.'),k.lastIndexOf('؛'),k.lastIndexOf(':'));return c>50?k.slice(0,c+1):k.slice(0,k.lastIndexOf(' '))+'…'}
+function cardS(x){var b=(x.b||[]).filter(function(p){return !/^§/.test(p)}).slice(0,3);return '<div class="scard"><div class="su">'+esc(x.u||'')+'</div><h2>'+esc(x.t)+'</h2>'+b.map(function(p){return '<div class="sb">'+esc(cut(p))+'</div>'}).join('')+((x.k&&x.k.length)?'<div class="sk"><b>أتذكر:</b> '+x.k.map(esc).join(' – ')+'</div>':'')+'</div>'}
+function mkSum(short){var L=list(),i=$('s-les').value;if(!L.length||i===''){show('s-out','<div class="note">لا توجد ملخصات بعدُ لـ'+esc($('s-sub').value)+' في '+esc($('s-lv').value)+'.</div>');return}var C=short?cardS:card;show('s-out',i=='all'?hd()+L.map(C).join(''):C(L[+i]))}
+$('s-go').onclick=function(){mkSum(true)};$('s-gd').onclick=function(){mkSum(false)};
+
 fill();})();
 /* ===== Documents pédagogiques (version française) ===== */
 (function(){
@@ -3162,7 +3167,7 @@ function build(){var a=list(),ids=[].map.call($('f-les').querySelectorAll('input
  if(R>0&&MI.length){var mi=MI.slice(0,Math.max(1,Math.min(MI.length,R*2)));n++;pts+=R;h+=hd('التمرين '+n+': أختار الجواب الصحيح وأحيطه بدائرة',R)+MCQ.html(mi,esc);K.push('<b>التمرين '+n+':</b> '+mi.map(function(x,i){return (i+1)+'. '+esc(x.a)}).join(' – ')+' (التنقيط موزع بالتساوي).');R=0}
  if(R>0){var ex2=S.slice(6,6+Math.max(2,R*2));if(ex2.length){n++;h+=hd('التمرين '+n+': أضع علامة (✓) أمام العبارة الصحيحة وعلامة (✗) أمام العبارة الخاطئة',R)+'<table style="font-size:14px">'+ex2.map(function(x,i){return '<tr><td style="width:30px">'+(i+1)+'</td><td>'+esc(x.s)+'</td><td style="width:50px"></td></tr>'}).join('')+'</table>';K.push('<b>التمرين '+n+':</b> كل العبارات صحيحة (مأخوذة من الملخص).')}
   else{n++;h+=hd('التمرين '+n+': أكتب عنوان درس درسته هذه الفترة',R)+'<div style="border-bottom:1px dotted #888;height:26px"></div>';K.push('<b>التمرين '+n+':</b> '+L.map(function(x){return esc(x.t)}).join(' / '))}}
- if($('f-key').checked)h+='<div style="page-break-before:always;break-before:page"></div><h3 class="rph3">عناصر الإجابة وسلم التنقيط</h3><div style="font-size:13px;line-height:1.9">'+K.join('<br><br>')+'</div>';
+ if($('f-key').checked)h+='<div style="page-break-before:always;break-before:page"></div><h3 class="rph3">عناصر الإجابة</h3><div style="font-size:13px;line-height:1.9">'+K.join('<br><br>')+'</div>';
  show('f-out',h);$('f-again').style.display=''}
 $('f-go').insertAdjacentHTML('afterend','<button class="go" id="f-again" style="display:none;background:var(--blue)">↻ صيغة أخرى للفرض</button>');$('f-again').onclick=function(){if(typeof runT=='function'&&runT(1))return;seed=(seed+7919)%233280;build()};
 var INS={'اللغة العربية':{read:['أقرأ النص ثم أجيب عن الأسئلة',['أستخرج من النص ……','أجيب: ……؟','أشرح الكلمة «……» من خلال السياق']],synt:['أتعرف الظاهرة وأوظفها',['أستخرج من الجمل التالية ……','أضع خطاً تحت ……','أكوّن جملة تتضمن ……']],morph:['أحوّل حسب المطلوب',['أحوّل الجمل التالية إلى ……','أصرف ……','أملأ الجدول']],dict:['أكتب الكلمات كتابة صحيحة',['أملأ الفراغ بـ ……','أصحح الأخطاء الإملائية في ……']],write:['أنتج كتابة',['أكتب فقرة من 4 إلى 6 أسطر عن ……']],oral:['أتواصل كتابياً',['أكمل الحوار ……']],poem:['المحفوظات',['أكتب البيتين ……']],hand:['أنقل بخط واضح',['أنقل الجملة: ……']],tale:['الحكاية',['أرتب أحداث الحكاية ……']],kit:['أكتب',['……']],lex:['المعجم',['أعطي مرادف أو ضد ……']],proj:['المشروع',['……']]},
@@ -3196,7 +3201,7 @@ function runT(again){var s=SB.value,lv=$('f-lv').value,T=window.FTPL&&FTPL[s+'|'
  var no=$('f-no').value,R;try{var cu=false;try{var q0=qi();cu=a.some(function(x,i){return (ids.indexOf(i)>-1)!=(inQ(x,i,a,q0)&&!skip(x))})}catch(e){}
  R=T({s:s,lv:lv,no:no,q:qi(),L:L,A:a,seed:tseed,custom:cu,pio:typeof mode!='undefined'&&mode=='p'})}catch(e){console.error(e);return false}
  var h=testHead(s,lv,no,R.parts)+(R.note?'<div style="font-size:12px;color:#777;margin-bottom:4px">'+esc(R.note)+'</div>':'')+'<div class="t12">'+R.html+'</div>';
- if($('f-key').checked)h+='<div style="page-break-before:always;break-before:page"></div><h3 class="rph3">عناصر الإجابة وسلّم التنقيط</h3><div style="font-size:13px;line-height:1.9"'+(R.fr?' dir="ltr"':'')+'>'+R.key.map(esc).join('<br>')+'</div>';
+ if($('f-key').checked)h+='<div style="page-break-before:always;break-before:page"></div><h3 class="rph3">عناصر الإجابة</h3><div style="font-size:13px;line-height:1.9"'+(R.fr?' dir="ltr"':'')+'>'+R.key.map(esc).join('<br>')+'</div>';
  show('f-out',h);$('f-again').style.display='';return true}
 var prev=$('f-go').onclick;
 $('f-go').onclick=function(){var s=SB.value;
@@ -5037,7 +5042,7 @@ S('توظيف الظواهر في وضعيات كتابية',['أن يوظف ا�
 function kind(lv,c,sb){var i=LV.indexOf(lv)+1;
  if(sb=='الرياضيات')return 'math5';
  if(sb=='النشاط العلمي')return 'sci2';
- if(sb=='الاجتماعيات')return 'soc2';
+ if(sb=='الاجتماعيات')return c=='التاريخ'?'hist':c=='الجغرافيا'?'geo':c=='مشروع الأسدوس'?'proj':'civ';
  if(sb=='التربية البدنية')return 'pe1';
  if(sb=='التربية الإسلامية')return c=='القرآن الكريم'?'quran6':'isl2';
  if(sb=='اللغة الفرنسية')return null;
@@ -5047,7 +5052,7 @@ function kind(lv,c,sb){var i=LV.indexOf(lv)+1;
  if(i==1&&c=='القراءة')return 'read1';
  if(i==3&&/^القراءة الوظيفية/.test(c))return 'text3';
  if(i==4&&c=='القراءة')return 'text4';
- if(i>=5&&c=='القراءة')return 'text3';
+ if(i>=5&&c=='القراءة')return 'text4';
  if(i>=4&&c=='التواصل الشفهي')return 'oral2';
  if(i>=4&&/^(الصرف والتحويل|التراكيب|الإملاء)$/.test(c))return 'phen2';
  if(i>=4&&c=='التعبير الكتابي')return 'write4';
@@ -5078,6 +5083,17 @@ S('التقويم والاستظهار',['أن يقوّم المتعلم حفظ�
 K.soc2=[
 S('الدرس: بناء التعلم',['أن يتعرف المتعلم مضمون «{t}» انطلاقا من الوثائق والصور'],['يعرض وثائق وصورا أو خريطة','يوجه القراءة واستخراج المعلومات'],['يلاحظ الوثائق ويستخرج المعلومات','يحدد المفاهيم الأساسية'],'يستخرج معلومتين من وثيقة'),
 S('تتمة الدرس: التوظيف والتقويم',['أن يوظف المتعلم المفاهيم في أنشطة تطبيقية','أن يلخص الدرس'],['يقدم أنشطة تطبيقية','يبني الخلاصة مع المتعلمين'],['ينجز الأنشطة','يدوّن الخلاصة'],'يشرح مفهوما ويستعمله في جملة')];
+K.hist=[
+S('الدرس: الوضعية الانطلاقية والوثائق التاريخية',['أن يتعرف المتعلم الحدث التاريخي موضوع «{t}» ويحدد زمانه ومكانه','أن يستخرج معلومات من وثائق تاريخية (نص، صورة، خريطة، شريط زمني)'],['يعرض وضعية انطلاقية (صورة أو وثيقة) ويطرح سؤال البحث','يوجه استغلال الوثائق وفق جدول الأسئلة','يبني معهم الشريط الزمني للحدث'],['يلاحظ الوثيقة ويصف ما يراه','يستخرج الأحداث والشخصيات والتواريخ','يحدد موقع الحدث على الشريط الزمني'],'يحدد زمان الحدث ومكانه ويذكر شخصية فاعلة فيه',[['الوضعية الانطلاقية',.15,['يعرض صورة أو وثيقة ويطرح سؤال البحث'],['يصف الوثيقة ويقترح فرضيات']],['استغلال الوثائق',.45,['يوزع الوثائق ويوجه الأسئلة','يتنقل بين المجموعات'],['يستخرج المعلومات ويدونها في الجدول','يتبادل النتائج داخل المجموعة']],['الشريط الزمني والمفاهيم',.25,['يبني الشريط الزمني مع المتعلمين','يوضح المفاهيم التاريخية'],['يضع الحدث في مكانه الزمني','يشرح المفهوم بأسلوبه']],['تقويم تكويني',.15,['يطرح سؤالين تقويميين'],['يجيب شفهيا']]]),
+S('تتمة الدرس: تفسير الحدث والخلاصة والتقويم',['أن يفسر المتعلم أسباب الحدث ونتائجه','أن يصوغ خلاصة الدرس ويوظفها'],['يوجه البحث عن الأسباب والنتائج','يبني الخلاصة مع المتعلمين','يقدم تمرين التقويم'],['يربط بين الأسباب والنتائج','يدون الخلاصة','ينجز التقويم'],'يذكر سببا ونتيجة للحدث',[['استحضار المكتسبات',.15,['يطرح أسئلة حول حصة الأمس'],['يتذكر الأحداث والتواريخ']],['الأسباب والنتائج',.35,['يعرض وثيقة تفسيرية ويوجه الأسئلة'],['يستخرج الأسباب والنتائج']],['الخلاصة',.25,['يبني الخلاصة على السبورة'],['يدون الخلاصة ويلخصها بأسلوبه']],['التقويم والدعم',.25,['يوزع تمرين التقويم','يعالج التعثرات'],['ينجز التمرين ويصححه']]])];
+K.geo=[
+S('الدرس: ملاحظة المجال وقراءة الوثائق الجغرافية',['أن يلاحظ المتعلم المجال موضوع «{t}» ويصفه','أن يقرأ خريطة أو صورة أو رسما بيانيا ويستخرج معلومات منها'],['يعرض صورة المجال أو الخريطة ويطرح سؤال البحث','يوجه قراءة الوثائق (العنوان، المفتاح، السلم)','ينظم أنشطة التموقع على الخريطة'],['يلاحظ المجال ويصفه','يقرأ مفتاح الخريطة ويحدد عناصرها','يتموقع على الخريطة'],'يقرأ خريطة ويستخرج منها معلومتين',[['الوضعية الانطلاقية',.15,['يعرض صورة أو خريطة المجال'],['يصف ما يلاحظه']],['قراءة الوثائق',.45,['يوزع الخرائط والصور','يوجه القراءة بالأسئلة'],['يقرأ الخريطة بمفتاحها','يستخرج المعطيات ويدونها']],['التموقع والمفاهيم',.25,['ينظم التموقع على الخريطة الصماء','يحدد المفاهيم الجغرافية'],['يتموقع ويشرح المفهوم']],['تقويم تكويني',.15,['يطرح أسئلة قصيرة'],['يجيب']]]),
+S('تتمة الدرس: تفسير الظاهرة والخلاصة والتقويم',['أن يفسر المتعلم العلاقة بين الإنسان والمجال','أن يصوغ خلاصة الدرس ويوظفها'],['يوجه البحث عن العوامل الطبيعية والبشرية','يبني الخلاصة','يقدم تمرين التقويم'],['يربط بين العوامل والظاهرة','يدون الخلاصة','ينجز التقويم'],'يذكر عاملا طبيعيا وآخر بشريا',[['استحضار المكتسبات',.15,['يطرح أسئلة حول المجال المدروس'],['يتذكر']],['التفسير',.35,['يعرض وثائق تفسيرية'],['يحدد العوامل ويربطها بالظاهرة']],['الخلاصة',.25,['يبني الخلاصة'],['يدون الخلاصة']],['التقويم والدعم',.25,['يوزع التقويم ويعالج التعثرات'],['ينجز ويصحح']]])];
+K.civ=[
+S('الدرس: وضعية مشكلة وبناء القاعدة أو القيمة',['أن يحلل المتعلم وضعية مشكلة تتعلق بـ«{t}»','أن يستخلص الحق أو الواجب أو القيمة المرتبطة بها'],['يعرض وضعية مشكلة من الحياة اليومية','ينظم النقاش ويدير الحوار','يوجه استخلاص الحق أو الواجب بربطه بالنصوص المرجعية'],['يحلل الوضعية ويبدي رأيه','يستخلص الحق أو الواجب','يربطه بقيم المواطنة'],'يستخلص حقا وواجبا من الوضعية',[['وضعية المشكلة',.2,['يعرض الوضعية ويطرح سؤال النقاش'],['يقرأ ويحدد المشكل']],['النقاش والتحليل',.4,['يدير النقاش في مجموعات','يدون الآراء'],['يعبر عن رأيه ويحاور زملاءه']],['استخلاص القاعدة',.25,['يبني الخلاصة مع المتعلمين'],['يصوغ القاعدة أو الواجب بأسلوبه']],['تقويم تكويني',.15,['يطرح موقفا جديدا'],['يحدد السلوك المناسب']]]),
+S('تتمة الدرس: تنزيل القيمة في سلوك ومشروع',['أن يوظف المتعلم القيمة في مواقف جديدة','أن يقترح سلوكا مواطنا أو عملا تضامنيا'],['يعرض مواقف جديدة للتحليل','ينظم لعب الأدوار','يوجه صياغة الالتزام أو المقترح'],['يحلل المواقف ويقترح سلوكا','يشارك في لعب الأدوار','يصوغ التزاما شخصيا'],'يقترح سلوكا مواطنا في موقف جديد',[['استحضار المكتسبات',.15,['يستحضر القاعدة المستخلصة'],['يتذكر']],['مواقف وتمثيل',.4,['يوزع المواقف ويدير لعب الأدوار'],['يمثل ويعلق']],['الالتزام والخلاصة',.25,['يوجه صياغة الميثاق أو الالتزام'],['يدون التزامه']],['التقويم',.2,['يقدم تقويما قصيرا'],['ينجز التقويم']]])];
+K.proj=[
+S('مشروع الأسدوس: مناقشة الموضوع وتتبع الإنجاز',['أن يناقش المتعلم موضوع المشروع «{t}» وأهدافه','أن يحدد مع مجموعته مهامه وخطوات الإنجاز','أن يتتبع مراحل الإنجاز ويقوّمها'],['يعرض موضوع المشروع وأهدافه ويحدد المنتوج المنتظر','ينظم المجموعات ويوزع المهام والأدوار','يتتبع محطات الإنجاز بجدول التتبع','يوجه تقويم المنتوج بشبكة المعايير'],['يناقش الموضوع ويقترح أفكاره','يحدد مهامه ودوره داخل المجموعة','ينجز مهمته ويدون ما أنجزه','يقوّم عمل مجموعته'],'يحدد مهمته في المشروع وما أنجزه منها',[['تقديم الموضوع والأهداف',.15,['يقدم موضوع المشروع وأهدافه'],['يناقش ويطرح أسئلته']],['التخطيط وتوزيع المهام',.25,['ينظم المجموعات ويوزع الأدوار','يحدد الآجال'],['يخطط مع مجموعته ويوزع المهام']],['الإنجاز والتتبع',.4,['يتنقل بين المجموعات ويوجه','يملأ جدول تتبع المحطات'],['ينجز مهمته','يدون مراحل الإنجاز']],['التقويم والعرض',.2,['يوجه التقويم الذاتي والتقويم بين المجموعات','يحدد ما تبقى من مهام'],['يقوّم عمله ويعرض حصيلته']]])];
 K.pe1=[
 S('حصة التربية البدنية',['أن يؤدي المتعلم النشاط المستهدف في «{t}» مع احترام قواعد السلامة'],[],[],'يؤدي المهمة المطلوبة بشكل صحيح',[['مرحلة التسخين (5–10 د)',.15,['ينظم المتعلمين في صفوف أو مجموعات','يجري حركات تسخينية سهلة'],['يشارك في الجري الخفيف والتسخين']],['المرحلة الرئيسة (30–40 د)',.7,['يشرح النشاط ويقدم النموذج','ينظم الورشات والألعاب ويصحح الأخطاء'],['ينجز المهمة فرديا أو ثنائيا أو جماعيا','يشارك في المنافسة بروح رياضية']],['العودة إلى الهدوء (5 د)',.15,['يجري نشاط استرخاء وتنفس عميق','يعلن النتائج ويقدم الحصيلة'],['يمشي مع التنفس العميق','ينشد إن أمكن']]])];
 var FR={
@@ -5116,13 +5132,372 @@ $('j-go').onclick=function(){prev.apply(this,arguments);
  var sb=$('subj').value,fr=sb=='اللغة الفرنسية',a=SESS_FOR(sb,$('j-lv').value,$('j-comp').value);if(!a||(typeof mode!='undefined'&&mode=='p'))return;
  var o=$('j-out'),html=o.innerHTML,v=sel.value,t=$('j-title').value.trim()||($('j-pick')&&$('j-pick').value)||'………',d=+$('j-dur').value||45;
  var H=fr?{o:'<h3 class="rph3">Objectifs',i1:'<h3 class="rph3">Contenu',sup:'<h3 class="rph3">Soutien',nt:'<h3 class="rph3">Notes après la séance',s:'Séance',of:' sur ',ob:'Objectifs',st:'Étape / Durée',ta:'Activités de l’enseignant(e)',la:'Activités de l’élève',cr:'Critère de réussite',m:' min',ph:[['Mise en route',.15,['Rappelle les acquis','Annonce l’objectif'],['Se rappelle et répond']],['Construction des apprentissages',.45],['Application / entraînement',.25,['Propose des exercices progressifs','Circule et guide'],['S’exerce','Se corrige']],['Évaluation et remédiation',.15,['Pose une question de sortie','Propose soutien ou enrichissement'],['Répond à la question de sortie']]]}:{o:'<h3 class="rph3">الأهداف',i1:'<h3 class="rph3">محتوى الدرس',sup:'<h3 class="rph3">الدعم والمعالجة',nt:'<h3 class="rph3">ملاحظات بعد الحصة',s:'الحصة',of:' من ',ob:'الأهداف',st:'المرحلة / الزمن',ta:'أنشطة الأستاذ(ة)',la:'أنشطة المتعلم(ة)',cr:'معيار النجاح',m:' د',ph:[['التمهيد',.15,['يستحضر مكتسبات الحصة السابقة','يعرض وضعية الانطلاق ويعلن هدف الحصة'],['يستحضر ويجيب','يعبّر عن توقعاته']],['بناء التعلمات',.45],['التطبيق والتدريب',.25,['يوزع أنشطة تطبيقية متدرجة','يتجول ويقدم التغذية الراجعة'],['ينجز الأنشطة فرديا أو في مجموعات','يصحح ذاتيا']],['التقويم والدعم',.15,['يطرح سؤال الخروج','يقترح نشاط دعم أو إثراء'],['يجيب عن سؤال الخروج','يعبر عن مدى فهمه']]]};
- var i0=html.indexOf(H.o),i1=html.indexOf(H.i1),i2=html.indexOf(H.sup),iN=html.indexOf(H.nt);
+ var IX=function(s){var x=s.replace('<h3 class="rph3">',''),m=html.match(new RegExp('<h3[^>]*>\\s*'+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));return m?m.index:-1},i0=IX(H.o),i1=IX(H.i1),i2=IX(H.sup),iN=IX(H.nt);
  if(i0<0||iN<0)return;
  var head=html.slice(0,i0),idx=v=='all'?a.map(function(_,i){return i}):[+v];
  var body=idx.map(function(i){var s=a[i],P=s.ph||H.ph.map(function(p,j){return j==1?[p[0],p[1],s.T,s.L]:p}),m=minsP(d,P.map(function(p){return p[1]}));
   return '<div style="border-top:2px solid #999;margin-top:14px;padding-top:6px"'+(fr?' dir="ltr" style="text-align:left"':'')+'><h3 class="rph3">'+H.s+' '+(i+1)+H.of+a.length+': '+esc2(s.t)+'</h3><b>'+H.ob+':</b>'+li2(s.o,t)+'<div class="scroll"><table class="run"><tr><th>'+H.st+'</th><th>'+H.ta+'</th><th>'+H.la+'</th></tr>'+P.map(function(p,j){return '<tr><td class="stg"><b>'+esc2(p[0])+'</b><span class="tm">'+m[j]+H.m+'</span></td><td>'+li2(p[2],t)+'</td><td>'+li2(p[3],t)+'</td></tr>'}).join('')+'</table></div><div><b>'+H.cr+':</b> '+esc2(s.e)+'</div></div>'}).join('');
  var sup=html.slice(i2>-1?i2:iN,iN),mid=i1>-1?html.slice(i1,i2>-1?i2:iN):'';
  o.innerHTML=head+body+mid+(i2>-1?sup:'')+html.slice(iN)};
+})();
+
+/* ===== جذاذة التعبير الكتابي المفصلة (حسب المهارة) ===== */
+(function(){
+var E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')};
+var LEN={1:'جملة واحدة',2:'جملتين إلى 3 جمل',3:'4 إلى 6 جمل',4:'6 إلى 8 جمل',5:'8 إلى 10 جمل',6:'10 إلى 12 جملة'};
+var ERC=[
+['أخطاء إملائية','كتابة «مدرستي» بتاء مفتوحة، أو «الى» بدل «إلى»','إملاء قصير من 3 كلمات يوميا + بطاقة «أخطائي» يعيد فيها المتعلم كتابة الكلمة 3 مرات'],
+['أخطاء نحوية وتطابق','«ذهبت التلاميذ إلى الساحة» أو «البنات لعبوا»','تحويل جمل خاطئة إلى صحيحة + لعبة «من يكتشف الخطأ؟» على السبورة'],
+['غياب الترقيم','نص كامل بلا نقطة أو بلا فاصلة','قراءة النص بصوت مرتفع والتوقف عند كل نقطة ثم وضع علامات الترقيم بألوان'],
+['ضعف الخط وتنظيم الصفحة','سطور غير مستقيمة وكلمات متراكبة','نقل متدرج على سطر مخطط مع نموذج على السبورة'] ];
+var S={};
+function add(k,o){o.k=k;S[k]=o}
+add('idea',{n:'توليد الأفكار',d:'توليد الأفكار هو البحث عن أفكار مناسبة للموضوع قبل الكتابة وتنظيمها في خريطة بسيطة. الفكرة التي لا تُجمع قبل الكتابة تضيع أثناءها.',
+tech:['أقرأ الموضوع مرتين وأضع خطا تحت الكلمات المفاتيح','أطرح الأسئلة: من؟ أين؟ متى؟ كيف؟ لماذا؟','أدوّن كل ما يخطر ببالي في خريطة (كلمات وليس جملا)','أحذف الأفكار البعيدة وأرتب الباقي: البداية ثم الوسط ثم الخاتمة'],
+crit:[['ارتباط الأفكار بالموضوع',3],['تنوع الأفكار (4 على الأقل)',3],['تنظيم الخريطة وترتيب الأفكار',2],['وضوح الكلمات وسلامتها',2]],
+hook:'تعرض صورة «حديقة المدرسة» وتسأل: «ما الذي يمكن أن نكتبه عنها؟» وتدوّن أول ثلاث إجابات',
+sup:'الموضوع: «أكتب عن حديقة مدرستي».',task:'أنجز خريطة أفكار حول الموضوع: الموقع، ما يوجد فيها، من يعتني بها، ما أحبه فيها، كيف نحافظ عليها.',
+ans:'الموقع: خلف القسم ← الأشجار والورود والمقاعد ← الحارس والتلاميذ المتطوعون ← أحب ظلها ورائحة الورد ← لا نقطف الورد ولا نرمي الأوساخ.',
+bad:'حديقة. أنا أحب المدرسة. ذهبت إلى السوق.',badn:['أفكار بعيدة عن الموضوع (السوق)','لا خريطة ولا ترتيب','فكرة واحدة مكررة'],
+er:[['أفكار خارج الموضوع','ذكر السوق في موضوع الحديقة','العودة إلى الكلمات المفاتيح وحذف كل فكرة لا تجيب عن سؤال'],['أفكار قليلة','فكرتان فقط','طرح الأسئلة الخمسة (من؟ أين؟ متى؟ كيف؟ لماذا؟) على كل موضوع'],['خريطة غير مرتبة','أفكار متناثرة بلا أرقام','ترقيم الأفكار 1، 2، 3 قبل الكتابة']]});
+add('sum',{n:'التلخيص',d:'التلخيص هو إعادة كتابة النص في عدد أقل من الجمل مع الاحتفاظ بالأفكار الأساسية وحذف التفاصيل والأمثلة، بأسلوب المتعلم وبالترتيب نفسه.',
+tech:['أقرأ النص مرتين: مرة للفهم ومرة للبحث عن الأساسي','أضع خطا تحت الأفكار الأساسية (من؟ ماذا حدث؟ كيف انتهى؟)','أشطب التفاصيل والأمثلة والوصف الطويل','أكتب كل فكرة أساسية في جملة قصيرة بأسلوبي','أربط الجمل بأدوات الربط (ثم، لكن، وأخيرا) وأقرأ ما كتبت'],
+crit:[['احترام معنى النص وعدم تحريفه',3],['الاختصار (حوالي ثلث النص) دون تفاصيل',2],['ترتيب الأفكار وأدوات الربط',2],['سلامة اللغة والإملاء',2],['الترقيم ونظافة الكتابة',1]],
+hook:'تحكي مشهدا من يوم الأمس في 8 جمل ثم تسأل: «لو لخصته في جملتين، ماذا أقول؟» وتقارن بين صياغتين',
+sup:'خرج سالم مع أبيه إلى الضيعة في صباح ربيعي جميل. كانت الشمس ساطعة والطيور تغرد فوق الأشجار. وفي الطريق رأى سالم عصفورا صغيرا سقط من عشه فبدا خائفا يرتجف. حمله بحذر ووضعه في كفه الدافئة، ثم صعد على جذع شجرة قصيرة وأعاده إلى عشه. فرحت أم العصفور وزقزقت شاكرة، وابتسم الأب وقال: «أنا فخور بك يا بني». ثم أكمل الاثنان طريقهما إلى الضيعة.',
+task:'ألخص النص في 3 جمل على الأكثر.',
+ans:'رأى سالم وهو في طريقه إلى الضيعة مع أبيه عصفورا سقط من عشه فأعاده إليه بحذر. شكرته أم العصفور وفرح أبوه بتصرفه.',
+bad:'خرج سالم مع أبيه إلى الضيعة وكانت الشمس ساطعة وراى عصفور وحمله بحدر وصعد على الجذع وابتسم الاب.',badn:['نسخ جمل النص بدل إعادة الصياغة','لم يذكر النتيجة (شكر الأم)','أخطاء إملائية: «راى» «بحدر» «الاب»'],
+er:[['نسخ النص','نقل جمل كاملة كما هي','تمرين «بكلماتي أنا»: يغطي المتعلم النص ثم يكتب ما فهمه'],['حذف فكرة أساسية','نسيان نهاية الحدث','طرح سؤال «كيف انتهى؟» قبل نهاية كل تلخيص'],['إبقاء التفاصيل','ذكر الشمس والطيور','شطب الوصف بقلم أحمر ثم عدّ الجمل المتبقية'],['إضافة رأي شخصي','«وأظن أن سالم طيب»','التذكير بأن التلخيص لا يتضمن رأيا']],
+note:'تلخيص النص الإخباري: يجيب الملخص عن الأسئلة: ماذا؟ من؟ أين؟ متى؟ ويحذف الأرقام الثانوية والأمثلة.'});
+add('exp',{n:'توسيع فكرة',d:'التوسيع هو الانطلاق من جملة أو فكرة واحدة وتطويرها بالشرح (لماذا؟ كيف؟) أو بالأمثلة (مثلا…) أو بالسبب والنتيجة حتى تصير فقرة مترابطة.',
+tech:['أقرأ الفكرة وأفهمها جيدا','أشرح: لماذا هي صحيحة؟ (لأن…)','أعطي مثالين من حياتي (مثلا…، من ذلك…)','أضيف النتيجة أو النصيحة (لذلك…)','أختم بجملة ختامية وأراجع'],
+crit:[['الانطلاق من الفكرة وعدم الخروج عنها',3],['الشرح أو الأمثلة (مثالان على الأقل)',3],['الربط بين الجمل (لأن، مثلا، لذلك)',2],['سلامة اللغة والإملاء والترقيم',2]],
+hook:'تكتب على السبورة «الماء أصل الحياة» وتسأل: «لماذا؟ من يعطيني دليلا؟» وتجمع 3 إجابات',
+sup:'الفكرة: «الماء أصل الحياة».',task:'أوسع الفكرة في فقرة من 6 إلى 8 جمل.',
+ans:'الماء أصل الحياة، فلا يستطيع الإنسان ولا الحيوان ولا النبات أن يعيش بدونه. نشرب الماء لنحافظ على صحتنا ونستعمله في النظافة والطبخ. وتسقي به الفلاحة الأرض فتعطينا الخضر والفواكه، فمن دون ماء يصيب الجفاف الحقول. لذلك يجب أن نحافظ عليه، فنغلق الصنبور بعد الاستعمال ولا نبذره.',
+bad:'الماء اصل الحياة. الماء جميل. الماء مهم جدا. الماء ماء.',badn:['تكرار الفكرة نفسها بكلمات مختلفة','لا شرح ولا أمثلة','لا ربط بين الجمل'],
+er:[['تكرار الفكرة','«الماء مهم، الماء مفيد»','استعمال بطاقة «لماذا؟ مثلا؟ لذلك؟» لإضافة جملة جديدة في كل مرة'],['غياب الأمثلة','فقرة بلا مثال','تدريب شفهي: أعطي مثالا من البيت ومثالا من المدرسة'],['الخروج عن الفكرة','الحديث عن البحر بدل الماء','قراءة الفكرة الأولى قبل كل جملة جديدة']]});
+add('cmt',{n:'التعليق وإبداء الرأي',d:'التعليق هو أن أصف ما أراه أو أقرؤه ثم أعبر عن رأيي وأعلله وأختم بخلاصة أو نصيحة.',
+tech:['أصف ما أرى: من؟ ماذا يفعل؟ أين؟','أعبر عن رأيي بصيغة «في رأيي… / أعتقد أن…»','أعلل رأيي بـ«لأن…»','أختم بنصيحة أو خلاصة'],
+crit:[['وصف دقيق للصورة أو الفكرة',2],['رأي واضح ومعلل',3],['خلاصة أو نصيحة',2],['سلامة اللغة والإملاء',2],['الترقيم والتنظيم',1]],
+hook:'تعرض صورة تلاميذ ينظفون ساحة المدرسة وتسأل: «ما رأيكم فيما يفعلونه؟ ولماذا؟»',
+sup:'الصورة: مجموعة من التلاميذ تجمع الأوراق من ساحة المدرسة وتضعها في أكياس.',task:'أعلق على الصورة في فقرة من 6 إلى 8 جمل.',
+ans:'في الصورة مجموعة من التلاميذ يجمعون الأوراق من ساحة المدرسة ويضعونها في أكياس. في رأيي عملهم جميل لأنهم يحافظون على نظافة مدرستهم. كما أن التعاون يجعل العمل أسهل وأسرع. أنصح كل تلميذ أن يشارك في ذلك حتى تبقى مدرستنا نظيفة ومريحة.',
+bad:'في الصورة اطفال. هم يعملون. المدرسة نضيفة.',badn:['وصف ناقص ولا رأي','لا تعليل','خطأ إملائي «نضيفة»'],
+er:[['رأي بلا تعليل','«أحب الصورة»','إلحاق «لأن» بكل رأي'],['وصف فقط دون رأي','سرد ما في الصورة','طرح سؤال «ما رأيك أنت؟» قبل نهاية الفقرة'],['خلط الرأي بالوصف','«الأطفال رائعون» داخل الوصف','فصل الوصف عن الرأي بفقرتين قصيرتين']]});
+add('des',{n:'الوصف',d:'الوصف هو رسم صورة بالكلمات لمكان أو شخص أو شيء، بالانتقال من العام إلى الخاص، واستعمال النعوت والتشبيهات والأحاسيس.',
+tech:['أقدم الموصوف: ما هو؟ أين؟','أصف من الشامل إلى الجزئي (الموقع ثم الشكل ثم الألوان ثم التفاصيل)','أستعمل نعوتا دقيقة وتشبيها واحدا على الأقل','أختم بانطباعي'],
+crit:[['تقديم الموصوف وتنظيم الوصف',2],['دقة النعوت والتفاصيل',3],['تشبيه أو تعبير جميل',1],['سلامة اللغة والإملاء',3],['الترقيم ونظافة الكتابة',1]],
+hook:'تصف غرض داخل كيس دون تسميته (شكله، ملمسه) ويخمن التلاميذ ثم تسألهم أي الكلمات ساعدتهم',
+sup:'الموضوع: «أصف حيي».',task:'أكتب فقرة من 6 إلى 8 جمل أصف فيها حيي أو منتزها أو شخصا أحبه.',
+ans:'يقع حيّنا في سفح الجبل وتحيط به أشجار الزيتون من كل جانب. شوارعه ضيقة ونظيفة وبيوته بيضاء ذات نوافذ زرقاء. في وسطه ساحة صغيرة يلعب فيها الأطفال بعد المدرسة، وبجانبها مسجد قديم تعلو مئذنته كأنها قلم يكتب في السماء. أحب حيّنا لأن جيراننا طيبون ولأن هواءه نقي.',
+bad:'حيي كبير وجميل وفيه بيوت وناس. وفيه شارع جميل. كل شيء جميل.',badn:['نعت واحد مكرر (جميل)','لا تفاصيل ولا ترتيب','لا انطباع'],
+er:[['تكرار النعوت','جميل جميل','لوحة «بدائل جميل»: رائع، ساحر، هادئ، أنيق'],['وصف غير منظم','الانتقال من البيت إلى الشارع فالسماء','رسم تخطيط بسيط (يمين، وسط، يسار) قبل الكتابة'],['غياب التشبيه','لا صورة بلاغية','لعبة «كأن…» بين الأقران']]});
+add('rep',{n:'سرد حدث أو وصف رحلة (التقرير)',d:'هو الإخبار عن حدث أو رحلة عشتها بترتيب زمني واضح، بالإجابة عن: ماذا؟ متى؟ أين؟ مع من؟ كيف؟ ثم الانطباع.',
+tech:['أبدأ بالمكان والزمان والأشخاص','أرتب الأحداث بأدوات الزمن (أولا، ثم، بعد ذلك، أخيرا)','أذكر ما رأيت وما فعلت في جمل قصيرة','أختم بانطباعي'],
+crit:[['الإجابة عن الأسئلة الأساسية (متى؟ أين؟ مع من؟)',3],['الترتيب الزمني وأدوات الربط',3],['الانطباع والخاتمة',1],['سلامة اللغة والإملاء',2],['الترقيم والتنظيم',1]],
+hook:'تسأل: «من زار مدينة أو حديقة هذا الأسبوع؟» ويحكي تلميذ ما فعله في جملتين ثم تدوّن أدوات الزمن التي استعملها',
+sup:'الموضوع: «رحلتنا المدرسية إلى الحديقة».',task:'أحكي الرحلة في فقرة من 8 إلى 10 جمل.',
+ans:'في يوم السبت الماضي نظمت مدرستنا رحلة إلى حديقة المدينة. ركبنا الحافلة في الثامنة صباحا ومعنا معلمتنا. وعند الوصول تجولنا بين الأشجار والورود، ثم لعبنا في الساحة الخضراء. بعد ذلك تناولنا غداءنا تحت شجرة كبيرة. وفي نهاية اليوم عدنا إلى المدرسة مسرورين. كانت رحلة جميلة لا أنساها.',
+bad:'ذهبنا الحديقة. لعبنا. رجعنا. كان جميل.',badn:['غياب الزمان والمكان والأشخاص','لا أدوات ربط','جمل ناقصة «ذهبنا الحديقة»'],
+er:[['ترتيب غير زمني','البدء بالنهاية','بطاقات أحداث تُرتب ثم تُكتب'],['جمل قصيرة ناقصة','حذف حرف الجر','قراءة الجملة بصوت مرتفع للتأكد من اكتمالها'],['غياب أدوات الربط','لا (ثم) ولا (بعد ذلك)','لوحة مرجعية لأدوات الزمن']]});
+add('let',{n:'كتابة رسالة أو دعوة أو طلب',d:'الرسالة نص له شكل ثابت: المكان والتاريخ، التحية، الموضوع، الخاتمة، الإمضاء. الدعوة تذكر المناسبة والزمان والمكان، والطلب يشرح الحاجة بأدب.',
+tech:['أكتب المكان والتاريخ أعلى اليسار','أحيي المرسل إليه (عزيزي… / السيد المدير المحترم)','أعرض الموضوع بوضوح وأدب في فقرة','أختم بعبارة شكر أو تحية وأوقّع'],
+crit:[['احترام شكل الرسالة (تاريخ، تحية، إمضاء)',3],['وضوح الموضوع والأدب في الأسلوب',3],['الخاتمة والإمضاء',1],['سلامة اللغة والإملاء',2],['الترقيم والتنظيم',1]],
+hook:'تسأل: «كيف نخبر صديقا بعيدا بخبر سار؟» وتعرض ظرفا فارغا وورقة لتبيّن مكان كل عنصر',
+sup:'الموضوع: «أكتب رسالة إلى صديقي أدعوه فيها لحضور عيد ميلادي».',task:'أكتب الرسالة (قالب: المكان والتاريخ، التحية، الدعوة، الخاتمة، الإمضاء).',
+ans:'الرباط، 12 ماي\nعزيزي كريم،\nسلام عليك وبعد، أدعوك لحضور حفلة عيد ميلادي يوم السبت القادم على الساعة الرابعة بعد الزوال في بيتنا. سنلعب ونأكل الحلوى معا، وسأكون سعيدا بحضورك.\nشكرا لك، وأنتظرك بشوق.\nصديقك: ياسين',
+bad:'كريم. انا ادعوك. تعال. ياسين',badn:['غياب المكان والتاريخ','لا تحية ولا خاتمة','أسلوب جاف: «تعال»'],
+er:[['نسيان عناصر الشكل','غياب التاريخ أو الإمضاء','بطاقة قالب تُلصق على الدفتر'],['أسلوب غير مهذب','«تعال» «أعطني»','تمرين تحويل الأمر إلى طلب مؤدب (من فضلك… هل يمكنك…؟)'],['خلط ضمائر المتكلم والمخاطب','أنا… أنت… بلا ترتيب','قراءة الرسالة مع الزميل للتأكد من وضوح من يخاطب من']]});
+add('dlg',{n:'كتابة حوار',d:'الحوار تبادل كلام بين شخصين أو أكثر، يُكتب بذكر اسم المتحدث ثم نقطتين رأسيتين، مع علامات الاستفهام والتعجب، وفي كل مرة يتكلم شخص واحد.',
+tech:['أحدد المتحدثين والمكان والموضوع','أكتب اسم المتحدث ثم نقطتين ثم كلامه','أنوع الجمل: سؤال، جواب، تعجب','أنهي الحوار بخاتمة مناسبة'],
+crit:[['احترام شكل الحوار (اسم + نقطتان)',2],['تبادل الكلام وتتابع الأفكار',3],['علامات الترقيم (؟ !)',2],['سلامة اللغة والإملاء',2],['خاتمة مناسبة',1]],
+hook:'تمثل مع تلميذ مشهدا بين بائع وزبون ثم تسأل: «كيف نكتب هذا الكلام لكي يعرف القارئ من تكلم؟»',
+sup:'الوضعية: يلتقي سعيد وأمينة في المكتبة، ويريد سعيد استعارة كتاب عن الحيوانات.',task:'أكتب حوارا من 6 تدخلات على الأقل بين سعيد وأمينة.',
+ans:'سعيد: صباح الخير يا أمينة، هل تعرفين أين أجد كتبا عن الحيوانات؟\nأمينة: صباح النور، إنها في الرف الثاني على اليمين.\nسعيد: شكرا لك! وهل يمكنني استعارتها إلى البيت؟\nأمينة: نعم، اطلب البطاقة من أمين المكتبة.\nسعيد: سأفعل ذلك الآن، إلى اللقاء.\nأمينة: إلى اللقاء، استمتع بالقراءة.',
+bad:'سعيد قال صباح الخير امينة قالت صباح النور اين الكتب',badn:['لا نقطتان ولا سطر جديد','لا ترقيم','متحدثان في سطر واحد'],
+er:[['عدم الفصل بين المتحدثين','كل الكلام في سطر','الذهاب إلى السطر عند كل متحدث جديد (ألوان مختلفة)'],['غياب النقطتين','«سعيد صباح الخير»','نموذج مرجعي معلق على السبورة'],['تكرار الجمل','الجواب نفسه للسؤال نفسه','لعبة أدوار ثم الكتابة']]});
+add('nar',{n:'السرد وتكملة النص أو كتابة القصة',d:'القصة تتكون من بداية (الشخصيات والمكان والزمان)، وعقدة (المشكلة)، وحل، ونهاية. التكملة تحافظ على الشخصيات والزمن والجو نفسه.',
+tech:['أحدد الشخصيات والمكان والزمان','أصوغ المشكلة (ماذا حدث؟)','أكتب الحل والأحداث بأدوات زمنية (فجأة، عندئذ، في النهاية)','أختم بعبرة أو نهاية سعيدة'],
+crit:[['احترام عناصر القصة (بداية، عقدة، حل، نهاية)',3],['الاتساق مع النص الأصلي (في التكملة)',2],['أدوات الربط والزمن',2],['سلامة اللغة والإملاء',2],['الترقيم',1]],
+hook:'تعرض صورة ثعلب أمام عش دجاجة وتسأل: «ماذا سيحدث؟» وتجمع توقعات متنوعة',
+sup:'بداية القصة: «في غابة قريبة من القرية، وجد الأرنب الصغير مفتاحا ذهبيا تحت شجرة كبيرة. تردد قليلا ثم حمله وجرى إلى بيته...»',task:'أكمل القصة بفقرة من 8 إلى 10 جمل تتضمن مشكلة وحلا ونهاية.',
+ans:'في الطريق قابل الأرنب السلحفاة، فسألته عن المفتاح، فأخبرها بما وجد. قالت له: «لعله لخزانة أحدهم». ذهبا معا إلى القرية فسألا الجميع، فقال العم حسن: «لقد ضاع مني منذ أسبوع!». فرح الرجل كثيرا وشكرهما وأهداهما سلة جزر طازجة. عاد الأرنب مسرورا وهو يقول: «الأمانة أجمل من الذهب».',
+bad:'ثم ذهب الارنب. وجد ناس. واعطاهم. وانتهت.',badn:['غياب العقدة','لا ربط ولا زمن','نهاية مفاجئة بلا عبرة'],
+er:[['غياب العقدة','سرد بلا مشكلة','سؤال «ما الذي صعّب الأمر على الشخصية؟»'],['تغيير الشخصيات','ظهور شخصية لا علاقة لها','قائمة الشخصيات في أعلى الورقة'],['نهاية سريعة','«وانتهت»','سؤال «كيف أصبح حال الشخصية؟» لاستخلاص العبرة']]});
+add('ins',{n:'كتابة نص إرشادي أو نصائح',d:'النص الإرشادي يوجه القارئ إلى كيفية القيام بعمل أو إلى سلوك صحيح، باستعمال أفعال الأمر أو المضارع المقرون بـ«ينبغي أن» وترتيب الخطوات بالأرقام.',
+tech:['أحدد الهدف (كيف؟) ومن يقرأ النص','أرتب الخطوات: أولا، ثانيا، ثالثا','أستعمل أفعال الأمر (اعبر، انتظر، انظر)','أضيف تحذيرا وخاتمة قصيرة'],
+crit:[['وضوح الهدف والخطوات',3],['ترتيب الخطوات والترقيم',2],['استعمال أفعال الأمر أو الصيغ المناسبة',2],['سلامة اللغة والإملاء',2],['الترقيم والتنظيم',1]],
+hook:'تقدم تعليمات لعبة بخطوات مبعثرة ويرتبها التلاميذ ثم تسأل: «لماذا نحتاج الترتيب؟»',
+sup:'الموضوع: «كيف نعبر الطريق بسلامة؟»',task:'أكتب 5 إرشادات مرتبة وخاتمة قصيرة.',
+ans:'كيف نعبر الطريق بسلامة؟\n1. قف على الرصيف قبل أن تعبر.\n2. انظر يمينا ثم يسارا ثم يمينا.\n3. اعبر من ممر الراجلين.\n4. لا تركض ولا تستعمل الهاتف أثناء العبور.\n5. انتظر الضوء الأخضر إن وجد.\nبهذه الإرشادات نحمي أنفسنا ونحمي غيرنا.',
+bad:'تعبر الطريق ويجب ان تنتبه. لا تركض.',badn:['لا ترتيب','لا ترقيم للخطوات','خلط صيغ الأمر والمضارع'],
+er:[['خلط صيغ الأمر','«قف… ينبغي أن تنتظر»','اختيار صيغة واحدة والاستمرار بها'],['خطوات غير مرتبة','البدء بالوصول','ترقيم الخطوات بطاقات قبل الكتابة'],['غياب التحذير','لا تنبيه إلى الخطر','سؤال: «ما الخطأ الأخطر هنا؟»']]});
+add('adv',{n:'كتابة إعلان',d:'الإعلان نص قصير يجذب القارئ ويقدم معلومة (ماذا؟ متى؟ أين؟ كيف نتصل؟) بعنوان بارز وجمل قصيرة.',
+tech:['أختار عنوانا جذابا','أحدد المعلومات: ماذا؟ متى؟ أين؟ لمن؟','أكتب جملا قصيرة واضحة','أضيف عبارة تشجيعية وطريقة الاتصال'],
+crit:[['عنوان جذاب',2],['اكتمال المعلومات',3],['جمل قصيرة وواضحة',2],['سلامة اللغة والإملاء',2],['التنظيم',1]],
+hook:'تعرض إعلانا قديما وتسأل: «ما الذي لفت نظركم؟ وما المعلومة الناقصة؟»',
+sup:'الوضعية: تنظم مدرستك معرضا للكتاب يوم الجمعة 3 مارس من التاسعة إلى الثانية عشرة بقاعة الأنشطة.',task:'أكتب إعلانا من 4 إلى 6 جمل.',
+ans:'معرض الكتاب بمدرستنا!\nهل تحب القراءة؟ تعال واكتشف كتبا جديدة بأثمان رمزية.\nالمكان: قاعة الأنشطة\nالزمان: الجمعة 3 مارس من التاسعة إلى الثانية عشرة\nنحن في انتظارك!',
+bad:'معرض كتاب في المدرسة تعالوا',badn:['لا زمان ولا مكان','لا عبارة تشجيعية','لا تنظيم'],
+er:[['معلومة ناقصة','نسيان الزمان أو المكان','قائمة التحقق: ماذا؟ متى؟ أين؟'],['جمل طويلة','فقرة كاملة','تقسيم الجملة الطويلة إلى جملتين'],['عنوان باهت','«إعلان»','اقتراح 3 عناوين والتصويت']]});
+add('log',{n:'كتابة يومية',d:'اليومية نص أكتبه عن يومي بصيغة المتكلم: التاريخ، الأحداث بالترتيب، مشاعري.',
+tech:['أكتب التاريخ في أعلى الصفحة','أحكي الأحداث بالترتيب بصيغة المتكلم','أعبر عن مشاعري (فرحت، تعبت)','أختم بما أنوي فعله غدا'],
+crit:[['التاريخ وصيغة المتكلم',2],['ترتيب الأحداث',3],['التعبير عن المشاعر',2],['سلامة اللغة والإملاء',2],['الترقيم',1]],
+hook:'تحكي يوما عاديا في 4 جمل وتسأل: «هل عرفتم ما شعرت به؟»',
+sup:'الموضوع: «يومي في المدرسة».',task:'أكتب يومية من 6 إلى 8 جمل.',
+ans:'الاثنين 6 مارس\nاستيقظت اليوم باكرا وذهبت إلى المدرسة مع صديقي. في الحصة الأولى تعلمنا قصيدة جميلة وحفظناها. وفي الاستراحة لعبنا كرة القدم وفرحت لأن فريقي فاز. عدت إلى البيت متعبا وسعيدا. غدا سأراجع دروسي جيدا.',
+bad:'ذهبت. لعبت. تعبت.',badn:['لا تاريخ','لا تفاصيل','لا ترتيب'],
+er:[['غياب التاريخ','لا عنوان زمني','سطر التاريخ بالألوان'],['انتقال من المتكلم إلى الغائب','«ذهبت… ثم ذهب»','قراءة النص مع الإبقاء على «أنا»'],['غياب المشاعر','حكي بلا إحساس','سؤال: ماذا شعرت؟']]});
+add('bio',{n:'بطاقة معلومات وسيرة ذاتية',d:'هي نص يقدم شخصا (الاسم، السن، المدرسة، الهوايات، الأحلام) بعناصر مرتبة ثم بجمل مترابطة.',
+tech:['أجمع المعلومات في بطاقة (الاسم، السن، المدينة…)','أحول المعلومات إلى جمل','أرتب: التعريف، الدراسة، الهوايات، الأحلام','أختم بجملة تعبر عن طموحي'],
+crit:[['اكتمال المعلومات',3],['ترتيب العناصر',2],['تحويل المعلومات إلى جمل مترابطة',2],['سلامة اللغة والإملاء',2],['الترقيم',1]],
+hook:'تقدم بطاقة معلومات عن شخصية معروفة وتسأل: «ماذا نعرف عنها الآن؟»',
+sup:'البطاقة: الاسم: ليلى. السن: 11 سنة. المدينة: فاس. الهواية: الرسم. الحلم: أن أكون معلمة.',task:'أحول البطاقة إلى فقرة من 5 إلى 6 جمل.',
+ans:'اسمي ليلى، عمري إحدى عشرة سنة، وأسكن بمدينة فاس. أدرس بالسنة الخامسة ابتدائي. أحب الرسم كثيرا، وأرسم دائما مناظر طبيعية. أحلم بأن أصير معلمة لأعلم الأطفال وأساعدهم.',
+bad:'ليلى 11 فاس الرسم معلمة',badn:['كلمات منفصلة بلا جمل','لا أفعال','لا ربط'],
+er:[['كتابة كلمات بدل الجمل','قائمة فقط','لعبة «أحول السطر إلى جملة»'],['خلط الضمائر','«اسمها ليلى وأنا…»','اختيار ضمير واحد'],['معلومات ناقصة','لا سن','مراجعة البطاقة قبل الكتابة']]});
+add('art',{n:'كتابة مقالة أو إصدار حكم أو دعوة إلى سلوك',d:'المقالة نص قصير يعرض فكرة ويدعمها بحجج (لأن، بدليل) ويختم بنتيجة أو دعوة. إصدار الحكم يعلّل قبوله أو رفضه لتصرف أو فكرة.',
+tech:['أعرض الفكرة في جملة واضحة','أقدم حجتين على الأقل (لأن… كما أن…)','أضيف مثالا من الواقع','أختم بنتيجة أو بدعوة'],
+crit:[['وضوح الفكرة أو الحكم',2],['الحجج والأمثلة',3],['التدرج والربط',2],['سلامة اللغة والإملاء',2],['الترقيم',1]],
+hook:'تطرح سؤالا: «هل نقرأ كل يوم؟» وتطلب موقفا مدعما بسبب واحد',
+sup:'الموضوع: «القراءة صديق وفي».',task:'أكتب مقالة قصيرة من 8 إلى 10 جمل أدعو فيها زملائي إلى القراءة.',
+ans:'القراءة صديق وفي لا يتخلى عنا. فهي تعلمنا كلمات جديدة وتوسع معارفنا وتنمي خيالنا. كما أنها تسلينا في أوقات الفراغ بدل الجلوس أمام الشاشات. فمن يقرأ نصف ساعة كل يوم يتحسن كتابته وفهمه. لذلك أدعو زملائي إلى زيارة المكتبة واستعارة كتاب كل أسبوع.',
+bad:'القراءة جيدة. كلنا نحب القراءة. اقرؤوا.',badn:['لا حجج','تكرار','دعوة مباشرة دون سبب'],
+er:[['رأي بلا حجة','«القراءة جيدة» فقط','سؤال «لماذا؟» بعد كل جملة'],['حجة ضعيفة','تكرار الفكرة','ربط الحجة بمثال'],['خاتمة غائبة','لا نتيجة','سؤال: ماذا أريد من القارئ؟']]});
+add('tra',{n:'تحويل نص',d:'التحويل هو إعادة كتابة النص بعد تغيير عنصر منه (الضمير، الزمن، العدد، الجنس) مع الاحتفاظ بالمعنى وتغيير كل ما يتبع هذا العنصر.',
+tech:['أحدد العنصر المطلوب تغييره','أضع خطا تحت كل كلمة ستتغير','أعيد الكتابة جملة بجملة','أراجع التطابق وأقرأ النص كاملا'],
+crit:[['تحويل كل المواضع',4],['سلامة التطابق',3],['احترام المعنى',1],['سلامة الإملاء',2]],
+hook:'تغير ضمير جملة بسيطة على السبورة وتسأل: «ما الذي تغير معه؟»',
+sup:'النص: «ذهبت سعاد إلى السوق، واشترت خبزا، ثم عادت إلى البيت.» المطلوب: التحويل إلى ضمير المتكلمين (نحن).',task:'أحول النص مع الحفاظ على المعنى.',
+ans:'ذهبنا إلى السوق، واشترينا خبزا، ثم عدنا إلى البيت.',
+bad:'ذهبنا إلى السوق، واشترت خبزا، ثم عدنا.',badn:['نسيان تحويل فعل واحد'],
+er:[['نسيان تحويل فعل','تحويل بعض الأفعال فقط','وضع خط تحت كل فعل قبل التحويل'],['اختلال التطابق','«نحن ذهبت»','جدول الضمائر وما يناسبها'],['تغيير المعنى','حذف جملة','مقارنة النصين جملة بجملة']]});
+add('mix',{n:'استثمار المهارات السابقة',d:'يختار المتعلم نوع النص الذي تدرب عليه (تلخيص، وصف، رسالة…) ويطبق تقنيته كاملة ثم يراجع إنتاجه بشبكة جامعة.',
+tech:['أختار نوع النص وأتذكر تقنيته','أخطط (خريطة أفكار)','أكتب مسودة','أراجع بقائمة تحقق ثم أكتب النسخة النهائية'],
+crit:[['احترام خصائص نوع النص',3],['التخطيط والتنظيم',2],['الأفكار والمضمون',2],['سلامة اللغة والإملاء',2],['الترقيم والنظافة',1]],
+hook:'تعرض بطاقات «أنواع النصوص» وتسأل: «أي نص تفضل أن تكتب؟ وما تقنيته؟»',
+sup:'الوضعية: اختر أحد الأنواع: وصف مكان، رسالة، تلخيص، قصة قصيرة.',task:'أنتج نصا من 8 إلى 10 جمل بحسب النوع المختار مع المسودة.',
+ans:'(يُحال إلى النموذج الخاص بالنوع الذي يختاره المتعلم، ثم يُراجع بالشبكة الجامعة.)',
+bad:'نص بلا تخطيط ولا مراجعة.',badn:['مسودة غائبة','خلط بين خصائص الأنواع'],
+er:[['خلط الأنواع','رسالة بأسلوب قصة','تذكير ببطاقة خصائص كل نوع'],['غياب المسودة','كتابة مباشرة','طلب المسودة قبل النسخة النهائية'],['مراجعة سطحية','لا تعديل','قائمة تحقق موقعة']]});
+add('wrd',{n:'بناء الكلمات والجمل الأولى',d:'في بداية السنة يبني المتعلم كلمات من حروف ومقاطع درسها ثم ينتقل إلى جملة قصيرة، وهذا أساس الكتابة اللاحقة.',
+tech:['أنطق المقاطع بصوت مرتفع','أركب الحروف لأبني الكلمة','أكتب الكلمة على السطر بخط واضح','أقرأ ما كتبت وأقارنه بالنموذج'],
+crit:[['صحة بناء الكلمة',4],['وضوح الخط واتجاه الكتابة',3],['القراءة الصحيحة لما كتب',3]],
+hook:'تعرض بطاقات حروف مبعثرة وتسأل: «من يبني كلمة؟»',
+sup:'الحروف: (م) (د) (ر) (س) (ة) (ا)',task:'أبني كلمة «مدرسة» ثم أضعها في جملة.',
+ans:'مَدْرَسَة ← أحب مدرستي.',bad:'مردسة',badn:['تبديل ترتيب الحروف'],
+er:[['قلب ترتيب الحروف','«مردسة»','بطاقات حروف تُرتب بالتحريك'],['عدم وصل الحروف','كتابة حروف منفصلة','نقل على سطر مخطط'],['خلط الحروف المتشابهة','ب/ت/ث','نطق مع الإشارة إلى النقط']]});
+add('snt',{n:'إنتاج الجمل والفقرة القصيرة',d:'ينتج المتعلم جملا مفيدة (فعل + فاعل + تتمة) ثم يربط بينها بأدوات بسيطة ليكون فقرة قصيرة حول صورة أو موضوع مألوف.',
+tech:['أنظر إلى الصورة وأسأل: من؟ ماذا يفعل؟ أين؟','أكتب جملة تبدأ بفعل','أضيف جملة ثانية وثالثة','أقرأ وأتأكد أن الجمل مفيدة وفيها نقطة'],
+crit:[['اكتمال الجملة (فعل وفاعل)',3],['ارتباط الجمل بالصورة أو الموضوع',3],['سلامة الإملاء والخط',2],['وضع النقطة والمسافات',2]],
+hook:'تعرض صورة لعبة وتسأل: «ماذا ترون؟ ماذا تفعل؟»',
+sup:'الصورة: طفل يلعب بالكرة في الحديقة.',task:'أكتب الجمل المناسبة للصورة.',
+ans:'يلعب الطفل بالكرة. يجري في الحديقة. هو سعيد.',bad:'الكرة الحديقة الطفل',badn:['كلمات بلا جمل'],
+er:[['كلمات بلا جملة','«الكرة حديقة»','بطاقات فعل/فاعل/مكان تُرتب'],['غياب النقطة','جمل متصلة','لعبة «أين النقطة؟»'],['تكرار نفس الجملة','«الطفل يلعب» ثلاث مرات','سؤال: ماذا آخر؟']]});
+var RX=[['idea',/توليد الأفكار/],['sum',/تلخيص/],['tra',/تحويل/],['exp',/توسيع|التوسع/],['cmt',/تعليق|التعليق|إصدار حكم/],['dlg',/حوار/],['nar',/قصة|سردي|حكاية/],['snt',/صياغة أسئلة|جملة|جملتين|ثلاث جمل|فقرة|كتابة تفاعلية|لعبة|صديقي يزورني/],['let',/رسالة|دعوة|طلب/],['adv',/إعلان/],['log',/يومية/],['bio',/سيرة|بطاقة/],['ins',/إرشاد|نصائح|قانون السير/],['rep',/تقرير|رحلة|رحلت|أذكر عملا|أتعاون|أخبر|إخبار|حدث/],['des',/وصف|أصف|أختار مهنة|منتزه|فلاح/],['art',/مقالة|فوائد|أدعو/],['mix',/استثمار/],['wrd',/كلمات|مقاطع|حروف/]];
+function pick(t,lv){t=String(t||'').replace(/\(.*?\)/g,'');for(var i=0;i<RX.length;i++)if(RX[i][1].test(t))return S[RX[i][0]];return lv<=1?S.wrd:lv<=3?S.snt:S.mix}
+function mins(d,p){var m=p.map(function(x){return Math.max(2,Math.round(d*x))}),s=m.reduce(function(a,b){return a+b},0),i=m.indexOf(Math.max.apply(null,m));m[i]+=d-s;return m}
+function lis(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ul>'}
+function nl(s){return E(s).replace(/\n/g,'<br>')}
+
+
+function render(lvName,title,d,short,only){
+ var lv=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].indexOf(String(lvName).split(' ')[0])+1||3,k=pick(title,lv),len=LEN[lv],T=title||'………',tot=k.crit.reduce(function(a,c){return a+c[1]},0);
+ var techOl='<ol>'+k.tech.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ol>';
+ var box=function(c,b,x){return '<div style="border:1px solid '+c+';background:'+b+';border-radius:8px;padding:6px 10px;margin:6px 0">'+x+'</div>'};
+ var grid='<div class="scroll"><table><tr>'+k.crit.map(function(c){return '<th>'+E(c[0])+' ('+c[1]+')</th>'}).join('')+'</tr><tr>'+k.crit.map(function(){return '<td>&nbsp;</td>'}).join('')+'</tr></table></div>';
+ var R=(window.ROSTER&&ROSTER.cur&&ROSTER.cur().st||[]).slice(0,32);if(!R.length)R=[{},{},{},{},{},{},{},{}];
+ var er=k.er.concat(ERC.slice(0,2));
+ var S=[
+ {t:'تقديم المهارة ونمذجتها والتخطيط',o:['أن يتعرف المتعلم المهارة «'+k.n+'» وخطواتها','أن يخطط لإنتاجه انطلاقا من نموذج'],
+  ph:[['التهيئة',.1,[k.hook,'اسأل: «ماذا كتبنا سابقا؟ وما الذي ينقصنا؟»'],['يجيبون شفهيا','يستحضرون خطوات الكتابة السابقة']],
+      ['تقديم المهارة',.15,['اكتب موضوع الحصة: «'+T+'» واقرأ تعريف المهارة','علّق خطوات المهارة على السبورة'],['يرددون التعريف بكلماتهم','ينقلون الخطوات']],
+      ['النمذجة (أنا أفعل)',.3,['اعرض نص الانطلاق واقرأه','فكّر بصوت مرتفع وأنت تطبق الخطوات واحدة بعد أخرى','اكتب الإنتاج النموذجي جملة بجملة مع تفسير كل اختيار'],['يلاحظون ويحددون الخطوات في النموذج','يطرحون أسئلة']],
+      ['التخطيط الموجه (نحن نفعل)',.35,['قدم تعليمة قريبة من النموذج','اجمع الأفكار على السبورة ورتبها'],['يخططون في أزواج ثم يقارنون']],
+      ['الإغلاق',.1,['سؤال الخروج: ما أول خطوة سأفعلها حين أكتب؟'],['يجيبون']]],
+  ex:function(){return '<b>ما المقصود بالمهارة؟</b><div>'+E(k.d)+'</div><b>خطوات المهارة (تُعلَّق على السبورة):</b>'+techOl+(short?'':'<div style="border:1px solid #999;border-radius:8px;padding:6px 10px;margin:6px 0"><b>نص الانطلاق / الوضعية:</b><div>'+nl(k.sup)+'</div></div>'+box('#2d6a4f','#f4fbf6','<b>الإنتاج النموذجي (للتصحيح):</b><br>'+nl(k.ans))+(lv<=3?'<div style="font-size:13px;color:#7a4f00">النماذج بمستوى السنة الخامسة تقريبا؛ بسّطها لقسمك.</div>':'')+(k.note?'<div style="font-size:13px">ملاحظة: '+E(k.note)+'</div>':''))}},
+ {t:'الإنجاز (المحاولة الأولى)',o:['أن يكتب المتعلم إنتاجه الأول ('+len+')','أن يطبق خطوات المهارة'],
+  ph:[['التذكير بالتعليمة',.1,['اقرأ التعليمة وذكّر بخطوات المهارة والطول المطلوب ('+len+')'],['يقرؤون التعليمة ويحددون المطلوب']],
+      ['الإنتاج الفردي (أنت تفعل)',.65,['وزع التعليمة: «'+k.task+'»','تنقل بين الصفوف وساعد من توقف دون أن تصحح عنهم'],['يكتبون المحاولة الأولى على الكراس','يرجعون إلى خطوات المهارة']],
+      ['التتبع',.15,['دوّن في جدول التتبع الأخطاء المتكررة (القسم الأخير)'],['يواصلون الكتابة أو يعيدون القراءة']],
+      ['الإغلاق',.1,['اجمع الكراريس وأعلن عن حصة المراجعة'],['يسلمون كراريسهم']]],
+  ex:function(){return short?'':box('#999','#fff','<b>التعليمة:</b> '+E(k.task)+'<br><b>الطول المطلوب:</b> '+E(len))}},
+ {t:'المراجعة وإتمام الإنجاز',o:['أن يراجع المتعلم محاولته بشبكة التصحيح','أن يتمم إنتاجه ويحسنه'],
+  ph:[['التغذية الراجعة',.25,['اعرض شبكة التصحيح واقرأ معاييرها','اقرأ إنتاجا مجهولا وصححه معهم بالشبكة'],['يتابعون ويقترحون التحسين']],
+      ['المراجعة الذاتية وبين الأقران',.4,['وزع الكراريس مع الشبكة','اطلب علامة أمام كل معيار'],['يصححون إنتاجهم بالشبكة','يتبادلون الكراريس مع زميل']],
+      ['إتمام الإنجاز',.25,['تنقل وساعد في تحسين الجمل'],['يعيدون كتابة الإنتاج محسنا']],
+      ['الإغلاق',.1,['سؤال الخروج: ما أكثر خطأ صححته؟'],['يجيبون']]],
+  ex:function(){return '<b>شبكة التصحيح (من '+tot+' نقط):</b>'+(short?grid:'<div class="scroll"><table><tr><th>المعيار</th><th>النقط</th><th>تحقق</th></tr>'+k.crit.map(function(c){return '<tr><td>'+E(c[0])+'</td><td>'+c[1]+'</td><td></td></tr>'}).join('')+'<tr><th>المجموع</th><th>'+tot+'</th><th></th></tr></table></div><b>مثال لإنتاج يحتاج إلى تصحيح (للعرض المجهول):</b>'+box('#c0504d','#fff6f5',nl(k.bad))+lis(k.badn.map(function(x){return 'ملاحظة التصحيح: '+x})))}},
+ {t:'التصحيح والعرض والمعالجة',o:['أن يصحح المتعلم إنتاجه ويعرضه','أن يعالج أخطاءه الشائعة'],
+  ph:[['التصحيح الجماعي',.3,['اعرض فقرة مجهولة تحمل الخطأ الأكثر تكرارا وصححها معهم'],['يكتشفون الخطأ ويصححونه']],
+      ['العرض',.25,['نظم عرض 3 إنتاجات محسنة وفق الشبكة'],['يعرضون ويقوّم زملاؤهم']],
+      ['المعالجة',.3,['فيّئ المتعلمين بحسب صنف الخطأ','قدم تمرينا علاجيا قصيرا للصنف الأكثر تكرارا'],['يعالجون خطأهم ويعيدون كتابة الجزء الخاطئ']],
+      ['الإغلاق',.15,['سجل في عمود «بعد المعالجة» وبرمج حصة أخرى لمن لم يتجاوز'],['يجيبون عن سؤال الخروج']]],
+  ex:function(){return '<b>تصنيف الأخطاء وطرق المعالجة:</b><div class="scroll"><table><tr><th>صنف الخطأ</th>'+(short?'':'<th>مثال</th>')+'<th>المعالجة</th></tr>'+(short?k.er.slice(0,3):er).map(function(r){return '<tr><td>'+E(r[0])+'</td>'+(short?'':'<td>'+E(r[1])+'</td>')+'<td>'+E(r[2])+'</td></tr>'}).join('')+'</table></div>'+(short?'':'<b>جدول تتبع الإنتاجات:</b><div style="font-size:12px">رموز الأخطاء: م مضمون، ت تنظيم، ل لغة، إ إملاء، ر ترقيم، خ خط. المعالجة: ف فردية، ج جماعية، ق أقران.</div><div class="scroll"><table style="font-size:11px"><tr><th>#</th><th>المتعلم(ة)</th>'+k.crit.map(function(c,i){return '<th>م'+(i+1)+'/'+c[1]+'</th>'}).join('')+'<th>المجموع/'+tot+'</th><th>صنف الخطأ</th><th>المعالجة</th><th>بعد المعالجة</th></tr>'+R.map(function(s,i){return '<tr><td>'+(i+1)+'</td><td>'+E(s.n||'')+'</td>'+k.crit.map(function(){return '<td></td>'}).join('')+'<td></td><td></td><td></td><td></td></tr>'}).join('')+'</table></div>')}}];
+ var idx=only==null||only==='all'?[0,1,2,3]:[+only];
+ return idx.map(function(i){var s=S[i],m=mins(d,s.ph.map(function(p){return p[1]}));
+  return '<div style="border-top:2px solid #999;margin-top:14px;padding-top:6px"><h3 class="rph3">الحصة '+(i+1)+' من 4: '+E(s.t)+'</h3><b>الأهداف:</b>'+lis(s.o)+'<div class="scroll"><table class="run"><tr><th>المرحلة</th><th>نشاط الأستاذ</th><th>نشاط المتعلمين</th></tr>'+s.ph.map(function(p,j){return '<tr><td class="stg"><b>'+E(p[0])+'</b><span class="tm">'+m[j]+' د</span></td><td>'+(short?E(p[2][0]):lis(p[2]))+'</td><td>'+(short?E(p[3][0]):lis(p[3]))+'</td></tr>'}).join('')+'</table></div>'+s.ex()+'</div>'}).join('')}
+window.WRITE_FICHE=render;window.WRITE_SKILL=pick;
+})();
+
+(function(){var prev=$('j-go').onclick;
+$('j-go').onclick=function(){prev.apply(this,arguments);
+ if($('subj').value!='اللغة العربية'||$('j-comp').value!='التعبير الكتابي')return;
+ var d=+$('j-dur').value||45,p=$('j-pick'),t=$('j-title').value.trim()||(p&&p.value&&p.selectedIndex>0?p.options[p.selectedIndex].text.replace(/\s*\(.*\)\s*$/,''):'')||'………',sl=$('j-ses'),ov=sl&&sl.options.length==5?sl.value:'all',sk=WRITE_SKILL(t,$('j-lv').selectedIndex+1);
+ show('j-out','<h2>جذاذة التعبير الكتابي</h2>'+hdr('التعبير الكتابي',d,t)+'<div style="margin:6px 0"><b>المهارة المستهدفة:</b> '+sk.n+'</div>'+WRITE_FICHE($('j-lv').value,t,d,!!window.JSHORT,ov)+(window.JSHORT?'':'<h3 class="rph3">ملاحظات بعد الحصة</h3><div>……………………………………………………</div>'))}})();
+
+/* ===== نص الحكاية والنص السماعي ===== */
+(function(){
+var E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')},KEY='muh.txt';
+var TALES=[
+{t:'السلحفاة الصبورة',v:'الصبر',x:'كانت سلحفاة صغيرة تعيش قرب نهر هادئ، وكانت تحلم بأن تصل إلى قمة التل لترى الغروب. قال لها الأرنب ضاحكا: «أنت بطيئة جدا، لن تصلي أبدا». لم تغضب السلحفاة، بل بدأت رحلتها في الصباح الباكر. صعدت خطوة بعد خطوة، وتوقفت لتستريح تحت شجرة ثم واصلت. حل المساء وهبت ريح باردة، فكادت تعود لكنها تذكرت حلمها. وأخيرا بلغت القمة وجلست تتأمل الشمس الحمراء وهي تغيب. جاء الأرنب متعبا وقال: «لقد سبقتني بصبرك». ابتسمت السلحفاة وقالت: «من صبر وصل».'},
+{t:'النملة والجدول',v:'التعاون',x:'في يوم حار، ذهبت نملة صغيرة تبحث عن الماء، فوجدت جدولا تفصل بينه وبين عشها ورقة شجر طافية. حاولت أن تعبر فجرفها التيار. رأتها نملة أخرى فنادت رفيقاتها، فتشابكن بأرجلهن حتى كوّن جسرا طويلا. عبرت النملة الصغيرة بسلام وهي تردد: «شكرا لكن». ثم حملت كل واحدة قطرة ماء إلى العش. فرحت ملكة النمل وقالت: «اليد الواحدة لا تصفق، ومعا نفعل المستحيل».'},
+{t:'الطفل الصادق',v:'الصدق',x:'كان أمين يلعب الكرة بجانب البيت حين كسرت كرته زجاج نافذة الجارة. خاف أمين وجرى إلى بيته، ثم جلس يفكر. تذكر قول أبيه: «الصدق منجاة». أخذ نفسا عميقا وذهب إلى الجارة، وقال بصوت خافت: «أنا من كسر النافذة، أرجو أن تسامحيني، وسأدفع ثمنها من مدخراتي». ابتسمت الجارة وقالت: «شجاعتك في الاعتراف أغلى من النافذة». أصلح أبوه الزجاج، وتعلم أمين ألا يلعب قرب النوافذ، وأن الصدق يريح القلب.'},
+{t:'القط الجائع',v:'المشاركة',x:'استيقظ قط صغير جائع فلم يجد في الزقاق ما يأكله. رأى عصفورا يحمل كسرة خبز، فتوقع أن يأخذها منه، لكن العصفور قال: «تعال نتقاسمها، فالخير يزداد حين يوزع». أكل القط نصف الكسرة وشكره. وفي اليوم التالي وجد القط سمكة صغيرة على حافة الميناء، فتذكر العصفور وجلب له قطعة. منذ ذلك اليوم صار القط والعصفور صديقين لا يفترقان.'}];
+var DLG=[
+[/يحيي|التحية|يستقبل|يودع/,'تحية','نادية: السلام عليكم يا معلمتي.\nالمعلمة: وعليكم السلام ورحمة الله يا نادية، كيف حالك اليوم؟\nنادية: بخير والحمد لله، وأنتِ يا معلمتي؟\nالمعلمة: بخير، شكرا لك. هيا إلى القسم.'],
+[/يقدم نفسه|يقدم أسرته|يقدم أصدقاءه|يقدم/,'تقديم','سعيد: مرحبا، اسمي سعيد وعمري سبع سنوات، وأدرس في السنة الثانية.\nليلى: مرحبا يا سعيد، اسمي ليلى. هذا أخي عمر وهذه أمي.\nسعيد: تشرفت بمعرفتكم جميعا.'],
+[/يشكر|شكر/,'شكر','كريم: أعطتني زميلتي قلمها لأني نسيت قلمي.\nكريم: شكرا جزيلا يا سلمى.\nسلمى: لا شكر على واجب يا كريم، هذا ما تفعله الصديقة.'],
+[/ينصح|ينهى|يأمر|ينبه|يحذر|يوجه|يرشد|إرشاد/,'نصح وتوجيه','الأب: يا يوسف، انتبه حين تعبر الطريق.\nيوسف: ماذا أفعل يا أبي؟\nالأب: قف على الرصيف وانظر يمينا ويسارا ثم اعبر. ولا تركض أبدا.\nيوسف: سأفعل ذلك دائما، شكرا يا أبي.'],
+[/يصف|وصف/,'وصف','هدى: ما رأيك في الحديقة الجديدة؟\nأيمن: واسعة وجميلة، فيها أشجار عالية وورود حمراء وصفراء.\nهدى: وهل فيها ألعاب؟\nأيمن: نعم، فيها أرجوحة كبيرة ومزلقة زرقاء.'],
+[/يحكي|يخبر|حدثا|حكاية/,'حكي حدث','منى: أين كنت أمس يا رشيد؟\nرشيد: زرت جدي في القرية، فركبنا الحمار وجمعنا الزيتون.\nمنى: وماذا فعلتم بعد ذلك؟\nرشيد: أكلنا خبز جدتي مع الزيت ثم عدنا مساء.'],
+[/يطلب|يستأذن|معلومات/,'طلب','التلميذ: من فضلك يا أستاذ، هل يمكنني أن أخرج إلى المرحاض؟\nالأستاذ: نعم، لكن عد بسرعة.\nالتلميذ: شكرا يا أستاذ.'],
+[/./,'حوار','أحمد: ماذا ستفعل في العطلة؟\nسمية: سأزور جدتي وأساعدها في الحديقة، وأنت؟\nأحمد: سأقرأ قصصا وألعب مع أخي.\nسمية: ما أجمل العطلة!']];
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function title(){var p=$('j-pick');return $('j-title').value.trim()||(p&&p.value&&p.selectedIndex>0?p.options[p.selectedIndex].text.replace(/\s*\(.*\)\s*$/,''):'')}
+function key(){return $('j-lv').value+'|'+$('j-comp').value+'|'+title()}
+function kind(){var c=$('j-comp').value,lv=$('j-lv').selectedIndex+1;if($('subj').value!='اللغة العربية')return null;if(/^الحكاية/.test(c))return 'tale';if(c=='التواصل الشفهي')return lv>=4?'listen':'sit';if(/^الوضعية التواصلية/.test(c))return lv>=4?'listen':'sit';return null}
+$('j-title').closest('label').insertAdjacentHTML('afterend','<label class="full" id="j-txt-l" style="display:none"><span id="j-txt-t"></span><textarea id="j-txt" rows="6" style="width:100%" placeholder="ألصق هنا نص الكتاب أو دليل الأستاذ مرة واحدة، وسيُحفظ في هاتفك ويظهر تلقائيا في الجذاذة."></textarea><span class="sub" id="j-txt-s" style="font-size:12px"></span></label>');
+function upd(){var k=kind(),l=$('j-txt-l');if(!k){l.style.display='none';return}l.style.display='';$('j-txt-t').textContent=k=='tale'?'نص الحكاية (اختياري)':'النص السماعي (اختياري)';var o=load();$('j-txt').value=o[key()]||'';$('j-txt-s').textContent=$('j-txt').value?'نص محفوظ لهذا الدرس.':'إن تركته فارغا يُقترح نص نموذجي من إنتاجنا.'}
+['subj','j-lv','j-comp','j-pick','j-ref'].forEach(function(i){$(i).addEventListener('change',function(){setTimeout(upd,60)})});$('j-title').addEventListener('input',upd);$('j-title').addEventListener('change',upd);
+$('j-txt').addEventListener('input',function(){var o=load();if(this.value.trim())o[key()]=this.value;else delete o[key()];save(o);$('j-txt-s').textContent=this.value.trim()?'تم الحفظ.':''});
+setTimeout(upd,200);
+function sents(x){return x.replace(/\r/g,'').split(/(?<=[.!؟?\n])\s*/).map(function(s){return s.trim()}).filter(function(s){return s.length>2})}
+function vocab(x){var seen={},out=[];(x.match(/[ء-ي]{6,}/g)||[]).forEach(function(w){var b=w.replace(/^(وال|فال|بال|لل|ال|و|ف)/,'');if(b.length>=5&&!seen[b]){seen[b]=1;out.push(w)}});return out.slice(0,8)}
+function ul(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ul>'}
+function section(){
+ var k=kind();if(!k)return '';var t=title()||'………',o=load(),x=(o[key()]||'').trim(),own=!!x,note='',lab=k=='tale'?'نص الحكاية':'النص السماعي',h='';
+ if(!x){
+  if(k=='tale'){var i=Math.abs(t.split('').reduce(function(a,c){return a+c.charCodeAt(0)},0))%TALES.length,T=TALES[i];x=T.x;note='النص الأصلي للكتاب المقرر غير متوفر في التطبيق؛ هذا نص نموذجي من إنتاجنا (قيمة: '+T.v+') يمكن استعماله للتدريب على الحكي، واستبداله بنص الكتاب بلصقه في خانة «نص الحكاية».'}
+  else if(k=='sit'){var d=DLG.filter(function(q){return q[0].test(t)})[0]||DLG[DLG.length-1];x=d[2];note='حوار نموذجي من إنتاجنا ('+d[1]+') يصلح نصا سماعيا للوضعية؛ استبدله بنص الدليل بلصقه في الخانة أعلاه.'}
+  else{return '<h3 class="rph3">النص السماعي</h3><div style="border:1px dashed #c0504d;border-radius:8px;padding:8px 12px">لم يُدخل نص الاستماع لهذا الدرس («'+E(t)+'»). نصوص الاستماع في دليل الأستاذ محمية بحقوق النشر ولا نملكها، فألصقها مرة واحدة في خانة «النص السماعي» وسيتولد لك: تقسيم النص وأسئلة الفهم والمفردات وجدول بنيته، وتبقى محفوظة في هاتفك.</div>'+listenFrame()}
+ }
+ var S=sents(x),n=S.length,a=Math.ceil(n/3);
+ h+='<h3 class="rph3">'+lab+'</h3>';
+ if(note)h+='<div style="font-size:13px;color:#7a4f00;background:#fff8e6;border:1px solid #e8c768;border-radius:8px;padding:6px 10px;margin-bottom:6px">'+E(note)+'</div>';
+ h+='<div style="border:1px solid #2d5fb8;border-radius:10px;padding:10px 14px;line-height:2;background:#fbfcff">'+x.split(/\n+/).map(function(p){return E(p)}).join('<br>')+'</div>';
+ var SH=!!window.JSHORT;
+ if(!SH)h+='<h3 class="rph3">كيف تقرأ النص أو تحكيه؟</h3>'+ul(['اقرأه مرتين على الأقل قبل الحصة وحدد المقاطع التي تتطلب تغيير نبرة الصوت.','اطلب من المتعلمين إغلاق الكتب والاستماع فقط، واحكِه بصوت واضح وبطيء مع وقفات عند علامات الترقيم.','استعمل الإشارات والتعابير الوجهية لتقريب المعنى، وانظر إلى المتعلمين لا إلى الورقة.','بعد القراءة الأولى اسأل عن الفكرة العامة فقط، ثم أعد القراءة وتوقف عند كل مقطع.']);
+ if(!SH&&n>=3){h+='<h3 class="rph3">تقسيم النص إلى مقاطع</h3><div class="scroll"><table><tr><th>المقطع</th><th>يبدأ بـ</th><th>العنوان المقترح للمتعلمين</th></tr>'+[0,1,2].map(function(i){var s=S[i*a]||'';return '<tr><td>'+(i+1)+'</td><td>'+E(s.length>70?s.slice(0,70)+'…':s)+'</td><td>'+(k=='tale'?['البداية: الشخصية والمكان','العقدة: المشكلة','الحل والنهاية'][i]:['………','………','………'][i])+'</td></tr>'}).join('')+'</table></div>'}
+ h+='<h3 class="rph3">أسئلة الفهم المقترحة</h3>';
+ var Q=k=='tale'?['من شخصيات الحكاية؟ (أسئلة حرفية)','أين ومتى وقعت الأحداث؟','ما المشكلة التي واجهت الشخصية الرئيسية؟','كيف تم حل المشكلة؟','لماذا تصرفت الشخصية هكذا؟ (سؤال استنتاجي)','ما العبرة التي نستخلصها؟','ماذا كنت ستفعل لو كنت مكانها؟ (سؤال رأي)']:['ما موضوع النص؟ (الفكرة العامة)','من يتحدث ومن يخاطب؟','اذكر معلومتين وردتا في النص. (سؤال حرفي)','لماذا … ؟ (سؤال استنتاجي من النص)','ما رأيك فيما سمعت؟ (سؤال رأي)'];
+ if(SH)Q=Q.slice(0,5);
+ h+='<ol>'+Q.map(function(q){return '<li>'+E(q)+'</li>'}).join('')+'</ol>';
+ var V=SH?[]:vocab(x);if(V.length)h+='<h3 class="rph3">مفردات مقترحة للشرح (راجعها)</h3><div>'+V.map(E).join(' • ')+'</div><div style="font-size:12px">اشرح كل كلمة بالسياق أو بالصورة أو بالضد قبل الاستماع الثاني.</div>';
+ if(k=='tale')h+='<h3 class="rph3">جدول عناصر الحكاية (يملأ مع المتعلمين)</h3><div class="scroll"><table><tr><th>الشخصيات</th><th>المكان والزمان</th><th>العقدة</th><th>الحل</th><th>العبرة</th></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr></table></div>';
+ return h+(k=='tale'||SH?'':listenFrame())}
+function listenFrame(){return '<h3 class="rph3">خطوات حصة الاستماع</h3><ol><li>التهيئة: عنوان النص وصورته وتوقع المضمون (3 د).</li><li>الاستماع الأول: الفكرة العامة فقط (5 د).</li><li>الاستماع الثاني: الأحداث أو المعلومات وإجابة الأسئلة الحرفية (7 د).</li><li>الاستماع الثالث: الأسئلة الاستنتاجية وشرح المفردات (7 د).</li><li>إعادة الحكي أو التلخيص الشفهي بالأزواج (10 د).</li><li>التقويم: سؤال رأي وتقويم الأقران (8 د).</li></ol>'}
+var prev=$('j-go').onclick;
+$('j-go').onclick=function(){prev.apply(this,arguments);var k=kind();if(!k)return;var o=$('j-out'),h=section();if(!h)return;var i=o.innerHTML.indexOf('<h3 class="rph3">ملاحظات بعد الحصة');o.innerHTML=i>-1?o.innerHTML.slice(0,i)+h+o.innerHTML.slice(i):o.innerHTML+h;if(window.fitOut)fitOut(o)};
+})();
+
+/* ===== جذاذة مختصرة / مفصلة ===== */
+(function(){
+var gs=$('j-gs'),go=$('j-go');
+function lab(){var base=/الخطاطة/.test(go.textContent+gs.textContent)||(typeof mode!='undefined'&&mode=='p')?'خطاطة':'جذاذة',a='📖 أنشئ '+base+' مفصلة',b='⚡ أنشئ '+base+' مختصرة';if(go.textContent!=a)go.textContent=a;if(gs.textContent!=b)gs.textContent=b}
+new MutationObserver(lab).observe(go,{childList:true,characterData:true,subtree:true});lab();
+function shorten(o){
+ var kill=/^الدعم|^الإثراء|الامتداد والاستثمار|محتوى الدرس والخلاصة|أسئلة التقويم المقترحة|ملاحظات بعد الحصة|Prolongement|Contenu|Notes après/;
+ [].slice.call(o.querySelectorAll('h3')).forEach(function(h){if(!kill.test(h.textContent)||!h.parentNode)return;var n=h.nextSibling,p=h.parentNode;p.removeChild(h);while(n&&!(n.nodeType==1&&/^H[23]$/.test(n.tagName))){var x=n.nextSibling;p.removeChild(n);n=x}});
+ [].slice.call(o.querySelectorAll('table.run ul')).forEach(function(u){[].slice.call(u.children).slice(2).forEach(function(li){li.remove()})});
+ [].slice.call(o.querySelectorAll('h3')).forEach(function(h){if(!/^(الأهداف|Objectifs)/.test(h.textContent.trim()))return;var u=h.nextElementSibling;if(u&&u.tagName=='UL')[].slice.call(u.children).slice(3).forEach(function(li){li.remove()})})}
+gs.onclick=function(){window.JSHORT=true;try{go.onclick();if($('j-comp').value!='التعبير الكتابي')shorten($('j-out'))}finally{window.JSHORT=false}if(window.fitOut)fitOut($('j-out'))};
+})();
+/* ===== تقسيم الجذاذة إلى حصص حسب منهاج 2021 ===== */
+(function(){
+var go=$('j-go');if(!go)return;
+var AR='اللغة العربية';
+function lvi(v){var a=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'];for(var i=0;i<6;i++)if(v.indexOf(a[i])>-1)return i+1;return 3}
+function rep(n,m,L){var o=[];for(var i=0;i<n;i++)o.push({m:Array.isArray(m)?m[i]:m,t:L[i]||L[L.length-1]});return o}
+var RD=['اكتشاف النص وفهمه','القراءة والفهم وبناء المعنى','القراءة المعبّرة والاستثمار','التوظيف والتقويم','تثبيت ودعم'];
+function plan(s,l,c){
+ if(s==AR){
+  if(l<=2){
+   if(c=='الحكاية'||c=='الوضعية التواصلية')return rep(4,30,['الاستماع والفهم','التحدث وإعادة السرد','التحدث في وضعيات','التقويم والدعم']);
+   if(c=='القراءة')return rep(5,45,['الاستكشاف والملاحظة','القراءة وفهم المعنى','التعرف على الحرف/المقطع','التدرب على القراءة','التقويم والدعم']);
+   if(c=='الكتابة'||c=='الظواهر اللغوية')return rep(5,30,['الخط والرسم الحرفي','النقل','الإملاء/الشكل','التطبيقات الكتابية','التعبير الكتابي']);
+  }
+  if(l==3){
+   if(c.indexOf('الحكاي')==0)return rep(1,30,['الاستماع والحكي']);
+   if(c=='الوضعية التواصلية')return rep(2,30,['الاستماع والفهم','التحدث والتواصل']);
+   if(c.indexOf('القراءة')==0)return rep(5,[45,45,30,30,30],['النص الوظيفي: الاكتشاف والفهم','النص الوظيفي: القراءة والاستثمار','النص الوظيفي: القراءة الفردية','النص الوظيفي: التقويم','النص الشعري']);
+   if(c.indexOf('الظواهر')==0)return rep(2,30,['الاكتشاف والبناء','التثبيت والتطبيق']);
+   if(c=='مشروع الوحدة')return rep(1,30,['إنجاز مشروع الوحدة']);
+  }
+  if(l==4){
+   if(c=='القراءة')return rep(4,30,['الاكتشاف','الفهم والتحليل','القراءة والاستثمار','التقويم والدعم']);
+   if(c.indexOf('الشفهي')>-1)return rep(2,30,['النص المسترسل','النص السماعي']);
+   if(c=='التعبير الكتابي')return rep(1,45,['التعبير الكتابي']);
+  }
+  if(l>=5){
+   if(c=='القراءة')return rep(4,30,['الاكتشاف والفهم','التحليل والاستثمار','القراءة والتقويم','النص المسترسل']);
+   if(c.indexOf('الشفهي')>-1)return rep(2,30,['النص المسترسل','النص السماعي']);
+  }
+  if(c=='التراكيب'||c=='الصرف والتحويل'||c=='الإملاء'||c.indexOf('الظواهر')==0)return rep(2,30,['الاكتشاف والبناء','التثبيت والتطبيق']);
+  if(c=='مشروع الوحدة')return rep(1,30,['إنجاز مشروع الوحدة وتتبعه']);
+  if(c=='المحفوظات')return rep(3,30,['الفهم والشرح','الحفظ والإلقاء','التقويم']);
+  return null}
+ if(s=='الرياضيات')return rep(2,60,['بناء المفهوم وترييضه','التقويم والدعم']);
+ if(s=='النشاط العلمي')return rep(2,60,['بناء المفهوم (التقصي)','التطبيق والتقويم']);
+ if(s=='التربية الإسلامية')return rep(c=='القرآن الكريم'?4:2,45,c=='القرآن الكريم'?['الفهم والتعريف','التلاوة والتجويد','الحفظ','التقويم']:['بناء الموضوع','الاستثمار والتقويم']);
+ if(s=='الاجتماعيات'&&c=='مشروع الأسدوس')return rep(1,60,['مناقشة المشروع وتتبعه']);
+ if(s=='الاجتماعيات')return rep(2,c=='التربية المدنية'?60:45,['الدرس','تتمة الدرس والتقويم']);
+ if(s=='اللغة الفرنسية'||/[A-Za-z]/.test(c)){var q=c.toLowerCase();
+  if(/^projet/.test(q))return rep(1,30,['Réalisation du projet de classe']);
+  if(/^lecture/.test(q))return l==1?rep(3,30,['Découverte','Lecture et compréhension','Entraînement']):l==2?rep(2,[30,20],['Découverte et compréhension','Lecture et écriture']):l<=4?rep(4,25,['Anticipation et découverte','Compréhension globale','Compréhension détaillée et lexique','Lecture expressive']):rep(3,[30,30,25],['Découverte et compréhension globale','Compréhension détaillée et lexique','Lecture à voix haute et réinvestissement']);
+  if(/oral|communication/.test(q))return l==1?rep(3,30,['Écoute et compréhension','Production orale','Jeux de rôles']):l==2?rep(4,30,['Écoute','Compréhension','Production orale','Jeux de rôles']):l==3?rep(4,25,['Écoute','Compréhension','Production orale','Jeux de rôles']):rep(2,30,['Écoute et compréhension','Production orale et jeu de rôles']);
+  if(/po[ée]sie/.test(q))return rep(1,l==1?30:20,['Découverte et mémorisation']);
+  if(/^[ée]criture/.test(q))return l==3?rep(2,20,['Observation et geste graphique','Entraînement']):rep(1,30,['Écriture et copie']);
+  if(/grammaire|conjugaison/.test(q))return rep(1,30,['Découverte, règle et entraînement']);
+  if(/orthographe/.test(q))return rep(1,l==4?20:l>=5?35:30,['Découverte, règle et dictée']);
+  if(/lexique/.test(q))return rep(1,25,['Découverte et réinvestissement']);
+  if(/production/.test(q))return l>=5?rep(2,[35,30],['Production écrite','Révision et réécriture']):rep(1,30,['Production écrite']);
+  return rep(2,45,['Découverte','Entraînement et évaluation'])}
+ return null}
+function tm(el,m){var sp=el.querySelectorAll('.tm');var v=[],t=0;sp.forEach(function(x){var k=parseInt(x.textContent)||0;v.push(k);t+=k});if(!t)return;var s=0;sp.forEach(function(x,i){var k=i==sp.length-1?Math.max(1,m-s):Math.max(1,Math.round(v[i]*m/t));s+=k;x.textContent=k+' د'})}
+var prev=go.onclick;
+go.onclick=function(){
+ var r=prev.apply(this,arguments);
+ try{
+  if(typeof mode!='undefined'&&mode=='p')return r;
+  var o=$('j-out'),tb=o.querySelector('table.run');
+  var P=plan($('subj').value,lvi($('j-lv').value),$('j-comp').value);
+  if(o.innerHTML.search(/الحصة \d+ من|Séance \d+ sur/)>-1){
+   if(P){var hs=[].filter.call(o.querySelectorAll('h3'),function(h){return /(الحصة|Séance) \d+ (من|sur)/.test(h.textContent)&&!/دقيقة|min\)/.test(h.textContent)});
+    hs.forEach(function(h,i){var m=(P.length==hs.length?P[i]:P[Math.min(i,P.length-1)]).m;h.textContent+=' — '+m+(/Séance/.test(h.textContent)?' min':' دقيقة');
+     var nx=hs[i+1],tbs=[].filter.call(o.querySelectorAll('table.run'),function(q){return (h.compareDocumentPosition(q)&4)&&(!nx||(nx.compareDocumentPosition(q)&2))});
+     tbs.forEach(function(q){tm(q,m)})})}
+   if(P)o.querySelectorAll('td,th').forEach(function(x){if(/^\d+ (دقيقة|د)$/.test(x.textContent.trim())&&x.previousElementSibling&&x.previousElementSibling.textContent.trim()=='المدة')x.textContent=P.length+' × '+P[0].m+' د'});
+   return r}
+  if(!tb)return r;
+  if(!P||P.length<2&&P[0].m==0)return r;
+  var fr=/[A-Za-z]/.test($('j-comp').value),h3=null;
+  o.querySelectorAll('h3').forEach(function(h){if(!h3&&/سير الحصة|Déroulement/.test(h.textContent))h3=h});
+  if(!h3)return r;
+  var sc=tb.closest('.scroll')||tb,tot=P.reduce(function(a,b){return a+b.m},0),box=document.createElement('div');
+  P.forEach(function(p,i){
+   var d=document.createElement('div');
+   d.innerHTML='<h3 class="rph3" style="'+(i?'border-top:2px solid #999;padding-top:8px;margin-top:14px':'')+'">'+(fr?'Séance '+(i+1)+' sur '+P.length:'الحصة '+(i+1)+' من '+P.length)+': '+p.t+' ('+p.m+(fr?' min':' دقيقة')+')</h3>';
+   var c=sc.cloneNode(true);tm(c,p.m);d.appendChild(c);box.appendChild(d)});
+  h3.textContent=fr?'Déroulement par séance':'سير الحصص حسب المنهاج ('+P.length+' حصص — '+tot+' دقيقة)';
+  sc.parentNode.replaceChild(box,sc);
+  o.querySelectorAll('td,th').forEach(function(x){if(/^\d+ دقيقة$/.test(x.textContent.trim())&&x.previousElementSibling&&x.previousElementSibling.textContent.trim()=='المدة')x.textContent=P.length+' × '+P[0].m+' د'});
+  if(window.fitOut)fitOut(o);
+ }catch(e){console.log(e)}
+ return r};
 })();
 
 /* ===== خطة الدعم والمعالجة ===== */
@@ -6140,7 +6515,7 @@ function head(o){/* o:{ar,sub,tot,dur,sess} */
 function band(t,p,ar){return '<div style="margin:14px 0 6px;break-after:avoid;page-break-after:avoid"><span style="display:inline-block;background:#000;color:#fff;border-radius:'+(ar?'0 22px 22px 0':'22px 0 0 22px')+';padding:4px 20px;font:700 17px Cairo,Tahoma,sans-serif">'+t+' ('+(ar?pt(p)+' نقط':pt(p)+' pts')+')</span></div>'}
 function Q(n,body,p,ar){return '<div style="display:flex;gap:8px;margin:7px 0;break-inside:avoid"><div style="flex:1;line-height:1.9">'+(n?'<b>'+n+'</b> ':'')+body+'</div><div style="width:46px;flex:none;text-align:center;color:#000;font-weight:700;border-inline-start:1.5px dashed #555;font-size:14px;display:flex;align-items:center;justify-content:center" dir="ltr">'+pt(p)+(ar?'ن':'')+'</div></div>'}
 function dots(k,w){var s='';for(var i=0;i<(k||1);i++)s+='<div style="border-bottom:1px dotted #777;height:24px"></div>';return s}
-function ktitle(ar){return '<div style="page-break-before:always;break-before:page"></div><h3>'+(ar?'عناصر الإجابة وسلّم التنقيط':'Éléments de correction et barème')+'</h3>'}
+function ktitle(ar){return '<div style="page-break-before:always;break-before:page"></div><h3>'+(ar?'عناصر الإجابة':'Éléments de réponse')+'</h3>'}
 
 /* ================= الرياضيات ================= */
 function dfmt(v,d){/* v: BigInt-like Number integer, d: decimals */var neg=v<0;v=Math.abs(v);var s=String(v);if(d>0){while(s.length<=d)s='0'+s;var a=s.slice(0,-d),b=s.slice(-d).replace(/0+$/,'');s=a.replace(/\B(?=(\d{3})+(?!\d))/g,' ')+(b?','+b:'')}else s=s.replace(/\B(?=(\d{3})+(?!\d))/g,' ');return (neg?'-':'')+s}
@@ -6428,7 +6803,7 @@ function apply(){
  if(EXM){
   ['f-lv','f-no','f-sub','f-text','f-gram'].forEach(function(i){show(lab($(i)),false)});show($('f-lesw'),false);show($('f-again'),false);
   note.style.display='';
-  note.innerHTML=KIND=='loc'?'<b>الامتحان المحلي – المستوى السادس:</b> لمادة واحدة تختارها من المواد الست، بالشكل الرسمي (رأس رسمي، نقط، عناصر الإجابة وسلّم التنقيط). اختر المادة وأدخل بيانات المؤسسة والدورة (الشهر والسنة).':'<b>الامتحان الإقليمي – المستوى السادس:</b> بالشكل الرسمي نفسه، وهو نموذج مبدئي إلى حين وصول النماذج الإقليمية فأعدّله عليها. اختر المادة وأدخل بيانات المؤسسة والدورة.';
+  note.innerHTML=KIND=='loc'?'<b>الامتحان المحلي – المستوى السادس:</b> لمادة واحدة تختارها من المواد الست، بالشكل الرسمي (رأس رسمي، نقط، عناصر الإجابة). اختر المادة وأدخل بيانات المؤسسة والدورة (الشهر والسنة).':'<b>الامتحان الإقليمي – المستوى السادس:</b> بالشكل الرسمي نفسه، وهو نموذج مبدئي إلى حين وصول النماذج الإقليمية فأعدّله عليها. اختر المادة وأدخل بيانات المؤسسة والدورة.';
   $('f-go').textContent=KIND=='loc'?'أنشئ نموذج الامتحان المحلي':'أنشئ نموذج الامتحان الإقليمي';
  }else{
   note.style.display='none';
@@ -6470,16 +6845,74 @@ $('f-go').onclick=function(){if(!EXM)return orig.apply(this,arguments);
 apply();
 })();
 
-</script>
-<script>
-/* ===== إعدادات الإعلانات: ضع هنا معرّفك بعد قبول موقعك في Google AdSense ===== */
-var MUH_ADS={client:'',slot:''}; /* مثال: client:'ca-pub-1234567890123456', slot:'1234567890' */
-(function(){if(!MUH_ADS.client||!navigator.onLine)return;
-var sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+MUH_ADS.client;document.head.appendChild(sc);
-document.getElementById('ad-slot').innerHTML='<ins class="adsbygoogle" style="display:block" data-ad-client="'+MUH_ADS.client+'" data-ad-slot="'+MUH_ADS.slot+'" data-ad-format="auto" data-full-width-responsive="true"></ins>';
-(window.adsbygoogle=window.adsbygoogle||[]).push({})})();
-/* العمل دون إنترنت */
-if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').catch(function(){})}
+/* ===== ملفي: وثائقي المحفوظة تلقائيا على الجهاز ===== */
+(function(){
+var FD=[{k:'jad',t:'جذاذاتي',ic:'📝',c:'#2d5fb8'},{k:'sum',t:'ملخصاتي',ic:'📚',c:'#7a4fa3'},{k:'day',t:'مذكرتي اليومية',ic:'📒',c:'#b8860b'},{k:'list',t:'لائحة التلاميذ',ic:'👥',c:'#3f8a3a'},{k:'rep',t:'تقاريري',ic:'📈',c:'#a33a5a'},{k:'doc',t:'وثائقي التربوية',ic:'🗂',c:'#2a7f8f'}];
+var MAP={j:'jad',rl:'jad',s:'sum',m:'day',ros:'list',ab:'list',rp:'rep',bl:'rep',ac:'rep',gr:'rep',sc:'rep',w:'doc',f:'doc',d:'doc',fl:'doc'};
+var MAXD=200,E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')};
+var DB=null;
+function db(){if(DB)return DB;DB=new Promise(function(res,rej){try{var r=indexedDB.open('muh-files',1);r.onupgradeneeded=function(){r.result.createObjectStore('d',{keyPath:'id'})};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}}catch(e){rej(e)}});return DB}
+function tx(m,f){return db().then(function(d){return new Promise(function(res,rej){var t=d.transaction('d',m),s=t.objectStore('d'),q=f(s);t.oncomplete=function(){res(q&&q.result)};t.onerror=function(){rej(t.error)}})})}
+var useLS=false,MEM=[];
+function lsGet(){try{return JSON.parse(localStorage.getItem('muh.files')||'[]')}catch(e){return MEM}}
+function lsSet(a){MEM=a;try{localStorage.setItem('muh.files',JSON.stringify(a))}catch(e){}}
+function A(f,g){return useLS?g():f().catch(function(){useLS=true;return g()})}
+function all(){return A(function(){return tx('readonly',function(s){return s.getAll()}).then(function(a){return a||[]})},function(){return Promise.resolve(lsGet())})}
+function put(o){return A(function(){return tx('readwrite',function(s){return s.put(o)})},function(){var a=lsGet().filter(function(x){return x.id!=o.id});a.push(o);lsSet(a);return Promise.resolve()})}
+function del(id){return A(function(){return tx('readwrite',function(s){return s.delete(id)})},function(){lsSet(lsGet().filter(function(x){return x.id!=id}));return Promise.resolve()})}
+function clr(){return A(function(){return tx('readwrite',function(s){return s.clear()})},function(){lsSet([]);return Promise.resolve()})}
+function toast(t){var d=document.createElement('div');d.textContent=t;d.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#25461a;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;z-index:99999;max-width:90%;text-align:center';document.body.appendChild(d);setTimeout(function(){d.remove()},2600)}
+function lvOf(){var s=document.querySelector('#p-'+cur+' select[id$="-lv"]');return s?s.value:''}
+function titleOf(el){
+ var lv=lvOf(),sb=(['j','s','f','d','w'].indexOf(cur)>-1&&$('subj'))?$('subj').value:'';
+ if(cur=='j'){var c=$('j-comp'),t=$('j-title');return {t:[c&&c.value,t&&t.value.trim(),lv].filter(Boolean).join(' – '),sb:sb,lv:lv}}
+ if(cur=='s'){var o=$('s-les'),x=o&&o.selectedIndex>=0?o.options[o.selectedIndex].text:'';return {t:['ملخص',x,lv].filter(Boolean).join(' – '),sb:$('s-sub')?$('s-sub').value:sb,lv:$('s-lv')?$('s-lv').value:lv}}
+ var h=el.querySelector('h2,h1,.core,h3'),x=h?(h.childNodes[0]||h).textContent.trim().slice(0,70):'وثيقة';
+ return {t:[x,sb,lv].filter(Boolean).join(' – '),sb:sb,lv:lv}}
+function save(){
+ if(cur=='myf'||!MAP[cur])return;var el=$(cur+'-out');if(!el||(el.innerText||'').trim().length<30)return;
+ var m=titleOf(el),f=MAP[cur],day=new Date().toISOString().slice(0,10),id=f+'|'+m.t+'|'+day;
+ var o={id:id,f:f,t:m.t,sb:m.sb,lv:m.lv,ts:Date.now(),h:el.innerHTML};
+ put(o).then(function(){toast('✔ حُفظت نسخة في ملف الأستاذ السنوي ‹ '+FD.filter(function(x){return x.k==f})[0].t+' ›');return all()}).then(function(a){var dd=due(a),L=localStorage.getItem('muh.bakn')||'',td=new Date().toISOString().slice(0,10);if(dd&&L!=td){try{localStorage.setItem('muh.bakn',td)}catch(e){}setTimeout(function(){toast('تذكير: لديك '+dd+' وثيقة بلا نسخة احتياطية (ملف الأستاذ السنوي ‹ نسخة احتياطية)')},2800)}if(a.length>MAXD){a.sort(function(x,y){return x.ts-y.ts});return del(a[0].id).then(function(){toast('حُذفت أقدم وثيقة لتجاوز '+MAXD+' وثيقة')})}}).catch(function(){})}
+['copy','print','word'].forEach(function(i){var b=$(i);if(b)b.addEventListener('click',function(){setTimeout(save,50)})});
+/* الواجهة */
+document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class="panel" id="p-myf"><div id="myf-top"><div class="note" style="margin:10px 0">تُحفظ هنا تلقائيا نسخة من كل وثيقة تنزّلها أو تطبعها أو تنسخها، على جهازك فقط (دون إنترنت). يمكنك حذف أي وثيقة أو ملف.</div><div id="myf-rem" class="note" style="display:none;background:#fff3cd;border-color:#e0b400"></div><div id="myf-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0"></div>'+
+'<details style="margin:12px 0"><summary style="cursor:pointer;color:var(--mute)">⚙ نسخة احتياطية</summary><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button class="go" id="myf-bak" type="button">⬇ تنزيل نسخة احتياطية</button><label class="go" style="cursor:pointer">⬆ استعادة<input type="file" id="myf-res" accept=".json" style="display:none"></label></div><div class="note">الوثائق مخزّنة في متصفح هذا الجهاز فقط؛ إذا مسحت بيانات المتصفح أو غيّرت الهاتف فستضيع، لذلك احتفظ بنسخة احتياطية.</div></details>'+
+'</div>'+
+'<div id="myf-list" style="display:none"></div><button class="go" id="myf-b2" type="button" style="display:none;margin:8px 0">→ رجوع إلى القائمة</button><div id="myf-out" class="sheet" style="display:none"></div></section>');
+document.querySelector('#tabs').insertAdjacentHTML('beforeend','<button role="tab" aria-selected="false" data-t="myf" id="tab-myf" style="--tb:#d8e8d0;--tt:#25461a">وثائقي</button>');
+var st=document.createElement('style');st.textContent='@media print{#p-myf>*:not(#myf-out){display:none!important}#myf-out.sheet{border:0!important;padding:0!important;margin:0!important}}.myf-c{border:0;border-radius:14px;color:#fff;padding:14px 8px;text-align:center;font:inherit;cursor:pointer}.myf-c i{display:block;font-size:26px;font-style:normal}.myf-c b{display:block;margin:4px 0}.myf-c span{font-size:13px;opacity:.9}.myf-r{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0}.myf-r div{flex:1}.myf-r small{display:block;color:var(--mute)}.myf-r button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font:inherit;cursor:pointer}.myf-r button.dl{color:#b3261e}';document.head.appendChild(st);
+var tb=$('tab-myf'),curF=null;(function(){var fl=$('tab-fl');if(fl)fl.parentNode.insertBefore(tb,fl)})();
+tb.onclick=function(){cur='myf';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-myf').classList.add('on');$('bar').classList.remove('on');home()};
+function due(a){var B={};try{B=JSON.parse(localStorage.getItem('muh.bak')||'{}')}catch(e){}var n=a.filter(function(x){return x.ts>(B.ts||0)}).length;return n>=20||(n>0&&Date.now()-(B.ts||a.reduce(function(m,x){return Math.min(m,x.ts)},Date.now()))>30*864e5)?n:0}
+function home(){curF=null;$('myf-b2').style.display='none';$('myf-top').style.display='';$('myf-list').style.display='none';$('myf-out').style.display='none';$('bar').classList.remove('on');
+ all().then(function(a){var n={};a.forEach(function(x){n[x.f]=(n[x.f]||0)+1});var d=due(a),r=$('myf-rem');if(r){r.style.display=d?'':'none';r.innerHTML=d?'⚠ لديك '+d+' وثيقة جديدة غير محفوظة في نسخة احتياطية. اضغط «نسخة احتياطية» أدناه وانقل الملف إلى Google Drive أو واتساب.':''}$('myf-grid').innerHTML=FD.map(function(f){return '<button class="myf-c" data-f="'+f.k+'" style="background:'+f.c+'"><i>'+f.ic+'</i><b>'+f.t+'</b><span>'+(n[f.k]||0)+' وثيقة</span></button>'}).join('')}).catch(function(){})}
+$('myf-grid').addEventListener('click',function(e){var b=e.target.closest('.myf-c');if(b)openF(b.dataset.f)});
+
+var Q='';
+function openF(k){curF=k;$('myf-top').style.display='none';$('myf-out').style.display='none';$('bar').classList.remove('on');var L=$('myf-list');L.style.display='';
+ var f=FD.filter(function(x){return x.k==k})[0];
+ all().then(function(a){a=a.filter(function(x){return x.f==k}).sort(function(x,y){return y.ts-x.ts});
+  var q=Q.trim(),b=q?a.filter(function(x){return (x.t+' '+x.sb+' '+x.lv).indexOf(q)>-1}):a;
+  var h='<div style="display:flex;gap:8px;align-items:center;margin:8px 0"><button class="go" id="myf-back" type="button" style="flex:0 0 auto">→ رجوع</button><b style="flex:1">'+f.ic+' '+f.t+' ('+a.length+')</b></div>';
+  if(k=='list')h+='<button class="go full" id="myf-ros" type="button" style="background:#3f8a3a;margin-bottom:8px">👥 فتح لائحة التلاميذ الحالية</button>';
+  h+='<input id="myf-q" placeholder="بحث…" value="'+E(Q)+'" style="width:100%;margin:6px 0">';
+  h+=b.length?b.map(function(x){var d=new Date(x.ts);return '<div class="myf-r"><div><b>'+E(x.t)+'</b><small>'+d.toLocaleDateString('ar-MA')+'</small></div><button data-v="'+E(x.id)+'">عرض</button><button class="dl" data-d="'+E(x.id)+'">حذف</button></div>'}).join(''):'<div class="note">لا توجد وثائق هنا بعد. ستُحفظ تلقائيا كل وثيقة تنزّلها أو تطبعها.</div>';
+  if(a.length)h+='<button class="go full" id="myf-clr" type="button" style="background:#b3261e;margin-top:10px">🗑 حذف كل وثائق هذا الملف</button>';
+  L.innerHTML=h;
+  $('myf-back').onclick=home;var rb=$('myf-ros');if(rb)rb.onclick=function(){if(window.gotoTab)gotoTab('cls','ros')};
+  var qi=$('myf-q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;openF(k);var n=$('myf-q');n.focus();try{n.setSelectionRange(p,p)}catch(e){}};
+  var cb=$('myf-clr');if(cb)cb.onclick=function(){if(!confirm('حذف كل وثائق «'+f.t+'» نهائيا؟'))return;Promise.all(a.map(function(x){return del(x.id)})).then(function(){openF(k)})};
+ })}
+$('myf-list').addEventListener('click',function(e){var v=e.target.dataset&&e.target.dataset.v,d=e.target.dataset&&e.target.dataset.d;
+ if(v)all().then(function(a){var x=a.filter(function(y){return y.id==v})[0];if(!x)return;$('myf-list').style.display='none';var o=$('myf-out');o.style.display='';o.innerHTML=x.h;$('myf-b2').style.display='';$('myf-b2').onclick=function(){o.style.display='none';$('myf-b2').style.display='none';$('bar').classList.remove('on');openF(curF)};$('bar').classList.add('on');if(window.fitOut)fitOut(o);window.scrollTo(0,0)});
+ if(d&&confirm('حذف هذه الوثيقة نهائيا؟'))del(d).then(function(){openF(curF)})});
+$('myf-bak').onclick=function(){all().then(function(a){try{localStorage.setItem('muh.bak',JSON.stringify({ts:Date.now()}))}catch(e){}home();var b=new Blob([JSON.stringify({v:1,d:a})],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download='وثائقي-نسخة-احتياطية.json';document.body.appendChild(l);l.click();setTimeout(function(){URL.revokeObjectURL(u);l.remove()},1500)})};
+$('myf-res').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var j=JSON.parse(r.result);Promise.all((j.d||[]).map(put)).then(function(){toast('تمت الاستعادة ('+(j.d||[]).length+' وثيقة)');home()})}catch(e){toast('ملف غير صالح')}};r.readAsText(f);this.value=''};
+if(window.regSection)regSection({id:'file',t:'ملف الأستاذ السنوي',d:'جذاذاتي وملخصاتي ومذكرتي اليومية وتقاريري ووثائقي',tabs:['myf']});var _s=document.createElement('style');_s.textContent='body[data-sec=file] #tabs{display:none!important}';document.head.appendChild(_s);
+window.MYFILES={all:all,save:save};
+})();
+
 </script>
 </body>
 </html>
