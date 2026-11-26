@@ -7224,7 +7224,7 @@ if(v==='y')load();
 if(v===null){
  var st=document.createElement('style');st.textContent='.cnsb{position:fixed;left:10px;right:10px;bottom:10px;z-index:99998;background:#fffdf7;color:#1d2a5c;border:1.5px solid #cfc7ae;border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.28);font:600 14px/1.8 Cairo,Tahoma,sans-serif;direction:rtl;max-width:520px;margin:0 auto}.cnsb b{font-weight:800}.cnsb .r{display:flex;gap:8px;margin-top:8px}.cnsb button{flex:1;font:800 15px Cairo,Tahoma,sans-serif;border-radius:999px;padding:9px 12px;cursor:pointer;border:1.5px solid #1d3a8a}.cnsb .y{background:#1d3a8a;color:#fff}.cnsb .n{background:transparent;color:#1d3a8a}@media print{.cnsb{display:none!important}}';document.head.appendChild(st);
  function mk(){var d=document.createElement('div');d.className='cnsb';d.setAttribute('role','dialog');
-  d.innerHTML='<b>إحصاء مجهول لعدد الزوار</b><br>نقيس عدد مستعملي التطبيق فقط لتحسينه. لا نجمع أسماء التلاميذ ولا وثائقك، فهي تبقى على هاتفك. <a href="privacy.html" style="color:#1d3a8a">التفاصيل</a><div class="r"><button class="y" type="button">أقبل</button><button class="n" type="button">لا أقبل</button></div>';
+  d.innerHTML='<b>ملفات تعريف الارتباط (Cookies)</b><br>نستعمل ملفات تعريف الارتباط لإحصاء عدد الزوار فقط. لا نطّلع على أسماء التلاميذ ولا وثائقك، فهي تبقى على هاتفك. <a href="privacy.html" style="color:#1d3a8a">التفاصيل</a><div class="r"><button class="y" type="button">قبول</button><button class="n" type="button">رفض</button></div>';
   d.querySelector('.y').onclick=function(){try{localStorage.setItem(K,'y')}catch(e){}d.remove();load()};
   d.querySelector('.n').onclick=function(){try{localStorage.setItem(K,'n')}catch(e){}d.remove()};
   document.body.appendChild(d)}
