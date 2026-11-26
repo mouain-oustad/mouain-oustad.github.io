@@ -5755,7 +5755,8 @@ var KEY='muh.ros',R={cl:[],cur:0};
 try{var x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&x.cl)R=x}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(R))}catch(e){}}
 function cls(){return R.cl[R.cur]}
-function lbl(i){var c=R.cl[i];if(!c)return '';if(c.nm)return c.nm;var same=R.cl.filter(function(x){return x.lv==c.lv}),k=same.indexOf(c)+1,n=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].map(function(x){return x+' ابتدائي'}).indexOf(c.lv)+1;return (n||c.lv)+'APG'+(same.length>1?'-'+k:'')}
+function lbl(i){var c=R.cl[i];if(!c)return '';if(c.nm)return c.nm;var same=R.cl.filter(function(x){return x.lv==c.lv}),n=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].map(function(x){return x+' ابتدائي'}).indexOf(c.lv)+1,g=c.g!=null?c.g:(same.length>1?same.indexOf(c)+1:0);return (n||c.lv)+'APG'+(g?'-'+g:'')}
+function autoName(lv,g){var n=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].map(function(x){return x+' ابتدائي'}).indexOf(lv)+1;return n+'APG'+(+g?'-'+g:'')}
 window.ROSTER_LABEL=lbl;
 if(!R.cl.length){R.cl.push({id:Date.now(),lv:'الرابع ابتدائي',st:[]});R.cur=0}
 window.ROSTER={get:function(){return R},cur:cls,save:save,onChange:[]};
@@ -5763,8 +5764,10 @@ function fire(){save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}})}
 var E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')};
 var LV=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].map(function(x){return x+' ابتدائي'});
 document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class="panel" id="p-ros"><div class="form">'+
-'<label>المستوى<select id="r-lv">'+LV.map(function(x){return '<option>'+x+'</option>'}).join('')+'</select></label>'+
-'<label class="full">اسم القسم (اختياري)<input id="r-nm" placeholder="مثال: 3APG أ"></label>'+'<label>الفوج<select id="r-cls"><option value="0">لا شيء</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>'+
+'<div class="full" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select id="r-pick" aria-label="أقسامي" style="flex:1;min-width:150px"></select><button class="go" id="r-new" type="button">+ إضافة قسم آخر</button></div>'+
+'<label>المستوى<select id="r-lv">'+LV.map(function(x,i){return '<option value="'+x+'">المستوى '+(i+1)+'</option>'}).join('')+'</select></label>'+
+'<label>الفوج<select id="r-cls"><option value="0">لا شيء</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>'+
+'<label class="full">القسم<input id="r-nm" placeholder="يُكتب تلقائياً"></label><button class="go full" id="r-ok" type="button" style="background:#2d6a4f">✓ تأكيد اسم القسم</button>'+
 '<details class="full" id="ri-box" style="border:1px solid var(--line);border-radius:12px;padding:8px 12px"><summary style="cursor:pointer;font-weight:700">👤 معلومات الأستاذ(ة)</summary><div class="form" style="margin-top:8px"><label class="full">الاسم الكامل<input id="ri-name"></label><label>الأكاديمية الجهوية<input id="ri-acad"></label><label>المديرية الإقليمية<input id="ri-dir"></label><label class="full">المؤسسة<input id="ri-school"></label></div></details>'+
 '<label class="go full" style="cursor:pointer;text-align:center;color:#fff">📥 إدخال لائحة التلاميذ من Excel (مسار)<input type="file" id="r-file" accept=".xlsx,.csv,.txt,.tsv,.docx" style="display:none"></label>'+
 '<button class="go full" id="r-out" type="button" style="background:#2d6a4f">🖨 استخراج لائحة تلاميذ خاصة بي</button></div>'+
@@ -5778,14 +5781,19 @@ function sameLv(lv){lv=lv||cls().lv;return R.cl.filter(function(x){return x.lv==
 function goTo(lv,pos){var same=sameLv(lv);while(same.length<=pos){R.cl.push({id:Date.now()+same.length,lv:lv,st:[]});same=sameLv(lv)}R.cur=R.cl.indexOf(same[pos]);fire();$('ros-out').style.display='none';$('bar').classList.remove('on');draw()}
 function docI(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}var I=(typeof TT!='undefined'&&TT.info)||{};return {acad:D.acad||'',dir:D.dir||'',school:D.school||I.school||'',name:D.name||I.name||''}}
 function draw(){var c=cls();
- var same=sameLv(),pos=same.indexOf(c);$('r-cls').value=same.length>1?String(pos+1):'0';var D0=docI();['name','acad','dir','school'].forEach(function(k){$('ri-'+k).value=D0[k]});
- $('r-lv').value=c.lv;$('r-nm').value=c.nm||'';$('r-nm').placeholder=lbl(R.cur);
+ var same=sameLv(),pos=same.indexOf(c);$('r-cls').value=c.g!=null?String(c.g):(same.length>1?String(pos+1):'0');$('r-pick').innerHTML=R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>قسم '+E(lbl(i))+' ('+x.st.length+')</option>'}).join('');var D0=docI();['name','acad','dir','school'].forEach(function(k){$('ri-'+k).value=D0[k]});
+ $('r-lv').value=c.lv;$('r-nm').value=lbl(R.cur);
  $('r-sum').textContent=c.st.length?('عدد التلاميذ: '+c.st.length):'اللائحة فارغة: استورد ملفا أو أضف تلاميذ.';
  $('r-tab').innerHTML='<tr><th>#</th><th>الاسم الكامل</th><th></th></tr>'+c.st.map(function(s,i){return '<tr><td>'+(i+1)+'</td><td><input data-i="'+i+'" data-f="n" value="'+E(s.n)+'" style="width:100%"></td><td><button type="button" data-del="'+i+'" style="border:0;background:none;color:#b3261e;font-size:18px">×</button></td></tr>'}).join('')}
 $('r-tab').addEventListener('input',function(e){var t=e.target,i=t.dataset.i;if(i==null)return;cls().st[+i][t.dataset.f]=t.value;save();});
 $('r-tab').addEventListener('click',function(e){var d=e.target.dataset&&e.target.dataset.del;if(d==null)return;var sn=(cls().st[+d]||{}).n;if(!confirm('حذف التلميذ'+(sn?' «'+sn+'»':'')+' ونقطه نهائيا؟ هل أنت متأكد؟'))return;cls().st.splice(+d,1);fire();draw()});
-$('r-cls').onchange=function(){var v=+this.value;goTo(cls().lv,v>0?v-1:0)};
-$('r-lv').onchange=function(){goTo(this.value,0)};$('r-nm').addEventListener('input',function(){cls().nm=this.value.trim();save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}})});
+function prevName(){$('r-nm').value=autoName($('r-lv').value,$('r-cls').value)}
+$('r-lv').onchange=prevName;$('r-cls').onchange=prevName;
+$('r-pick').onchange=function(){R.cur=+this.value;fire();$('ros-out').style.display='none';$('bar').classList.remove('on');draw()};
+$('r-new').onclick=function(){var used=R.cl.map(function(x){return x.lv}),lv=LV.filter(function(l){return used.indexOf(l)<0})[0]||LV[0];R.cl.push({id:Date.now(),lv:lv,g:0,st:[]});R.cur=R.cl.length-1;fire();draw();$('r-lv').scrollIntoView({behavior:'smooth',block:'center'})};
+$('r-ok').onclick=function(){var lv=$('r-lv').value,g=+$('r-cls').value,au=autoName(lv,g),nm=$('r-nm').value.trim()||au,c=cls(),dup=R.cl.some(function(x,i){return x!==c&&lbl(i)==nm});
+ if(dup){alert('يوجد قسم آخر بهذا الاسم. غيّر المستوى أو الفوج أو الاسم.');return}
+ c.lv=lv;c.g=g;c.nm=nm==au?'':nm;fire();draw();try{toast('تم تأكيد القسم '+lbl(R.cur))}catch(e){}};
 ['name','acad','dir','school'].forEach(function(k){$('ri-'+k).addEventListener('input',function(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}D[k]=this.value.trim();try{localStorage.setItem('muh.doc',JSON.stringify(D))}catch(e){}if(k=='acad')try{localStorage.setItem('muh.aca',D[k])}catch(e){}if(k=='dir')try{localStorage.setItem('muh.dir',D[k])}catch(e){}if(typeof TT!='undefined'&&(k=='name'||k=='school')){TT.info=TT.info||{};TT.info[k]=D[k];try{ttSave()}catch(e){}}})});
 $('r-out').onclick=function(){var c=cls();if(!c.st.length){alert('اللائحة فارغة. أدخل ملف مسار أو أضف تلاميذ أولا.');return}
  var I=docI(),V=function(x){return x?E(x):'……………………'},lg=window.LOGO_MIN?'<img src="'+window.LOGO_MIN+'" alt="" style="height:64px">':'',yr=c.yr||(function(){var d=new Date(),y=d.getFullYear();return d.getMonth()>=7?y+'/'+(y+1):(y-1)+'/'+y})(),T='border:1px solid #000;padding:3px 4px;',n=c.st.length,
@@ -5877,7 +5885,7 @@ function wizL(Lv,fname){var m=Lv.meta,c=cls(),SUBL=['اللغة العربية',
 /* ---- استيراد تلقائي لعدة ملفات (نقط الدورة) ---- */
 window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{},bad:[]};var firstC=null,usedC=[];
  function pickCls(t){var cur=cls(),lf=t?LV.filter(function(l){return String(t).indexOf(l.split(' ')[0])>-1})[0]:null;if(!lf)return cur;
-  var f=R.cl.filter(function(x){return x.lv==lf});if(f.length)return f[0];
+  if(cur.lv==lf)return cur;var f=R.cl.filter(function(x){return x.lv==lf});if(f.length)return f[0];
   if(!cur.st.length){cur.lv=lf;return cur}
   var n={id:Date.now()+R.cl.length,lv:lf,st:[]};R.cl.push(n);return n}
  for(var q=0;q<files.length;q++){var f=files[q],nm=f.name.toLowerCase(),rows;
@@ -7436,24 +7444,18 @@ if(window.regSection)regSection({id:'rep',tabs:['gr','gc','bl','un','rp','ac']})
 })();
 </script>
 <script>
-/* ===== شريط الأقسام (قسم 1APG، 2APG …) ===== */
-(function(){
-if(!window.ROSTER)return;var $=function(i){return document.getElementById(i)},E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')};
-var LV=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'].map(function(x){return x+' ابتدائي'});
-var st=document.createElement('style');st.textContent='#clsbar{display:none;margin:8px 0;padding:8px 10px;border:1px solid var(--line,#ccd);border-radius:14px;background:rgba(255,255,255,.7)}#clsbar.on{display:block}#clsbar b.t{display:block;font-size:12px;color:var(--mute,#666);margin-bottom:6px}#clsbar .ch{display:inline-block;margin:3px 0 3px 6px;padding:7px 14px;border-radius:999px;border:1.5px solid #3f6f9a;background:#fff;color:#1d3a5a;font:700 14px Cairo,Tahoma,sans-serif;cursor:pointer}#clsbar .ch.on{background:#1d3a8a;color:#fff;border-color:#1d3a8a}#clsbar select{font:700 13px Cairo,Tahoma,sans-serif;padding:7px 8px;border-radius:999px;border:1.5px dashed #3f6f9a;background:#fff}@media print{#clsbar{display:none!important}}';document.head.appendChild(st);
-var bar=document.createElement('div');bar.id='clsbar';bar.setAttribute('role','group');bar.setAttribute('aria-label','القسم');$('tabs').insertAdjacentElement('beforebegin',bar);
-function R(){return ROSTER.get()}
-function order(){var r=R().cl.map(function(c,i){return {c:c,i:i}});r.sort(function(a,b){return LV.indexOf(a.c.lv)-LV.indexOf(b.c.lv)||a.i-b.i});return r}
-function draw(){var r=R(),o=order();bar.innerHTML='<b class="t">القسم الحالي (اختره قبل استخراج أي وثيقة أو تقرير)</b>'+o.map(function(x){var n=x.c.st.length;return '<button type="button" class="ch'+(x.i==r.cur?' on':'')+'" data-i="'+x.i+'">قسم '+E(ROSTER_LABEL(x.i))+(n?' · '+n:'')+'</button>'}).join('')+'<select id="cb-add" aria-label="إضافة قسم"><option value="">＋ إضافة قسم</option>'+LV.map(function(l){return '<option value="'+l+'">'+l.replace(' ابتدائي','')+'</option>'}).join('')+'</select>'}
-function vis(){var b=document.body,on=!b.classList.contains('home')&&!b.classList.contains('gate')&&['cls','rep'].indexOf(b.dataset.sec)>-1;bar.classList.toggle('on',on);if(on)draw()}
+/* ===== اختيار القسم داخل صفحات الوثائق ===== */
+(function(){if(!window.ROSTER)return;
+var E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')};
+var st=document.createElement('style');st.textContent='.cpk{margin:0 0 12px;padding:8px 12px;border:1.5px solid #3f6f9a;border-radius:14px;background:#eef4fa}.cpk b{display:block;font-size:12px;color:#1d3a5a;margin-bottom:4px}.cpk select{width:100%;font:700 15px Cairo,Tahoma,sans-serif;padding:8px;border-radius:10px;border:1px solid #3f6f9a;background:#fff}@media print{.cpk{display:none!important}}';document.head.appendChild(st);
+var P=['p-gr','p-gc','p-un','p-rp','p-bl'],HID=[['gr-lv','gr-cls'],['rp-lv','rp-cls'],['bl-lv','bl-cls']];
+HID.forEach(function(a){a.forEach(function(id){var e=document.getElementById(id);if(e&&e.closest('label'))e.closest('label').style.display='none'})});
+function opts(){var R=ROSTER.get();return R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>قسم '+E(ROSTER_LABEL(i))+' ('+x.st.length+' تلميذ)</option>'}).join('')}
+P.forEach(function(id){var p=document.getElementById(id);if(!p)return;var d=document.createElement('div');d.className='cpk';d.innerHTML='<b>اختر القسم الذي تريد استخراج الوثيقة له</b><select class="cpick" aria-label="القسم"></select>';p.insertBefore(d,p.firstChild)});
+function fill(){[].forEach.call(document.querySelectorAll('.cpick'),function(s){s.innerHTML=opts()})}
 function fire(){ROSTER.save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}})}
-function refresh(){var t=document.querySelector('#tabs button[aria-selected=true]');if(t)t.click()}
-bar.addEventListener('click',function(e){var b=e.target.closest('.ch');if(!b)return;R().cur=+b.dataset.i;fire();draw();refresh()});
-bar.addEventListener('change',function(e){if(e.target.id!='cb-add'||!e.target.value)return;var lv=e.target.value,r=R(),same=r.cl.filter(function(c){return c.lv==lv});
- if(same.length&&!confirm('يوجد قسم لهذا المستوى. هل تريد إضافة فوج آخر له؟'))return draw();
- r.cl.push({id:Date.now(),lv:lv,st:[]});r.cur=r.cl.length-1;fire();draw();refresh()});
-ROSTER.onChange.push(function(){if(bar.classList.contains('on'))draw()});
-document.addEventListener('click',function(){setTimeout(vis,80)});window.addEventListener('popstate',function(){setTimeout(vis,80)});vis();
+document.addEventListener('change',function(e){var t=e.target;if(!t.classList||!t.classList.contains('cpick'))return;ROSTER.get().cur=+t.value;fire();fill();var b=document.querySelector('#tabs button[aria-selected=true]');if(b)b.click()});
+ROSTER.onChange.push(fill);document.getElementById('tabs').addEventListener('click',function(){setTimeout(fill,60)});fill();
 })();
 </script>
 <script>
