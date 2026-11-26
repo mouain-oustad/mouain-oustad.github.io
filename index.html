@@ -3372,7 +3372,11 @@ function regContent(s0,lv,wn,k,nWeek){var mp=subjMap(s0),s=mp.s;
  var per=Math.max(1,Math.ceil(items.length/nWeek)),pick=items.slice((k-1)*per,k*per);if(!pick.length)pick=items.slice(-per);
  return {les:pick,obj:[],src:'dist'}}
 var _sc=slotContent;
-slotContent=function(s0,lv,P,w,k,n){if(reg())return regContent(s0,lv,+$('m-wn').value,k,n);if(SAMEP(subjMap(s0).s,lv)){var rs=regContent(s0,lv,Math.min(34,((+P||1)-1)*6+(+w||1)),k,n);if(rs&&rs.src!='none')return rs}var r=_sc.apply(this,arguments);if(r&&r.src=='none'){var wn=Math.min(34,((+P||1)-1)*6+(+w||1)),r2=regContent(s0,lv,wn,k,n);if(r2&&r2.src!='none')return r2}return r};
+/* مرحلة الرائدة n ↔ وحدة n-1 في المواد غير الرائدة (لا تُدرَّس في المرحلة 1) */
+function unitWeek(P,w){P=+P||1;w=+w||1;if(P<=1)return 0;var u=P-1,ws=Object.keys(UN).filter(function(x){return UN[x]==u}).map(Number).sort(function(x,y){return x-y});if(!ws.length)return 99;return w<=ws.length?ws[w-1]:ws[ws.length-1]+1}
+slotContent=function(s0,lv,P,w,k,n){if(reg())return regContent(s0,lv,+$('m-wn').value,k,n);
+ if(SAMEP(subjMap(s0).s,lv)){var uw=unitWeek(P,w);if(!uw)return {les:['لا تُدرَّس هذه المادة في المرحلة الأولى'],obj:[],src:'dist'};var rs=regContent(s0,lv,uw,k,n);if(rs&&rs.src!='none')return rs}
+ var r=_sc.apply(this,arguments);if(r&&r.src=='none'){var uw2=unitWeek(P,w);if(uw2){var r2=regContent(s0,lv,uw2,k,n);if(r2&&r2.src!='none')return r2}}return r};
 var _memo=memo;
 memo=function(){if(!reg())return _memo.apply(this,arguments);
  var S0=SESS;SESS={};try{_memo.apply(this,arguments)}finally{SESS=S0}
@@ -7365,6 +7369,70 @@ window.UNITREP=function(ses,ev){var c=ROSTER.cur(),T=(ld()[c.id]||{})[ses+'|'+ev
  h+='<h3 class="rph3">7. تقويم أثر الدعم</h3><div class="scroll"><table><tr><th>المتعلم</th><th>المادة</th><th>المستوى قبل الدعم</th><th>المستوى بعد الدعم</th><th>الملاحظة</th></tr><tr><td> </td><td></td><td></td><td></td><td></td></tr><tr><td> </td><td></td><td></td><td></td><td></td></tr></table></div>';
  show('rp-out',h)};
 if(window.regSection)regSection({id:'rep',tabs:['gr','bl','un','rp','ac']});
+})();
+</script>
+<script>
+/* ===== شبكات الكفايات (Grilles de compétences) للمدرسة الرائدة ===== */
+(function(){
+if(!window.ROSTER||!document.getElementById('tab-rp')||!document.getElementById('tab-un'))return;
+var $=function(i){return document.getElementById(i)},E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')};
+function PIO(){try{return localStorage.getItem('muh.mode')==='p'}catch(e){return false}}
+var SB=[['اللغة العربية','AR'],['اللغة الفرنسية','FR'],['الرياضيات','MA']];
+var FRC=['CO1','CO2','PO1','PO2','PO3','LF1','LF2','LC1','PE1','PE2','OL1'];
+var BI={AR:{3:['V1','V2','PO1','PO2','CO1','CO2','LF','LC1','LC2','LC3','PE1','OL1'],4:['V1','V2','PO2','CO1','CO2','LF2','LC1','LC2','LC3','LC4','PE1','PE2','OL1','OL2'],5:['V1','V2','PO1','PO2','CO1','CO2','LF','LC1','LC2','LC3','LC4','PE1','PE2','OL1','OL2']},
+ FR:{3:FRC,4:FRC,5:FRC,6:FRC},
+ MA:{3:['CNM','CN2','CN6','CN7','GM1','GM4','RP3'],4:['CNM','CN5','CN6','CN7','GM3','GM4','GM5','RP4'],5:['CM','CN8','GM2','GM3','GM4','D1','RP1','RP3','RP4']}};
+var PR={AR:['V','PO','CO','LF','LC','PE','OL'],FR:['CO','PO','LF','LC','PE','OL'],MA:['CM','CNM','CN','GM','D','RP']};
+function rk(k,c){var p=c.replace(/\d+$/,''),i=PR[k].indexOf(p);return (i<0?99:i)*100+(+(c.match(/\d+$/)||[0])[0])}
+function lvN(c){var a=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],i=-1;a.forEach(function(x,j){if(String(c.lv||'').indexOf(x)==0)i=j});return i+1}
+document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class="panel" id="p-gc"><div class="form">'+
+'<label>المرحلة<select id="gc-st"><option value="1">المرحلة 1</option><option value="2" selected>المرحلة 2</option><option value="3">المرحلة 3</option><option value="4">المرحلة 4</option><option value="5">المرحلة 5</option></select></label>'+
+'<label>المادة<select id="gc-sb"><option value="">المواد الثلاث (صفحة لكل مادة)</option>'+SB.map(function(s){return '<option value="'+s[1]+'">'+s[0]+'</option>'}).join('')+'</select></label>'+
+'<label class="full"><input type="checkbox" id="gc-fill" checked> ملء الدرجات من ملفات الكفايات المستوردة (إن وُجدت)</label></div>'+
+'<div id="gc-msg" class="note" style="margin:8px 0"></div>'+
+'<button class="go" id="gc-go" type="button">📋 إنشاء شبكة الكفايات</button><div class="sheet" id="gc-out" contenteditable="true" style="margin-top:10px"></div></section>');
+var tb=document.createElement('button');tb.setAttribute('role','tab');tb.setAttribute('aria-selected','false');tb.dataset.t='gc';tb.id='tab-gc';tb.style.cssText='--tb:#e6f2d9;--tt:#2f5d12';tb.textContent='شبكات الكفايات';
+$('tab-un').parentNode.insertBefore(tb,$('tab-un'));
+tb.onclick=function(){cur='gc';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-gc').classList.add('on');$('bar').classList.remove('on');info()};
+function vis(){tb.style.display=PIO()?'':'none'}
+document.addEventListener('click',function(){setTimeout(vis,60)});vis();
+function info(){var c=ROSTER.cur(),n=lvN(c);$('gc-msg').innerHTML='القسم: <b>'+E(ROSTER_LABEL(ROSTER.get().cur))+'</b> — '+c.st.length+' تلميذ(ة). تُملأ ترويسة الشبكة من «معلوماتي» (اسم الأستاذ والمؤسسة…). الأسماء تُكتب تلقائياً، والخانات تُترك فارغة للملء اليدوي إن لم تستورد ملف الكفايات.'}
+$('gc-st').onchange=info;
+function doc(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}return D}
+function codesFor(k,subj,c,st){var LB=(window.LIVRETS&&LIVRETS.all()[c.id])||{},e=Object.keys(LB).map(function(q){return LB[q]}).filter(function(z){return z.sub==subj&&String(z.stage)==String(st)})[0];
+ if(e&&e.g&&e.g.length){var seen={},a=[];e.g.forEach(function(q){var cd=String(q.code).trim();if(cd&&!seen[cd]){seen[cd]=1;a.push(cd)}});a.sort(function(x,y){return rk(k,x)-rk(k,y)});return {codes:a,e:e,src:'livret'}}
+ var n=lvN(c),b=BI[k][n],ks=Object.keys(BI[k]).map(Number),use=n;
+ if(!b&&n){use=ks.sort(function(x,y){return Math.abs(x-n)-Math.abs(y-n)||y-x})[0];b=BI[k][use]}
+ return b?{codes:b.slice(),e:null,src:use==n?'built':'inf',from:use}:null}
+function page(k,subj,c,st,fill,warn){var n=lvN(c),r=codesFor(k,subj,c,st),D=doc(),fr=k=='FR';
+ if(!r){warn.push('«'+subj+'»: لا تتوفر رموز الكفايات لهذا المستوى. استورد ملف الكفايات (Excel من مسار) لتظهر.');return ''}
+ if(r.src=='inf')warn.push('«'+subj+'»: رموز هذا المستوى مستنتجة من المستوى '+['الأول','الثاني','الثالث','الرابع','الخامس','السادس'][r.from-1]+' لعدم توفر نموذج رسمي. تحقق منها أو استورد ملف الكفايات.');
+ if(r.src!='livret'&&+st!=2)warn.push('«'+subj+'»: رموز المرحلة '+st+' غير مستوردة، فاعتُمدت رموز المرحلة 2. تحقق منها أو استورد ملف الكفايات.');
+ var codes=r.codes,S=c.st.length?c.st:[],rows=Math.max(30,S.length),V=function(x){return x?E(x):''},yr=String(D.year||c.yr||'2026-2027').replace('-','/'),cl=ROSTER_LABEL(ROSTER.get().cur),
+  L=fr?{ac:'Académie régionale',di:'Direction provinciale',et:'Établissement',en:'Enseignant(e)',an:'Année scolaire',nv:'Niveau / Classe',no:'N°',nm:'Nom de l’élève',mo:'Moy.',t:'Grille d’évaluation des compétences – Langue française',sg:'Étape '+st,ba:'Barème : chaque compétence est notée de 0 à 10.',s1:'Signature de l’enseignant(e) :',s2:'Signature du directeur / de la directrice :',nvv:['1re','2e','3e','4e','5e','6e'][n-1]+' année primaire'}:
+  {ac:'الأكاديمية الجهوية',di:'المديرية الإقليمية',et:'المؤسسة',en:'الأستاذ(ة)',an:'السنة الدراسية',nv:'المستوى / القسم',no:'ر.ت',nm:'اسم التلميذ(ة)',mo:'المعدل',t:'شبكة تفريغ نتائج تقويم '+subj,sg:'المرحلة '+['الأولى','الثانية','الثالثة','الرابعة','الخامسة'][st-1],ba:'سلم التنقيط: تُنقَّط كل كفاية من 0 إلى 10.',s1:'توقيع الأستاذ(ة) :',s2:'توقيع المدير(ة) :',nvv:(c.lv||'')+' – '+cl};
+ var G='#0a8a0a',LG='#e3f2e1',BR='1px solid #2f7d2f',tx=fr?'left':'right';
+ var info=function(a,b){return '<tr><td style="border:'+BR+';background:'+LG+';font-weight:700;padding:3px 8px;width:42%">'+a+'</td><td style="border:'+BR+';padding:3px 8px">'+b+'</td></tr>'};
+ var infoL=[[L.ac,V(D.acad)],[L.di,V(D.dir)],[L.et,V(D.school)]],infoR=[[L.en,V(D.name)],[L.an,E(yr)],[L.nv,E(fr?L.nvv+' – '+cl:L.nvv)]];
+ var h='<div class="grpage" dir="'+(fr?'ltr':'rtl')+'" style="font:12px/1.4 Cairo,Tahoma,sans-serif;color:#000;page-break-after:always;break-after:page">'+
+  '<table style="width:100%;border-collapse:separate;border-spacing:8px 0"><tr><td style="width:40%;padding:0;border:0"><table style="width:100%;border-collapse:collapse">'+(fr?infoL:infoL).map(function(x){return info(x[0],x[1])}).join('')+'</table></td><td style="border:0"></td><td style="width:40%;padding:0;border:0"><table style="width:100%;border-collapse:collapse">'+infoR.map(function(x){return info(x[0],x[1])}).join('')+'</table></td></tr></table>'+
+  '<div style="text-align:center;margin:10px 0"><span style="display:inline-block;background:'+G+';color:#fff;border-radius:14px;padding:6px 22px;font:800 18px Cairo,Tahoma,sans-serif">'+E(L.t)+'</span> <span style="display:inline-block;background:#e8821e;color:#fff;border-radius:14px;padding:5px 14px;font:800 13px Cairo,Tahoma,sans-serif;margin:0 8px">'+E(L.sg)+'</span></div>'+
+  '<table style="width:100%;border-collapse:collapse;table-layout:fixed;text-align:center"><tr><th rowspan="2" style="border:'+BR+';background:'+G+';color:#fff;width:4.5%">'+L.no+'</th><th rowspan="2" style="border:'+BR+';background:'+G+';color:#fff;width:'+(codes.length>12?'22':'26')+'%">'+L.nm+'</th><th colspan="'+(codes.length+1)+'" style="border:'+BR+';background:'+G+';color:#fff;padding:2px">'+E(subj)+'</th></tr><tr>'+
+  codes.map(function(cd){return '<th style="border:'+BR+';background:'+LG+';font-size:11px;padding:2px 0">'+E(cd)+'</th>'}).join('')+'<th style="border:'+BR+';background:'+LG+';font-size:11px;padding:2px 0">'+L.mo+'</th></tr>';
+ var D2={};if(fill&&r.e)r.e.g.forEach(function(q){D2[String(q.code).trim()]=q.d});
+ for(var i=0;i<rows;i++){var x=S[i],id=x?(window.SCORES?SCORES.sid(x):(x.id||x.n)):'',sum=0,cnt=0;
+  var cells=codes.map(function(cd){var v=x&&D2[cd]?D2[cd][id]:null;if(v!=null&&isFinite(v)){sum+=+v;cnt++;return '<td style="border:'+BR+';height:19px">'+(Math.round(v*100)/100).toString().replace('.',fr?',':'٫')+'</td>'}return '<td style="border:'+BR+';height:19px"></td>'}).join('');
+  h+='<tr'+(i%2?' style="background:#f6fbf5"':'')+'><td style="border:'+BR+';font-weight:700">'+(i+1)+'</td><td style="border:'+BR+';text-align:'+tx+';padding:0 6px;font-size:12px">'+(x?E(String(x.n).replace(/\s+/g,' ').trim()):'')+'</td>'+cells+'<td style="border:'+BR+';font-weight:700;background:'+LG+'">'+(cnt?(Math.round(sum/cnt*100)/100).toString().replace('.',fr?',':'٫'):'')+'</td></tr>'}
+ h+='</table><div style="margin:8px 0;font-size:12px">'+L.ba+'</div><table style="width:100%;border:0;margin-top:10px"><tr><td style="border:0;width:50%">'+L.s1+' ……………………………</td><td style="border:0">'+L.s2+' ……………………………</td></tr></table></div>';
+ return h}
+$('gc-go').onclick=function(){var c=ROSTER.cur(),st=$('gc-st').value,k=$('gc-sb').value,fill=$('gc-fill').checked,warn=[],h='';
+ if(!lvN(c)){alert('حدّد مستوى القسم أولاً من «قسمي».');return}
+ SB.forEach(function(s){if(!k||k==s[1])h+=page(s[1],s[0],c,st,fill,warn)});
+ if(!h){alert(warn.join('\n')||'تعذّر إنشاء الشبكة.');return}
+ info();if(warn.length)$('gc-msg').innerHTML+='<br><b style="color:#a33">'+warn.map(E).join('<br>')+'</b>';
+ show('gc-out','<style>@page{size:A4 landscape;margin:7mm}</style>'+h)};
+ROSTER.onChange.push(function(){if($('p-gc').classList.contains('on'))info()});
+if(window.regSection)regSection({id:'rep',tabs:['gr','gc','bl','un','rp','ac']});
 })();
 </script>
 <script>
