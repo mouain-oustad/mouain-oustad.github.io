@@ -1148,6 +1148,7 @@ var CRCT=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++
 function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
 function u8(s){return new TextEncoder().encode(s)}
 async function deflate(d){try{if(typeof CompressionStream=='undefined')return null;var s=new Blob([d]).stream().pipeThrough(new CompressionStream('deflate-raw'));return new Uint8Array(await new Response(s).arrayBuffer())}catch(e){return null}}
+window.XL=window.XL||{};XL.zip=function(f){return zip(f)};
 async function zip(files){var loc=[],cen=[],off=0;
  for(var fi=0;fi<files.length;fi++){var f=files[fi],nm=u8(f.n),d=f.d,cr=crc32(d),z=f.n.slice(-4)=='.xml'||f.n.slice(-5)=='.rels'?await deflate(d):null,meth=z?8:0,dd=z||d,h=new DataView(new ArrayBuffer(30));
   h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,meth,true);h.setUint16(10,0,true);h.setUint16(12,0x21,true);h.setUint32(14,cr,true);h.setUint32(18,dd.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);
@@ -5795,6 +5796,7 @@ $('r-delc').onclick=function(){if(!confirm('حذف هذه اللائحة ونق�
 $('r-add').onclick=function(){cls().st.push({n:''});fire();draw();var a=document.querySelectorAll('#r-tab input');a[a.length-1].focus()};
 $('r-bak').onclick=function(){try{var bl=new Blob([JSON.stringify({v:1,ros:R,sc:JSON.parse(localStorage.getItem('muh.sc')||'null'),abs:JSON.parse(localStorage.getItem('muh.abs')||'null'),lv:JSON.parse(localStorage.getItem('muh.lv')||'null'),bl:JSON.parse(localStorage.getItem('muh.bl')||'null'),blc:JSON.parse(localStorage.getItem('muh.blc')||'null')})],{type:'application/json'}),u=URL.createObjectURL(bl),a=document.createElement('a');a.href=u;a.download='نسخة_احتياطية_معين_الأستاذ.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)}catch(e){alert('تعذر إنشاء النسخة')}};
 $('r-res').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!d.ros||!d.ros.cl)throw 0;if(!confirm('سيُستبدل ما في التطبيق من لوائح ونقط بمحتوى النسخة. متابعة؟'))return;R=d.ros;ROSTER.get=function(){return R};if(d.sc)localStorage.setItem('muh.sc',JSON.stringify(d.sc));if(d.abs)localStorage.setItem('muh.abs',JSON.stringify(d.abs));if(d.lv)localStorage.setItem('muh.lv',JSON.stringify(d.lv));if(d.bl)localStorage.setItem('muh.bl',JSON.stringify(d.bl));if(d.blc)localStorage.setItem('muh.blc',JSON.stringify(d.blc));save();draw();alert('تمت الاستعادة. أعد فتح التطبيق إن لم تظهر بقية البيانات.')}catch(e){alert('الملف غير صالح')}};r.readAsText(f);this.value=''};
+window.XL=window.XL||{};XL.u8=function(x){return new TextEncoder().encode(x)};XL.read=function(b){return readXlsx(b)};
 /* ---- قراءة الملفات ---- */
 function colN(ref){var m=ref.match(/^([A-Z]+)/)[1],n=0;for(var i=0;i<m.length;i++)n=n*26+m.charCodeAt(i)-64;return n-1}
 async function readXlsx(buf){var f=await unzipEntries(buf,function(n){return /^xl\/(sharedStrings\.xml|workbook\.xml|_rels\/workbook\.xml\.rels|worksheets\/sheet\d+\.xml)$/.test(n)});
@@ -5960,6 +5962,7 @@ document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class=
 '<label>المستوى<select id="rp-lv">'+LVS.map(function(x){return '<option>'+x+'</option>'}).join('')+'</select></label>'+
 '<label>الفوج<select id="rp-cls"><option value="0">لا شيء</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>'+
 '<label class="full">الدورة<select id="rp-ses"><option>الدورة الأولى</option><option>الدورة الثانية</option></select></label>'+
+'<label class="full">نوع التقرير<select id="rp-evx"><option value="بيان الدورة">تقرير الدورة (معدل المواد)</option></select></label>'+
 '<div class="full" id="rp-subs"></div>'+
 '<details class="full" id="rp-info" style="border:1px solid var(--line);border-radius:12px;padding:8px 12px"><summary style="cursor:pointer;font-weight:700">معلومات الأستاذ (تظهر في رأس التقرير)</summary><div class="form" style="margin-top:8px"><label class="full">اسم الأستاذ(ة)<input id="rpi-name"></label><label>الأكاديمية الجهوية<input id="rpi-acad"></label><label>المديرية الإقليمية<input id="rpi-dir"></label><label class="full">المؤسسة<input id="rpi-school"></label></div></details>'+
 '<button class="go full" id="rp-nt" type="button">① حساب نقط الدورة (أنشئ النقط أولا)</button>'+
@@ -5976,8 +5979,16 @@ function fill(){var R=ROSTER.get(),c=ROSTER.cur(),same=sameLv(),pos=same.indexOf
  $('rp-lv').value=c.lv;$('rp-cls').value=same.length>1?String(pos+1):'0';
  TPROF.draw($('rp-subs'));
  var I=DOCI();['name','acad','dir','school'].forEach(function(k){$('rpi-'+k).value=I[k]});
- $('rp-go').disabled=false;
+ $('rp-go').disabled=false;fillEv();
  $('rp-msg').textContent=c.st.length?('القسم الحالي: '+ROSTER_LABEL(R.cur)+' — '+c.st.length+' تلميذ(ة).'):'لا يوجد تلاميذ في هذا القسم بعد. ارفع ملفات مسار (الخطوة ②) أو أنشئ النقط من «حساب نقط الدورة» (①).'}
+function fillEv(keep){var sel=$('rp-evx');if(!sel)return;var c=ROSTER.cur(),B=SCORES.of(c),s=$('rp-ses').value,v=keep||sel.value||'بيان الدورة',evs=[];
+ Object.keys(B).forEach(function(k){if(B[k].ses==s&&B[k].ev&&B[k].ev!='بيان الدورة'&&evs.indexOf(B[k].ev)<0)evs.push(B[k].ev)});
+ if(window.UNITKEYS)window.UNITKEYS(c,s).forEach(function(e){if(evs.indexOf(e)<0)evs.push(e)});
+ evs.sort(function(a,b){return a.localeCompare(b,'ar',{numeric:true})});
+ sel.innerHTML='<option value="بيان الدورة">تقرير الدورة (معدل المواد)</option>'+evs.map(function(e){return '<option value="'+E(e)+'">تقرير '+E(e)+'</option>'}).join('');
+ sel.value=(v=='بيان الدورة'||evs.indexOf(v)>-1)?v:'بيان الدورة'}
+window.RPFILLEV=fillEv;
+$('rp-ses').addEventListener('change',function(){fillEv()});
 $('rp-lv').onchange=function(){goTo(this.value,0)};
 $('rp-cls').onchange=function(){var v=+this.value;goTo(ROSTER.cur().lv,v>0?v-1:0)};
 ['name','acad','dir','school'].forEach(function(k){$('rpi-'+k).addEventListener('input',function(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}D[k]=this.value.trim();try{localStorage.setItem('muh.doc',JSON.stringify(D))}catch(e){}if(k=='acad')try{localStorage.setItem('muh.aca',D[k])}catch(e){}if(k=='dir')try{localStorage.setItem('muh.dir',D[k])}catch(e){}})});
@@ -5985,13 +5996,15 @@ $('rp-nt').onclick=function(){$('tab-bl').click()};
 $('rp-up').onclick=function(){$('rp-file').click()};
 $('rp-file').onchange=async function(){var fs=[].slice.call(this.files);this.value='';if(!fs.length)return;$('rp-msg').textContent='جارٍ قراءة الملفات…';
  var o=await window.BLIMPORT(fs),ss=Object.keys(o.ses);if(ss.length==1)$('rp-ses').value=/الثانية|2/.test(ss[0])?'الدورة الثانية':'الدورة الأولى';
- fill();$('rp-msg').innerHTML='<b>تم استيراد '+o.n+' ملف'+(o.bad.length?'، وتعذّر '+o.bad.length+': '+o.bad.map(E).join('، '):'')+'.</b> المواد: '+(Object.keys(o.subs).map(E).join('، ')||'—')+'. اضغط «أنشئ التقرير».'};
+ fill();fillEv();$('rp-msg').innerHTML='<b>تم استيراد '+o.n+' ملف'+(o.bad.length?'، وتعذّر '+o.bad.length+': '+o.bad.map(E).join('، '):'')+'.</b> المواد: '+(Object.keys(o.subs).map(E).join('، ')||'—')+'. اضغط «أنشئ التقرير».'};
 function bars(rows,max,color){return '<table style="width:100%;border-collapse:collapse">'+rows.map(function(r){var w=max?Math.max(0,Math.min(100,r[1]/max*100)):0;return '<tr><td style="width:34%;border:0;padding:2px 4px;font-size:13px">'+E(r[0])+'</td><td style="border:0;padding:2px 4px"><div style="background:'+(r[2]||color)+';height:13px;width:'+w.toFixed(0)+'%;min-width:2px;border-radius:3px"></div></td><td style="width:15%;border:0;padding:2px 4px;font-size:13px;text-align:left">'+E(r[3]!=null?r[3]:f2(r[1]))+'</td></tr>'}).join('')+'</table>'}
 function supKey(n){if(/التاريخ|الجغراف|المدنية|الاجتماع|المواطنة/.test(n))return 'الاجتماعيات';if(/العربية/.test(n))return 'اللغة العربية';if(/الفرنس/.test(n))return 'اللغة الفرنسية';if(/الرياض/.test(n))return 'الرياضيات';if(/العلم/.test(n))return 'النشاط العلمي';if(/الإسلام|الاسلام/.test(n))return 'التربية الإسلامية';return ''}
 function ul(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ul>'}
-$('rp-go').onclick=function(){var c0=ROSTER.cur(),s=$('rp-ses').value,th=5;if(!c0.st.length){alert('لا يوجد تلاميذ في هذا القسم. ارفع ملفات مسار أو أنشئ النقط أولا.');return}
- if(!window.BLREFRESH||!window.BLREFRESH(s=='الدورة الثانية'?'2':'1')){alert('لا توجد نقط لهذه الدورة. ارفع ملفات مسار (②) أو أنشئ النقط من «حساب نقط الدورة» (①).');return}
- var c=ROSTER.cur(),B=SCORES.of(c),evk=s+'|بيان الدورة';
+$('rp-go').onclick=function(){var EV0=$('rp-evx')&&$('rp-evx').value;if(/^الوحدة/.test(EV0||'')&&window.UNITREP){window.UNITREP($('rp-ses').value,EV0);return}var c0=ROSTER.cur(),s=$('rp-ses').value,th=5;if(!c0.st.length){alert('لا يوجد تلاميذ في هذا القسم. ارفع ملفات مسار أو أنشئ النقط أولا.');return}
+ var EVN=($('rp-evx')&&$('rp-evx').value)||'بيان الدورة';
+ if(EVN=='بيان الدورة'){if(!window.BLREFRESH||!window.BLREFRESH(s=='الدورة الثانية'?'2':'1')){alert('لا توجد نقط لهذه الدورة. ارفع ملفات مسار (②) أو أنشئ النقط من «حساب نقط الدورة» (①).');return}}
+ var c=ROSTER.cur(),B=SCORES.of(c),evk=s+'|'+EVN;
+ if(EVN!='بيان الدورة'&&!B[evk]){alert('لا توجد نقط لهذا التقرير في '+s+'.');return}
  var keys=Object.keys(B).filter(function(k){return B[k].ses==s&&(evk=='*'||k==evk)});if(!keys.length)return;
  var subs=[],data={};/* data[sub][sid]=list of /10 */
  keys.forEach(function(k){var T=B[k];Object.keys(T.subs).forEach(function(n){if(subs.indexOf(n)<0)subs.push(n);var S=T.subs[n];c.st.forEach(function(x){var o=S.d[SCORES.sid(x)];if(o&&o.s!=null){var d=data[n]=data[n]||{},id=SCORES.sid(x);(d[id]=d[id]||[]).push(o.s/(S.max||10)*10)}})})});
@@ -6011,7 +6024,7 @@ $('rp-go').onclick=function(){var c0=ROSTER.cur(),s=$('rp-ses').value,th=5;if(!c
  var DI=DOCI(),V=function(x){return x?E(x):'……………………'},LG=window.LOGO_MIN?'<img src="'+window.LOGO_MIN+'" alt="" style="height:70px">':'';
  h+='<style>.rph3{background:#12385f;color:#fff;padding:5px 12px;border-radius:6px;margin:16px 0 8px;font-size:15px}.rpk{display:inline-block;box-sizing:border-box;width:23.5%;margin:3px 0.4%;padding:6px 4px;border:1px solid #12385f;border-radius:8px;text-align:center;font-size:12px;vertical-align:top}.rpk b{display:block;font-size:19px;color:#12385f}</style>';
  h+='<table style="width:100%;border:2px solid #12385f;border-collapse:collapse;margin-bottom:8px"><tr><td style="width:36%;border:0;padding:6px 10px;font-size:13px;line-height:1.9;text-align:right"><b>الأكاديمية الجهوية للتربية والتكوين:</b> '+V(DI.acad)+'<br><b>المديرية الإقليمية:</b> '+V(DI.dir)+'<br><b>المؤسسة:</b> '+V(DI.school)+'</td><td style="border:0;text-align:center;width:18%">'+LG+'</td><td style="border:0;padding:6px 10px;font-size:13px;line-height:1.9;text-align:right"><b>الأستاذ(ة):</b> '+V(DI.name)+'<br><b>المستوى:</b> '+E(lvn.replace(' ابتدائي',''))+(ROSTER.get().cl.length>1&&sameLv().length>1?' – '+E(ROSTER_LABEL(ROSTER.get().cur).split('–').pop().trim()):'')+'<br><b>السنة الدراسية:</b> '+E(yr)+'</td></tr></table>';
- h+='<div style="text-align:center;margin:10px 0"><div style="font:800 24px Cairo,Tahoma,sans-serif;color:#12385f">تقرير نتائج '+E(s)+'</div><div style="font-size:13px">المواد المستهدفة: '+E(subs.join('، '))+' &nbsp;|&nbsp; تاريخ الإعداد: '+new Date().toLocaleDateString('ar-MA')+'</div></div>';
+ h+='<div style="text-align:center;margin:10px 0"><div style="font:800 24px Cairo,Tahoma,sans-serif;color:#12385f">تقرير نتائج '+(EVN=='بيان الدورة'?E(s):E(EVN)+' — '+E(s))+'</div><div style="font-size:13px">المواد المستهدفة: '+E(subs.join('، '))+' &nbsp;|&nbsp; تاريخ الإعداد: '+new Date().toLocaleDateString('ar-MA')+'</div></div>';
  h+='<div style="text-align:center;margin-bottom:6px"><span class="rpk"><b>'+stud.length+'</b>عدد المتعلمين</span><span class="rpk"><b>'+f2(gm)+'</b>المعدل العام</span><span class="rpk"><b>'+f2(pass.length/ev.length*100)+'%</b>نسبة النجاح</span><span class="rpk"><b>'+fail.length+'</b>المتعثرون</span></div>';
  h+='<h3 class="rph3">1. المعطيات العامة</h3><div class="scroll"><table><tr><th>عدد المتعلمين</th><th>الذين لهم نقط</th><th>المعدل العام</th><th>أعلى معدل</th><th>أدنى معدل</th><th>الناجحون (≥ '+f2(th)+')</th><th>نسبة النجاح</th><th>المتعثرون</th></tr><tr><td>'+stud.length+'</td><td>'+ev.length+'</td><td>'+f2(gm)+'</td><td>'+f2(Math.max.apply(null,ms))+'</td><td>'+f2(Math.min.apply(null,ms))+'</td><td>'+pass.length+'</td><td>'+f2(pass.length/ev.length*100)+'%</td><td>'+fail.length+'</td></tr></table></div>'+(nNo?'<div style="font-size:13px">ملاحظة: '+nNo+' متعلم(ين) بلا نقط مسجلة، ولم يدخلوا في الإحصائيات.</div>':'')+'<div style="font-size:13px">المعدل العام = متوسط معدلات المواد على 10 (معامل كل مادة 1). تُحسب الاجتماعيات (التاريخ والجغرافيا والتربية المدنية) مادة واحدة بمعدل مكوناتها.</div>';
  h+='<h3 class="rph3">2. النتائج حسب المواد</h3><div class="scroll"><table><tr><th>المادة</th><th>عدد النقط</th><th>المعدل</th><th>أعلى</th><th>أدنى</th><th>الناجحون</th><th>نسبة النجاح</th><th>المتعثرون</th><th>المتغيبون</th></tr>'+sub.map(function(x){return '<tr><td>'+E(x.n)+'</td><td>'+x.N+'</td><td>'+f2(x.avg)+'</td><td>'+f2(x.max)+'</td><td>'+f2(x.min)+'</td><td>'+x.p+'</td><td>'+(x.pp==null?'—':f2(x.pp)+'%')+'</td><td>'+x.f+'</td><td>'+x.ab+'</td></tr>'}).join('')+'</table></div>';
@@ -6428,7 +6441,7 @@ var tb=$('tab-bl');$('tab-rp').parentNode.insertBefore(tb,$('tab-rp'));tb.onclic
 /* ---------- المواد المستهدفة في التقرير حسب تخصص الأستاذ ---------- */
 function stripL(x){return norm(String(x).replace(/^اللغة\s*/,''))}
 var SUBS8=['اللغة العربية','اللغة الفرنسية','الرياضيات','النشاط العلمي','الاجتماعيات','التربية الإسلامية','التربية الفنية','التربية البدنية'];
-window.TPROF={sel:function(){try{var a=JSON.parse(localStorage.getItem('muh.tsubs'));if(Array.isArray(a))return a}catch(e){}return ['اللغة العربية','اللغة الفرنسية','الرياضيات']},
+window.SUBS8=SUBS8;window.TPROF={sel:function(){try{var a=JSON.parse(localStorage.getItem('muh.tsubs'));if(Array.isArray(a))return a}catch(e){}return ['اللغة العربية','اللغة الفرنسية','الرياضيات']},
  targets:function(){return this.sel()},
  match:function(n,tg){tg=tg||this.targets();return tg.some(function(t){return stripL(t)==stripL(n)})}};
 var PRESETS=[['','اختيار سريع حسب الأستاذ(ة)…',null],['ar','أستاذ(ة) العربية + مواد التفتح (كل مادة على حدة)',['اللغة العربية','التربية الإسلامية','الاجتماعيات','التربية الفنية','التربية البدنية']],['fr3','أستاذ(ة) الفرنسية + الرياضيات + النشاط العلمي',['اللغة الفرنسية','الرياضيات','النشاط العلمي']],['m2','أستاذ(ة) الرياضيات + النشاط العلمي',['الرياضيات','النشاط العلمي']],['fr','أستاذ(ة) الفرنسية فقط',['اللغة الفرنسية']]];
@@ -7201,6 +7214,125 @@ window.show=function(id,html){var r=o.apply(this,arguments);try{
    var nm=n?String(n).replace(/&/g,'&amp;').replace(/</g,'&lt;'):'………………………';
    d.innerHTML='<span>'+(fr?'Enseignant(e) : ':'الأستاذ(ة): ')+'<b>'+nm+'</b></span>'+(D.school?'<span>'+(fr?'École : ':'المؤسسة: ')+'<b>'+String(D.school).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b></span>':'');
    c.parentNode.insertBefore(d,c.nextSibling)}}}catch(e){}return r};
+})();
+</script>
+<script>
+/* ===== تقويم الوحدة بمستويات التحكم (بدل النقط) ===== */
+(function(){
+if(!window.ROSTER||!window.TPROF||!window.XL||!document.getElementById('tab-rp'))return;
+var $=function(i){return document.getElementById(i)},E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')};
+var NU=10,LV=['','غير متحكم','في طور التحكم','متحكم'],LC=['#eee','#e5a3a3','#f2cd8a','#9fd3a4'],LS=['—','غ','ط','م'],STK='muh.unl';
+function ld(){try{return JSON.parse(localStorage.getItem(STK))||{}}catch(e){return {}}}
+function sv(o){try{localStorage.setItem(STK,JSON.stringify(o))}catch(e){}}
+function sid(x){return window.SCORES?SCORES.sid(x):String(x.id||x.n)}
+function key(){return $('un-ses').value+'|الوحدة '+$('un-n').value}
+window.UNITKEYS=function(c,ses){var o=ld()[c.id]||{},r=[];Object.keys(o).forEach(function(k){if(k.split('|')[0]==ses&&Object.keys(o[k]).some(function(n){return Object.keys(o[k][n]).length}))r.push(k.split('|')[1])});return r};
+document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class="panel" id="p-un"><div class="form">'+
+'<label>الدورة<select id="un-ses"><option>الدورة الأولى</option><option>الدورة الثانية</option></select></label>'+
+'<label>الوحدة<select id="un-n">'+Array.apply(null,Array(NU)).map(function(_,i){return '<option value="'+(i+1)+'">الوحدة '+(i+1)+'</option>'}).join('')+'</select></label>'+
+'<div class="full" id="un-subs"></div></div>'+
+'<div class="note" style="margin:6px 0">المستويات: <b style="background:#e5a3a3;padding:1px 8px;border-radius:6px">غ</b> غير متحكم &nbsp; <b style="background:#f2cd8a;padding:1px 8px;border-radius:6px">ط</b> في طور التحكم &nbsp; <b style="background:#9fd3a4;padding:1px 8px;border-radius:6px">م</b> متحكم. اضغط على الخانة لتغيير المستوى.</div>'+
+'<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="go" id="un-dl" type="button">📥 تنزيل قالب Excel</button><button class="go" id="un-up" type="button" style="background:#2d6a4f">📤 رفع القالب بعد ملئه</button></div><input type="file" id="un-file" accept=".xlsx" style="display:none">'+
+'<div id="un-msg" class="note" style="margin:8px 0"></div><div class="scroll"><table class="sheet" id="un-tab" style="width:100%"></table></div>'+
+'<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><button class="go" id="un-rep" type="button">📊 تقرير هذه الوحدة</button><button class="go" id="un-clr" type="button" style="background:#7a2a2a">مسح تقويم هذه الوحدة</button></div></section>');
+var tb=document.createElement('button');tb.setAttribute('role','tab');tb.setAttribute('aria-selected','false');tb.dataset.t='un';tb.id='tab-un';tb.style.cssText='--tb:#dff0e3;--tt:#1f5a2e';tb.textContent='تقرير الوحدة';
+$('tab-rp').parentNode.insertBefore(tb,$('tab-rp'));
+tb.onclick=function(){cur='un';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-un').classList.add('on');$('bar').classList.remove('on');draw()};
+var USK='muh.usubs';function subs(){try{var a=JSON.parse(localStorage.getItem(USK));if(Array.isArray(a)&&a.length)return a}catch(e){}return (window.SUBS8||[]).filter(function(n){return n!='التربية البدنية'})}
+function draw(){var cs=subs();$('un-subs').innerHTML='<b>المواد (كل المواد ما عدا التربية البدنية)</b><div>'+(window.SUBS8||cs).map(function(n){return '<label style="display:inline-block;margin:3px 0 3px 14px"><input type="checkbox" class="us-c" value="'+E(n)+'"'+(cs.indexOf(n)>-1?' checked':'')+'> '+E(n)+'</label>'}).join('')+'</div>';draw0()}
+$('un-subs').addEventListener('change',function(e){if(!e.target.classList.contains('us-c'))return;var v=[].map.call($('un-subs').querySelectorAll('.us-c:checked'),function(x){return x.value});try{localStorage.setItem(USK,JSON.stringify(v))}catch(x){}draw0()});
+function draw0(){var c=ROSTER.cur(),sb=subs(),T=(ld()[c.id]||{})[key()]||{},m=$('un-msg'),tab=$('un-tab');
+ if(!c.st.length){m.innerHTML='لا يوجد تلاميذ في هذا القسم بعد. أضفهم من «قسمي» أو ارفع ملف مسار أولاً.';tab.innerHTML='';return}
+ m.innerHTML='القسم: <b>'+E(ROSTER_LABEL(ROSTER.get().cur))+'</b> — '+c.st.length+' تلميذ(ة). يُحفظ كل تغيير تلقائياً.';
+ var h='<tr><th>#</th><th>الاسم</th>'+sb.map(function(n){return '<th>'+E(n.replace('اللغة ',''))+'<br><button type="button" class="ufill" data-n="'+E(n)+'" style="font:700 11px Cairo,Tahoma,sans-serif;border:1px solid #999;border-radius:8px;background:#fff;padding:1px 6px;margin-top:3px">الكل م</button></th>'}).join('')+'</tr>';
+ c.st.forEach(function(x,i){var id=sid(x);h+='<tr><td>'+(i+1)+'</td><td style="text-align:right">'+E(x.n)+'</td>'+sb.map(function(n){var v=(T[n]&&T[n][id])||0;return '<td><button type="button" class="ulv" data-i="'+i+'" data-n="'+E(n)+'" data-v="'+v+'" style="width:44px;height:36px;border:1px solid #999;border-radius:10px;font:800 16px Cairo,Tahoma,sans-serif;background:'+LC[v]+';color:#222">'+LS[v]+'</button></td>'}).join('')+'</tr>'});
+ tab.innerHTML=h}
+function setv(c,n,id,v){var o=ld(),B=o[c.id]=o[c.id]||{},k=key(),T=B[k]=B[k]||{},S=T[n]=T[n]||{};if(v)S[id]=v;else delete S[id];sv(o)}
+$('un-tab').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var c=ROSTER.cur();
+ if(b.classList.contains('ulv')){var v=((+b.dataset.v)+1)%4,x=c.st[+b.dataset.i];b.dataset.v=v;b.textContent=LS[v];b.style.background=LC[v];setv(c,b.dataset.n,sid(x),v)}
+ else if(b.classList.contains('ufill')){c.st.forEach(function(x){setv(c,b.dataset.n,sid(x),3)});draw0()}});
+$('un-ses').onchange=draw0;$('un-n').onchange=draw0;
+$('un-clr').onclick=function(){var c=ROSTER.cur(),o=ld();if(!o[c.id]||!o[c.id][key()]){alert('لا يوجد تقويم لهذه الوحدة.');return}if(!confirm('هل أنت متأكد؟ سيتم مسح تقويم هذه الوحدة لهذا القسم.'))return;delete o[c.id][key()];sv(o);draw0()};
+$('un-rep').onclick=function(){var c=ROSTER.cur(),T=(ld()[c.id]||{})[key()];if(!T||!Object.keys(T).some(function(n){return Object.keys(T[n]).length})){alert('أدخل مستويات التحكم أولاً لهذه الوحدة.');return}
+ var ses=$('un-ses').value,ev='الوحدة '+$('un-n').value;$('tab-rp').click();$('rp-ses').value=ses;if(window.RPFILLEV)RPFILLEV(ev);$('rp-evx').value=ev;$('rp-go').click()};
+/* ---------- قالب Excel ---------- */
+function CL(n){var s='';n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
+function X(s){return String(s==null?'':s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+$('un-dl').onclick=async function(){var c=ROSTER.cur(),sb=subs();if(!c.st.length){alert('لا يوجد تلاميذ في هذا القسم بعد.');return}
+ var SS=[],si={};function S(t){t=String(t);if(!(t in si)){si[t]=SS.length;SS.push(t)}return si[t]}
+ var rows=[],T=(ld()[c.id]||{})[key()]||{},n=$('un-n').value;
+ rows.push([[S('قالب تقويم الوحدة — معين الأستاذ'),0]]);
+ rows.push([[S('الدورة'),0],[S($('un-ses').value),0]]);
+ rows.push([[S('الوحدة'),0],[n,'n']]);
+ rows.push([[S('القسم'),0],[S(ROSTER_LABEL(ROSTER.get().cur)),0]]);
+ rows.push([[S('طريقة الملء: اختر في كل خانة من القائمة: غير متحكم / في طور التحكم / متحكم'),0]]);
+ rows.push([]);
+ var hd=[[S('ID'),1],[S('الاسم'),1]];sb.forEach(function(x){hd.push([S(x),1])});rows.push(hd);
+ var first=rows.length+1;
+ c.st.forEach(function(x){var id=sid(x),r=[[S(id),2],[S(x.n),2]];sb.forEach(function(nm){var v=(T[nm]&&T[nm][id])||0;r.push(v?[S(LV[v]),2]:['',2])});rows.push(r)});
+ var last=rows.length,lc=CL(1+sb.length);
+ var sh='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><cols><col min="1" max="1" width="14" customWidth="1"/><col min="2" max="2" width="30" customWidth="1"/><col min="3" max="'+(2+sb.length)+'" width="18" customWidth="1"/></cols><sheetData>';
+ rows.forEach(function(r,i){sh+='<row r="'+(i+1)+'">';r.forEach(function(cl,j){var ref=CL(j)+(i+1);if(cl[0]===''){sh+='<c r="'+ref+'" s="'+cl[1]+'"/>'}else if(cl[1]==='n'){sh+='<c r="'+ref+'"><v>'+cl[0]+'</v></c>'}else sh+='<c r="'+ref+'" t="s" s="'+cl[1]+'"><v>'+cl[0]+'</v></c>'});sh+='</row>'});
+ var rng='C'+first+':'+lc+last;
+ sh+='</sheetData><conditionalFormatting sqref="'+rng+'"><cfRule type="cellIs" dxfId="0" priority="1" operator="equal"><formula>"غير متحكم"</formula></cfRule><cfRule type="cellIs" dxfId="1" priority="2" operator="equal"><formula>"في طور التحكم"</formula></cfRule><cfRule type="cellIs" dxfId="2" priority="3" operator="equal"><formula>"متحكم"</formula></cfRule></conditionalFormatting>';
+ sh+='<dataValidations count="1"><dataValidation type="list" allowBlank="1" showErrorMessage="1" errorTitle="قيمة غير صحيحة" error="اختر من القائمة" sqref="'+rng+'"><formula1>"غير متحكم,في طور التحكم,متحكم"</formula1></dataValidation></dataValidations></worksheet>';
+ var N='xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"',R='http://schemas.openxmlformats.org/officeDocument/2006/relationships',H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+ var bd='<border><left style="thin"><color rgb="FFBBBBBB"/></left><right style="thin"><color rgb="FFBBBBBB"/></right><top style="thin"><color rgb="FFBBBBBB"/></top><bottom style="thin"><color rgb="FFBBBBBB"/></bottom><diagonal/></border>';
+ var files=[
+  {n:'[Content_Types].xml',d:XL.u8(H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>')},
+  {n:'_rels/.rels',d:XL.u8(H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="xl/workbook.xml"/></Relationships>')},
+  {n:'xl/workbook.xml',d:XL.u8(H+'<workbook '+N+' xmlns:r="'+R+'"><sheets><sheet name="تقويم الوحدة" sheetId="1" r:id="rId1"/></sheets></workbook>')},
+  {n:'xl/_rels/workbook.xml.rels',d:XL.u8(H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="'+R+'/sharedStrings" Target="sharedStrings.xml"/><Relationship Id="rId3" Type="'+R+'/styles" Target="styles.xml"/></Relationships>')},
+  {n:'xl/styles.xml',d:XL.u8(H+'<styleSheet '+N+'><fonts count="2"><font><sz val="11"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Arial"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1D3A8A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>'+bd+'</borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf></cellXfs><dxfs count="3"><dxf><font><color rgb="FF9C0006"/></font><fill><patternFill><bgColor rgb="FFF4B6B6"/></patternFill></fill></dxf><dxf><font><color rgb="FF7A4B00"/></font><fill><patternFill><bgColor rgb="FFFAD9A0"/></patternFill></fill></dxf><dxf><font><color rgb="FF1F5A2E"/></font><fill><patternFill><bgColor rgb="FFB7E1BB"/></patternFill></fill></dxf></dxfs></styleSheet>')},
+  {n:'xl/sharedStrings.xml',d:XL.u8(H+'<sst '+N+' count="'+SS.length+'" uniqueCount="'+SS.length+'">'+SS.map(function(t){return '<si><t xml:space="preserve">'+X(t)+'</t></si>'}).join('')+'</sst>')},
+  {n:'xl/worksheets/sheet1.xml',d:XL.u8(sh)}];
+ var b=await XL.zip(files),blob=new Blob([b],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='قالب-تقويم-الوحدة-'+n+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)};
+$('un-up').onclick=function(){$('un-file').click()};
+function lvOf(x){x=String(x==null?'':x).trim();if(!x)return 0;if(/^[123]$/.test(x))return +x;if(/غير/.test(x))return 1;if(/طور|في/.test(x))return 2;if(/متحكم|م$/.test(x))return 3;return 0}
+$('un-file').onchange=async function(){var f=this.files[0];this.value='';if(!f)return;var rows;try{rows=await XL.read(await f.arrayBuffer())}catch(e){alert('تعذّرت قراءة الملف. استعمل القالب الذي نزّلته من التطبيق.');return}
+ var hi=-1;rows.forEach(function(r,i){if(hi<0&&r&&String(r[0]).trim()==='ID')hi=i});if(hi<0){alert('هذا الملف ليس قالب التطبيق. نزّل القالب أولاً.');return}
+ var ses=null,un=null;rows.slice(0,hi).forEach(function(r){var k=String(r[0]||'').trim();if(k=='الدورة'&&r[1])ses=String(r[1]).trim();if(k=='الوحدة'&&r[1]){var m=String(r[1]).match(/\d+/);if(m)un=m[0]}});
+ if(ses&&/الثانية/.test(ses))$('un-ses').value='الدورة الثانية';else if(ses)$('un-ses').value='الدورة الأولى';if(un&&+un>=1&&+un<=NU)$('un-n').value=un;
+ var hd=rows[hi],c=ROSTER.cur(),o=ld(),B=o[c.id]=o[c.id]||{},k=key(),T=B[k]=B[k]||{},cnt=0,miss=0,byId={},byN={};
+ c.st.forEach(function(x){byId[sid(x)]=x;byN[String(x.n).replace(/\s+/g,' ').trim()]=x});
+ for(var i=hi+1;i<rows.length;i++){var r=rows[i];if(!r||(!r[0]&&!r[1]))continue;var x=byId[String(r[0]).trim()]||byN[String(r[1]||'').replace(/\s+/g,' ').trim()];if(!x){miss++;continue}
+  for(var j=2;j<hd.length;j++){var nm=String(hd[j]||'').trim();if(!nm)continue;var v=lvOf(r[j]);if(v){var S=T[nm]=T[nm]||{};S[sid(x)]=v;cnt++}}}
+ sv(o);draw0();$('un-msg').innerHTML='<b>تم استيراد '+cnt+' تقويماً</b> للوحدة '+$('un-n').value+' ('+E($('un-ses').value)+').'+(miss?' تعذّر ربط '+miss+' سطر بتلاميذ القسم.':'')+' اضغط «تقرير هذه الوحدة».'};
+/* ---------- تقرير الوحدة ---------- */
+function supKey(n){if(/التاريخ|الجغراف|المدنية|الاجتماع|المواطنة/.test(n))return 'الاجتماعيات';if(/العربية/.test(n))return 'اللغة العربية';if(/الفرنس/.test(n))return 'اللغة الفرنسية';if(/الرياض/.test(n))return 'الرياضيات';if(/العلم/.test(n))return 'النشاط العلمي';if(/الإسلام|الاسلام/.test(n))return 'التربية الإسلامية';return ''}
+function ul(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ul>'}
+function pc(a,b){return b?(Math.round(a/b*1000)/10).toString().replace(/\.0$/,'')+'%':'—'}
+window.UNITREP=function(ses,ev){var c=ROSTER.cur(),T=(ld()[c.id]||{})[ses+'|'+ev];if(!T){alert('لا يوجد تقويم لهذه الوحدة.');return}
+ var sb=subs().filter(function(n){return T[n]&&Object.keys(T[n]).length});if(!sb.length){alert('لا يوجد تقويم للمواد المستهدفة. غيّر المواد أو أدخل المستويات.');return}
+ var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}var I=(typeof TT!='undefined'&&TT.info)||{},V=function(x){return x?E(x):'……………………'};
+ var st=c.st.map(function(x){var id=sid(x),L={};sb.forEach(function(n){var v=T[n]&&T[n][id];if(v)L[n]=v});return {n:x.n,id:id,L:L}});
+ var rows=sb.map(function(n){var a=[0,0,0,0];st.forEach(function(x){if(x.L[n])a[x.L[n]]++});var N=a[1]+a[2]+a[3];return {n:n,a:a,N:N,m:N?a[3]/N*100:null}});
+ var tot=[0,0,0,0];rows.forEach(function(r){for(var i=1;i<4;i++)tot[i]+=r.a[i]});var TN=tot[1]+tot[2]+tot[3];
+ var h='<style>.rph3{background:#1f5a2e;color:#fff;padding:5px 12px;border-radius:6px;margin:16px 0 8px;font-size:15px}.rpk{display:inline-block;box-sizing:border-box;width:23.5%;margin:3px 0.4%;padding:6px 4px;border:1px solid #1f5a2e;border-radius:8px;text-align:center;font-size:12px;vertical-align:top}.rpk b{display:block;font-size:17px}.lvg{background:#f4b6b6}.lvt{background:#fad9a0}.lvm{background:#b7e1bb}</style>';
+ h+='<table style="width:100%;border:2px solid #1f5a2e;border-collapse:collapse;margin-bottom:8px"><tr><td style="width:34%;border:0;padding:6px 10px;font-size:13px;line-height:1.8;text-align:right"><b>الأكاديمية:</b> '+V(D.acad)+'<br><b>المديرية:</b> '+V(D.dir)+'<br><b>المؤسسة:</b> '+V(D.school||I.school)+'</td><td style="border:0;text-align:center">'+(window.LOGO_MIN?'<img src="'+window.LOGO_MIN+'" alt="" style="height:50px">':'')+'</td><td style="width:34%;border:0;padding:6px 10px;font-size:13px;line-height:1.8;text-align:right"><b>الأستاذ(ة):</b> '+V(D.name||I.name)+'<br><b>المستوى:</b> '+E(c.lv||'')+'<br><b>الموسم الدراسي:</b> '+V(D.year||c.yr||'2026-2027')+'</td></tr></table>';
+ h+='<div style="text-align:center;margin:8px 0"><div style="font:800 23px Cairo,Tahoma,sans-serif;color:#1f5a2e">تقرير تقويم '+E(ev)+' — '+E(ses)+'</div><div style="font-size:13px">المواد: '+E(sb.join('، '))+' &nbsp;|&nbsp; القسم: '+E(ROSTER_LABEL(ROSTER.get().cur))+' &nbsp;|&nbsp; '+new Date().toLocaleDateString('ar-MA')+'</div></div>';
+ h+='<div style="text-align:center;margin-bottom:6px"><span class="rpk"><b>'+c.st.length+'</b>عدد المتعلمين</span><span class="rpk lvm"><b>'+pc(tot[3],TN)+'</b>متحكمون</span><span class="rpk lvt"><b>'+pc(tot[2],TN)+'</b>في طور التحكم</span><span class="rpk lvg"><b>'+pc(tot[1],TN)+'</b>غير متحكمين</span></div>';
+ h+='<h3 class="rph3">1. النتائج حسب المواد</h3><div class="scroll"><table><tr><th>المادة</th><th>المقيَّمون</th><th>متحكم</th><th>%</th><th>في طور التحكم</th><th>%</th><th>غير متحكم</th><th>%</th></tr>'+rows.map(function(r){return '<tr><td>'+E(r.n)+'</td><td>'+r.N+'</td><td class="lvm">'+r.a[3]+'</td><td>'+pc(r.a[3],r.N)+'</td><td class="lvt">'+r.a[2]+'</td><td>'+pc(r.a[2],r.N)+'</td><td class="lvg">'+r.a[1]+'</td><td>'+pc(r.a[1],r.N)+'</td></tr>'}).join('')+'</table></div>';
+ if(window.CH&&CH.stack)h+='<h3 class="rph3">2. مبيان مستويات التحكم</h3>'+CH.stack(rows.filter(function(r){return r.N}).map(function(r){return {l:r.n.replace('اللغة ',''),p:[r.a[3],r.a[2],r.a[1]]}}),['متحكم','في طور التحكم','غير متحكم'],['#3f8a3a','#e0a030','#c0504d'],{title:'توزيع المتعلمين حسب مستوى التحكم في كل مادة'});
+ h+='<h3 class="rph3">3. لائحة تفييء المتعلمين</h3>';
+ rows.forEach(function(r){var g=function(v){return st.filter(function(x){return x.L[r.n]==v}).map(function(x){return x.n})};
+  h+='<div style="margin:8px 0;break-inside:avoid"><b>'+E(r.n)+'</b><div class="scroll"><table><tr><th style="width:24%">الفئة</th><th style="width:9%">العدد</th><th>المتعلمون</th></tr><tr><td class="lvg">غير متحكمين: دعم مكثف</td><td>'+g(1).length+'</td><td style="text-align:right">'+(E(g(1).join('، '))||'—')+'</td></tr><tr><td class="lvt">في طور التحكم: تثبيت</td><td>'+g(2).length+'</td><td style="text-align:right">'+(E(g(2).join('، '))||'—')+'</td></tr><tr><td class="lvm">متحكمون: إغناء</td><td>'+g(3).length+'</td><td style="text-align:right">'+(E(g(3).join('، '))||'—')+'</td></tr></table></div></div>'});
+ h+='<h3 class="rph3">4. النتائج الفردية</h3><div class="scroll"><table style="font-size:12px"><tr><th>#</th><th>الاسم</th>'+sb.map(function(n){return '<th>'+E(n.replace('اللغة ',''))+'</th>'}).join('')+'</tr>'+st.map(function(x,i){return '<tr><td>'+(i+1)+'</td><td style="text-align:right">'+E(x.n)+'</td>'+sb.map(function(n){var v=x.L[n]||0;return '<td class="'+(['','lvg','lvt','lvm'][v])+'">'+(v?LV[v]:'—')+'</td>'}).join('')+'</tr>'}).join('')+'</table></div>';
+ var best=rows.filter(function(r){return r.N}).sort(function(a,b){return b.m-a.m}),w=best[best.length-1],b0=best[0];
+ h+='<h3 class="rph3">5. قراءة في النتائج</h3>'+ul([ 'بلغت نسبة المتحكمين '+pc(tot[3],TN)+' من مجموع التقويمات، ونسبة غير المتحكمين '+pc(tot[1],TN)+'.',b0&&w&&b0!==w?'أعلى نسبة تحكم في «'+b0.n+'» ('+pc(b0.a[3],b0.N)+') وأدناها في «'+w.n+'» ('+pc(w.a[3],w.N)+').':'' ].filter(Boolean));
+ h+='<h3 class="rph3">6. خطة الدعم والمعالجة</h3>';
+ var SD=window.SUPPORT_D||{},weak=rows.filter(function(r){return r.a[1]+r.a[2]>0});
+ if(!weak.length)h+='<div>لا حاجة إلى دعم، يكفي الإغناء والتعميق.</div>';
+ weak.forEach(function(r){var d=SD[supKey(r.n)]||[],who=st.filter(function(x){return x.L[r.n]==1}).map(function(x){return x.n}),mid=st.filter(function(x){return x.L[r.n]==2}).map(function(x){return x.n});
+  h+='<div style="border:1px solid #bbb;border-radius:10px;padding:8px 12px;margin:10px 0;break-inside:avoid"><b>«'+E(r.n)+'» — '+r.a[1]+' غير متحكم، '+r.a[2]+' في طور التحكم</b>'+(who.length?'<div>دعم مكثف: '+E(who.join('، '))+'</div>':'')+(mid.length?'<div>تثبيت: '+E(mid.join('، '))+'</div>':'');
+  if(d.length){d.slice(0,2).forEach(function(x){h+='<div style="margin:6px 0"><u>'+E(x.l)+'</u>'+ul(x.m.slice(0,3))+'<div>نموذج تمرين: '+E(x.e[0])+'</div><div>مؤشر التحسن: '+E(x.i)+'</div></div>'})}
+  else h+=ul(['تشخيص أسباب عدم التحكم بملاحظة المتعلم أثناء إنجاز المهمة','تجزيء المهمة إلى خطوات قصيرة مع نموذج محلول','ممارسة موجهة في مجموعة صغيرة ثم تمرين فردي بسيط']);
+  h+='<div><b>للمتحكمين:</b> أنشطة إغناء وتعميق، وإسناد دور المساعد لزملائهم.</div></div>'});
+ h+='<b>الجدول الزمني المقترح (ثلاثة أسابيع)</b><div class="scroll"><table><tr><th>الأسبوع</th><th>النشاط</th></tr><tr><td>1</td><td>رائز تشخيصي قصير، وتشكيل المجموعات، وحصتا دعم أولى</td></tr><tr><td>2</td><td>حصتا دعم بطرق متنوعة وتمارين متدرجة مع تصحيح فوري ودفتر متابعة</td></tr><tr><td>3</td><td>تقويم أثر الدعم برائز مماثل ثم تعديل المجموعات</td></tr></table></div>';
+ h+='<b>شراكة مع الأسرة</b>'+ul(['إخبار أسر غير المتحكمين بنتائج أبنائهم وبخطة الدعم','اقتراح نشاط منزلي قصير يومياً (10 دقائق)','لقاء أو مكالمة بعد ثلاثة أسابيع لتقديم نتائج الدعم']);
+ h+='<h3 class="rph3">7. تقويم أثر الدعم</h3><div class="scroll"><table><tr><th>المتعلم</th><th>المادة</th><th>المستوى قبل الدعم</th><th>المستوى بعد الدعم</th><th>الملاحظة</th></tr><tr><td> </td><td></td><td></td><td></td><td></td></tr><tr><td> </td><td></td><td></td><td></td><td></td></tr></table></div>';
+ show('rp-out',h)};
+if(window.regSection)regSection({id:'rep',tabs:['gr','bl','un','rp','ac']});
 })();
 </script>
 <script>
