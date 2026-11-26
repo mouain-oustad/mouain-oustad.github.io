@@ -1,5 +1,5 @@
 /* يعمل التطبيق دون إنترنت: تخزين الملفات الأساسية عند التثبيت */
-const CACHE = 'mouin-v36';
+const CACHE = 'mouin-v37';
 const CORE = ['./', './index.html', './manifest.webmanifest', './privacy.html',
   './icon-192.png', './icon-512.png', './maskable-192.png', './maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); self.skipWaiting(); });
@@ -12,7 +12,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   /* الإعلانات لا تُخزَّن */
-  if (/googlesyndication|doubleclick|googleads|adservice/.test(url.hostname)) return;
+  if (/googlesyndication|doubleclick|googleads|adservice|googletagmanager|google-analytics|analytics\.google/.test(url.hostname)) return;
   /* معطيات الحصص: الشبكة دائماً (التطبيق يحفظها بنفسه) */
   if (url.pathname.indexOf('/data/') > -1) return;
   /* لا تخزين لطلبات GitHub (لوحة المشرف) */
