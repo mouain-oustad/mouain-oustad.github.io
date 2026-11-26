@@ -5871,11 +5871,15 @@ function wizL(Lv,fname){var m=Lv.meta,c=cls(),SUBL=['اللغة العربية',
   if(m.yr)c.yr=m.yr;window.LIVRETS.save();fire();$('r-wiz').innerHTML='';draw();alert('تم استيراد ملف الكفايات ('+sub+' – المرحلة '+Lv.stage+')'+(add?'، وأُضيف '+add+' تلميذا.':'.'))};
  function have0(){return false}}
 /* ---- استيراد تلقائي لعدة ملفات (نقط الدورة) ---- */
-window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{},bad:[]};
+window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{},bad:[]};var firstC=null,usedC=[];
+ function pickCls(t){var cur=cls(),lf=t?LV.filter(function(l){return String(t).indexOf(l.split(' ')[0])>-1})[0]:null;if(!lf)return cur;
+  var f=R.cl.filter(function(x){return x.lv==lf});if(f.length)return f[0];
+  if(!cur.st.length){cur.lv=lf;return cur}
+  var n={id:Date.now()+R.cl.length,lv:lf,st:[]};R.cl.push(n);return n}
  for(var q=0;q<files.length;q++){var f=files[q],nm=f.name.toLowerCase(),rows;
   try{if(/\.xlsx$/.test(nm))rows=await readXlsx(await f.arrayBuffer());else if(/\.(csv|txt|tsv)$/.test(nm))rows=readCsv(await f.text());else{out.bad.push(f.name);continue}}catch(e){out.bad.push(f.name);continue}
   if(!rows||rows.length<2){out.bad.push(f.name);continue}
-  var c=cls(),M=massar(rows);
+  var M=massar(rows),Lv=M?null:livret(rows),mm=M?M.meta:(Lv?Lv.meta:{}),c=pickCls(mm.lv);if(!firstC)firstC=c;if(usedC.indexOf(c)<0)usedC.push(c);
   if(M){var m=M.meta,have=c.st.length;
    if(!have)c.st=M.st.map(function(x){return Object.assign({},x)});
    else M.st.forEach(function(x){var o=c.st.filter(function(y){return y.id==x.id||(x.code&&y.code==x.code)})[0];if(o){o.id=x.id;o.code=x.code||o.code;o.dob=x.dob||o.dob}else{c.st.push(Object.assign({},x));out.add++}});
@@ -5883,12 +5887,12 @@ window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{
    if(m.lv&&!have){var lf=LV.filter(function(l){return m.lv.indexOf(l.split(' ')[0])>-1})[0];if(lf)c.lv=lf}
    if(m.yr)c.yr=m.yr;out.sc+=window.SCORES.put(c,M);M.st.forEach(function(x){delete x.sc});c.st.forEach(function(x){delete x.sc});
    if(m.ses)out.ses[m.ses]=1;if(m.sub)out.subs[m.sub]=1;out.n++;continue}
-  var Lv=livret(rows);
   if(Lv){var m2=Lv.meta,SUBL=['اللغة العربية','اللغة الفرنسية','الرياضيات','النشاط العلمي','الاجتماعيات','التربية الإسلامية','التربية الفنية','التربية البدنية'],sub=SUBL.filter(function(s){return (m2.sub||'').indexOf(s.replace('اللغة ',''))>-1})[0]||(Lv.g.some(function(x){return /[ء-ي]/.test(x.desc)})?'اللغة العربية':'اللغة الفرنسية');
    Lv.cols.forEach(function(x){var o=c.st.filter(function(y){return y.id==x.id})[0];if(!o&&x.n){c.st.push({id:x.id,n:x.n});out.add++}});
    var B=LVST[c.id]=LVST[c.id]||{};B[sub+'|'+Lv.stage]={sub:sub,stage:Lv.stage,yr:m2.yr||'',g:Lv.g.map(function(x){return {g:x.g,code:x.code,d:x.d}})};
    if(m2.yr)c.yr=m2.yr;window.LIVRETS.save();out.lv++;out.subs[sub]=1;out.n++;continue}
   out.bad.push(f.name)}
+ if(firstC)R.cur=R.cl.indexOf(firstC);out.cls=usedC.map(function(x){return lbl(R.cl.indexOf(x))});
  fire();draw();return out};
 /* ---- ربط الأعمدة ---- */
 var ROLES=window.ROSTER_ROLES=[['','تجاهل'],['name','الاسم الكامل'],['fam','النسب'],['giv','الاسم الشخصي']];
@@ -7248,8 +7252,14 @@ function relabel(){var p=PIO(),w=U(),sel=$('un-n'),cv=sel.value||'1',N=p?5:NU;
 document.addEventListener('click',function(){setTimeout(function(){tb.textContent='تقرير '+U()},60)});tb.textContent='تقرير '+U();
 function evList(){var c=ROSTER.cur(),B=window.SCORES?SCORES.of(c):{};return Object.keys(B).map(function(k){return {k:k,ev:B[k].ev,ses:B[k].ses}}).filter(function(x){return x.ses==$('un-ses').value})}
 function drawPio(){var L=evList(),c=ROSTER.cur(),LB=(window.LIVRETS&&LIVRETS.all()[c.id])||{},st=$('un-n').value,nl=Object.keys(LB).filter(function(k){return LB[k].stage==st}).length;
- $('un-pio').innerHTML='<b>تحميل من الفروض والكفايات</b><div class="note">ملفات الكفايات المستوردة للمرحلة '+st+': <b>'+nl+'</b>. اختر الفروض المعتمدة في هذه المرحلة:</div>'+(L.length?L.map(function(x){return '<label style="display:block;margin:3px 0"><input type="checkbox" class="up-c" value="'+E(x.k)+'" checked> '+E(x.ev)+'</label>'}).join(''):'<div class="note">لا توجد فروض مستوردة لهذه الدورة (يمكنك إدخال المستويات يدوياً أو عبر Excel).</div>')+'<div class="note">التحويل إلى مستويات (النقطة على 10): أقل من 5 = غير متحكم، من 5 إلى أقل من 7 = في طور التحكم، 7 فأكثر = متحكم. المعدل بين الكفايات والفروض المختارة.</div><button class="go" id="up-go" type="button">⬇️ تحميل المستويات من الفروض والكفايات</button>';
- $('up-go').onclick=loadPio}
+ $('un-pio').innerHTML='<b>مصدر المستويات: الفروض والكفايات</b><div class="note">① ارفع ملفات Excel من مسار: <b>الفروض</b> (التربية الإسلامية، الاجتماعيات، التربية الفنية، النشاط العلمي) و<b>الكفايات</b> (العربية، الفرنسية، الرياضيات).</div><button class="go" id="up-imp" type="button" style="background:#2d6a4f">📥 رفع ملفات الفروض والكفايات</button><input type="file" id="up-file" accept=".xlsx,.csv" multiple style="display:none"><div id="up-st" class="note"></div><div class="note">② ملفات الكفايات المستوردة للمرحلة '+st+': <b>'+nl+'</b>. اختر الفروض المعتمدة في هذه المرحلة:</div>'+(L.length?L.map(function(x){return '<label style="display:block;margin:3px 0"><input type="checkbox" class="up-c" value="'+E(x.k)+'"'+(/^الفرض/.test(x.ev)?' checked':'')+'> '+E(x.ev)+'</label>'}).join(''):'<div class="note">لا توجد فروض مستوردة لهذه الدورة (يمكنك إدخال المستويات يدوياً أو عبر Excel).</div>')+'<div class="note">التحويل إلى مستويات (النقطة على 10): أقل من 5 = غير متحكم، من 5 إلى أقل من 7 = في طور التحكم، 7 فأكثر = متحكم. المعدل بين الكفايات والفروض المختارة.</div><button class="go" id="up-go" type="button">⬇️ تحميل المستويات من الفروض والكفايات</button>';
+ $('up-go').onclick=loadPio;
+ $('up-imp').onclick=function(){$('up-file').click()};
+ $('up-file').onchange=async function(){var fs=[].slice.call(this.files);this.value='';if(!fs.length)return;$('up-st').textContent='جارٍ قراءة الملفات…';
+  var o;try{o=await window.BLIMPORT(fs)}catch(e){$('up-st').textContent='تعذّرت قراءة الملفات.';return}
+  var ss=Object.keys(o.ses);if(ss.length==1)$('un-ses').value=/الثانية|2/.test(ss[0])?'الدورة الثانية':'الدورة الأولى';
+  var ms=Object.keys(o.subs).map(E).join('، ')||'—',bad=o.bad.length?'، وتعذّر '+o.bad.length+': '+o.bad.map(E).join('، '):'',n=o.n;
+  draw0();drawPio();$('up-st').innerHTML='<b>تم استيراد '+n+' ملف'+bad+'.</b> '+(o.cls&&o.cls.length>1?'فُصلت الملفات تلقائياً إلى '+o.cls.length+' أقسام: '+o.cls.map(E).join('، ')+' (بدّل القسم من «قسمي»). ':'القسم: '+E((o.cls||[])[0]||'')+'. ')+'المواد: '+ms+'. اضغط الآن «تحميل المستويات».'}}
 function eqs(a,b){return a==b||(supKey(a)&&supKey(a)==supKey(b))}
 function lvl(v){return v<5?1:v<7?2:3}
 function loadPio(){var c=ROSTER.cur(),B=SCORES.of(c),ks=[].map.call(document.querySelectorAll('.up-c:checked'),function(x){return x.value}),LB=(window.LIVRETS&&LIVRETS.all()[c.id])||{},st=$('un-n').value,sb=subs(),o=ld(),A=o[c.id]=o[c.id]||{},k=key(),T=A[k]=A[k]||{},cnt=0;
