@@ -2018,6 +2018,7 @@ function memoData(day){var K=function(r){return (+r.c||0)+'|'+r.s},cnt={},tot={}
     var c=+r.c||0;if(!bk||bk.c!==c){bk={c:c,rows:[],f:r.f,t:r.t};blocks.push(bk)}bk.t=r.t;
     var kk=K(r);cnt[kk]=(cnt[kk]||0)+1;var k=cnt[kk],cl=TT.classes[c]||TT.classes[0],C=slotContent(r.s,cl.lv,P,w,k,tot[kk]||1);
     var CS=cl.lv2?SESS[sKey(subjMap(r.s).s,lvKeyN(cl.lv,cl.lv2),P,w,k)]:null;if(CS){C=sessText(CS);C.les=['◄ حصة القسم المشترك '+cl.lv.replace(' ابتدائي','')+' و'+cl.lv2.replace(' ابتدائي','')+':'].concat(C.les);C.src='sess'}
+    else if(cl.lv2&&mode=='p'&&P>1&&r.s=='اللغة العربية'){var n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['لا توجد حصة مستوردة للقسم المشترك '+n1+' و'+n2+' لهذا اليوم'],obj:[],src:'none'}}
     else if(cl.lv2&&C&&r.s!='الدعم'){var C2=slotContent(r.s,cl.lv2,P,w,k,tot[kk]||1)||{les:['……'],obj:[]},n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['◄ المستوى '+n1+':'].concat(C.les,['◄ المستوى '+n2+':'],C2.les),obj:(C.obj||[]).concat(C2.obj||[]),src:(C.src=='none'&&C2.src=='none')?'none':'mix'}}
     if(cl.lv2&&!CS&&P>1&&mode=='p'&&r.s=='اللغة العربية'&&nosh.indexOf(cl.lv+'+'+cl.lv2)<0)nosh.push(cl.lv+'+'+cl.lv2);
     if(r.s!='أخرى'&&(!C||C.src=='none'||C.les[0]=='……'))miss.push(r.s);
@@ -2071,7 +2072,7 @@ function objVar(sub,c,t){var T='«'+cut(t,50)+'»',h=0,i;for(i=0;i<t.length;i++)
   if(sub=='الرياضيات'&&!/^(حل|مسائل|مراجعة)/.test(t))return pk(['أن يكتشف المتعلم من خلال وضعية '+T+' ثم يصوغ ما توصل إليه','أن يوظف المتعلم '+T+' في حل تمارين متدرجة','أن يبرر المتعلم خطوات إنجازه في '+T+' ويتحقق من صحة نتيجته']);
   return ''}
 function objFor(sub,c,t){t=String(t||'').replace(/^(درس اليوم|الدرس \d+)\s*[:：]\s*/,'').replace(/\s*\(\d\)$/,'').trim();var _v=objVar(sub,c,t);if(_v)return _v;
-  if(!t||/^[….\s]+$/.test(t)||/^(نشاط اعتيادي|افتتاح)/.test(c||'')||/الدعم والتقوية|TaRL/.test(t))return '';
+  if(!t||/^[….\s]+$/.test(t)||/^(نشاط اعتيادي|افتتاح)/.test(c||'')||/الدعم والتقوية|TaRL|^لا توجد حصة مستوردة/.test(t))return '';
   var k=(c||'')+' '+sub;
   if(sub=='اللغة العربية'){
     if(/قراءة|^مسترسلة/.test(c))return 'أن يقرأ المتعلم النص قراءة سليمة معبرة ويفهم معانيه';
@@ -2112,7 +2113,7 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
         if(ex){ex.h+=h;return}
         mg.push({k:k,R:R,c:x.c,d:x.d,h:h,first:seenR.indexOf(R)<0});if(seenR.indexOf(R)<0)seenR.push(R)});
       mg.forEach(function(x,i){var R=x.R;rows+='<tr'+(x.first&&i?' class="sep"':'')+'>'+(i===0?'<td rowspan="'+mg.length+'" class="tm"><u>'+esc(B.f||'')+'</u><br><br><u>'+esc(B.t||'')+'</u></td>':'')+
-        '<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
+        '<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s&&R.s!='اللغة العربية'?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
         '<td class="to"'+(R.fr?' dir="ltr" style="text-align:left"':'')+'>'+x.h+'</td>'+
         (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?'……':'')+'</td></tr>'})});
     show('m-out','<div class="paper"><div class="memo-ar">'+head+'<div class="scroll"><table class="memo m2"><tr><th>التوقيت</th><th>المدة</th><th>المكون</th><th>الموضوع / الهدف التعلمي</th><th>المستوى</th><th>رقم الجذاذة</th></tr>'+rows+
@@ -5374,8 +5375,8 @@ function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 function title(){var p=$('j-pick');return $('j-title').value.trim()||(p&&p.value&&p.selectedIndex>0?p.options[p.selectedIndex].text.replace(/\s*\(.*\)\s*$/,''):'')}
 function key(){return $('j-lv').value+'|'+$('j-comp').value+'|'+title()}
 function kind(){var c=$('j-comp').value,lv=$('j-lv').selectedIndex+1;if($('subj').value!='اللغة العربية')return null;if(/^الحكاية/.test(c))return 'tale';if(c=='التواصل الشفهي')return lv>=4?'listen':'sit';if(/^الوضعية التواصلية/.test(c))return lv>=4?'listen':'sit';return null}
-$('j-title').closest('label').insertAdjacentHTML('afterend','<label class="full" id="j-txt-l" style="display:none"><span id="j-txt-t"></span><textarea id="j-txt" rows="6" style="width:100%" placeholder="ألصق هنا نص الكتاب أو دليل الأستاذ مرة واحدة، وسيُحفظ في هاتفك ويظهر تلقائيا في الجذاذة."></textarea><span class="sub" id="j-txt-s" style="font-size:12px"></span></label>');
-function upd(){var k=kind(),l=$('j-txt-l');if(!k){l.style.display='none';return}l.style.display='';$('j-txt-t').textContent=k=='tale'?'نص الحكاية (اختياري)':'النص السماعي (اختياري)';var o=load();$('j-txt').value=o[key()]||'';$('j-txt-s').textContent=$('j-txt').value?'نص محفوظ لهذا الدرس.':'إن تركته فارغا يُقترح نص نموذجي من إنتاجنا.'}
+$('j-title').closest('label').insertAdjacentHTML('afterend','<label class="full" id="j-txt-l" style="display:none!important"><span id="j-txt-t"></span><textarea id="j-txt" rows="6" style="width:100%" placeholder="ألصق هنا نص الكتاب أو دليل الأستاذ مرة واحدة، وسيُحفظ في هاتفك ويظهر تلقائيا في الجذاذة."></textarea><span class="sub" id="j-txt-s" style="font-size:12px"></span></label>');
+function upd(){var k=kind(),l=$('j-txt-l');l.style.display='none';if(!k)return;$('j-txt-t').textContent=k=='tale'?'نص الحكاية (اختياري)':'النص السماعي (اختياري)';var o=load();$('j-txt').value=o[key()]||'';$('j-txt-s').textContent=$('j-txt').value?'نص محفوظ لهذا الدرس.':'إن تركته فارغا يُقترح نص نموذجي من إنتاجنا.'}
 ['subj','j-lv','j-comp','j-pick','j-ref'].forEach(function(i){$(i).addEventListener('change',function(){setTimeout(upd,60)})});$('j-title').addEventListener('input',upd);$('j-title').addEventListener('change',upd);
 $('j-txt').addEventListener('input',function(){var o=load();if(this.value.trim())o[key()]=this.value;else delete o[key()];save(o);$('j-txt-s').textContent=this.value.trim()?'تم الحفظ.':''});
 setTimeout(upd,200);
@@ -5385,9 +5386,9 @@ function ul(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join
 function section(){
  var k=kind();if(!k)return '';var t=title()||'………',o=load(),x=(o[key()]||'').trim(),own=!!x,note='',lab=k=='tale'?'نص الحكاية':'النص السماعي',h='';
  if(!x){
-  if(k=='tale'){var i=Math.abs(t.split('').reduce(function(a,c){return a+c.charCodeAt(0)},0))%TALES.length,T=TALES[i];x=T.x;note='النص الأصلي للكتاب المقرر غير متوفر في التطبيق؛ هذا نص نموذجي من إنتاجنا (قيمة: '+T.v+') يمكن استعماله للتدريب على الحكي، واستبداله بنص الكتاب بلصقه في خانة «نص الحكاية».'}
-  else if(k=='sit'){var d=DLG.filter(function(q){return q[0].test(t)})[0]||DLG[DLG.length-1];x=d[2];note='حوار نموذجي من إنتاجنا ('+d[1]+') يصلح نصا سماعيا للوضعية؛ استبدله بنص الدليل بلصقه في الخانة أعلاه.'}
-  else{return '<h3 class="rph3">النص السماعي</h3><div style="border:1px dashed #c0504d;border-radius:8px;padding:8px 12px">لم يُدخل نص الاستماع لهذا الدرس («'+E(t)+'»). نصوص الاستماع في دليل الأستاذ محمية بحقوق النشر ولا نملكها، فألصقها مرة واحدة في خانة «النص السماعي» وسيتولد لك: تقسيم النص وأسئلة الفهم والمفردات وجدول بنيته، وتبقى محفوظة في هاتفك.</div>'+listenFrame()}
+  if(k=='tale'){var i=Math.abs(t.split('').reduce(function(a,c){return a+c.charCodeAt(0)},0))%TALES.length,T=TALES[i];x=T.x;note='نص الحكاية الرسمي في دليل الأستاذ؛ هذا نص نموذجي من إنتاجنا (قيمة: '+T.v+') يمكن استعماله للتدريب على الحكي.'}
+  else if(k=='sit'){var d=DLG.filter(function(q){return q[0].test(t)})[0]||DLG[DLG.length-1];x=d[2];note='حوار نموذجي من إنتاجنا ('+d[1]+') يصلح نصا سماعيا للوضعية؛ يمكنك استبداله بنص الدليل.'}
+  else{return '<h3 class="rph3">النص السماعي</h3><div style="border:1px dashed #c0504d;border-radius:8px;padding:8px 12px">نص الاستماع لهذا الدرس («'+E(t)+'») في دليل الأستاذ (ملحق النصوص السماعية). اقرأه من الدليل.</div>'+listenFrame()}
  }
  var S=sents(x),n=S.length,a=Math.ceil(n/3);
  h+='<h3 class="rph3">'+lab+'</h3>';
@@ -5411,7 +5412,8 @@ $('j-go').onclick=function(){prev.apply(this,arguments);var k=kind();if(!k)retur
 /* ===== جذاذة مختصرة / مفصلة ===== */
 (function(){
 var gs=$('j-gs'),go=$('j-go');
-function lab(){var base=/الخطاطة/.test(go.textContent+gs.textContent)||(typeof mode!='undefined'&&mode=='p')?'خطاطة':'جذاذة',a='📖 أنشئ '+base+' مفصلة',b='⚡ أنشئ '+base+' مختصرة';if(go.textContent!=a)go.textContent=a;if(gs.textContent!=b)gs.textContent=b}
+function lab(){var pm=(typeof mode!='undefined'&&mode=='p'),base=/الخطاطة/.test(go.textContent+gs.textContent)||pm?'خطاطة':'جذاذة',a='📖 أنشئ '+base+' مفصلة',b=pm?'⚡ أنشئ الخطاطة':'⚡ أنشئ '+base+' مختصرة';if(go.textContent!=a)go.textContent=a;if(gs.textContent!=b)gs.textContent=b;var hd=pm?'none':'';if(go.style.display!=hd)go.style.display=hd}
+document.querySelectorAll('.choice').forEach(function(b){b.addEventListener('click',function(){setTimeout(lab,50)})});
 new MutationObserver(lab).observe(go,{childList:true,characterData:true,subtree:true});lab();
 function shorten(o){
  var kill=/^الدعم|^الإثراء|الامتداد والاستثمار|محتوى الدرس والخلاصة|أسئلة التقويم المقترحة|ملاحظات بعد الحصة|Prolongement|Contenu|Notes après/;
