@@ -6000,7 +6000,7 @@ $('rp-file').onchange=async function(){var fs=[].slice.call(this.files);this.val
 function bars(rows,max,color){return '<table style="width:100%;border-collapse:collapse">'+rows.map(function(r){var w=max?Math.max(0,Math.min(100,r[1]/max*100)):0;return '<tr><td style="width:34%;border:0;padding:2px 4px;font-size:13px">'+E(r[0])+'</td><td style="border:0;padding:2px 4px"><div style="background:'+(r[2]||color)+';height:13px;width:'+w.toFixed(0)+'%;min-width:2px;border-radius:3px"></div></td><td style="width:15%;border:0;padding:2px 4px;font-size:13px;text-align:left">'+E(r[3]!=null?r[3]:f2(r[1]))+'</td></tr>'}).join('')+'</table>'}
 function supKey(n){if(/التاريخ|الجغراف|المدنية|الاجتماع|المواطنة/.test(n))return 'الاجتماعيات';if(/العربية/.test(n))return 'اللغة العربية';if(/الفرنس/.test(n))return 'اللغة الفرنسية';if(/الرياض/.test(n))return 'الرياضيات';if(/العلم/.test(n))return 'النشاط العلمي';if(/الإسلام|الاسلام/.test(n))return 'التربية الإسلامية';return ''}
 function ul(a){return '<ul>'+a.map(function(x){return '<li>'+E(x)+'</li>'}).join('')+'</ul>'}
-$('rp-go').onclick=function(){var EV0=$('rp-evx')&&$('rp-evx').value;if(/^الوحدة/.test(EV0||'')&&window.UNITREP){window.UNITREP($('rp-ses').value,EV0);return}var c0=ROSTER.cur(),s=$('rp-ses').value,th=5;if(!c0.st.length){alert('لا يوجد تلاميذ في هذا القسم. ارفع ملفات مسار أو أنشئ النقط أولا.');return}
+$('rp-go').onclick=function(){var EV0=$('rp-evx')&&$('rp-evx').value;if(/^(الوحدة|المرحلة)/.test(EV0||'')&&window.UNITREP){window.UNITREP($('rp-ses').value,EV0);return}var c0=ROSTER.cur(),s=$('rp-ses').value,th=5;if(!c0.st.length){alert('لا يوجد تلاميذ في هذا القسم. ارفع ملفات مسار أو أنشئ النقط أولا.');return}
  var EVN=($('rp-evx')&&$('rp-evx').value)||'بيان الدورة';
  if(EVN=='بيان الدورة'){if(!window.BLREFRESH||!window.BLREFRESH(s=='الدورة الثانية'?'2':'1')){alert('لا توجد نقط لهذه الدورة. ارفع ملفات مسار (②) أو أنشئ النقط من «حساب نقط الدورة» (①).');return}}
  var c=ROSTER.cur(),B=SCORES.of(c),evk=s+'|'+EVN;
@@ -7225,21 +7225,43 @@ var NU=10,LV=['','غير متحكم','في طور التحكم','متحكم'],LC
 function ld(){try{return JSON.parse(localStorage.getItem(STK))||{}}catch(e){return {}}}
 function sv(o){try{localStorage.setItem(STK,JSON.stringify(o))}catch(e){}}
 function sid(x){return window.SCORES?SCORES.sid(x):String(x.id||x.n)}
-function key(){return $('un-ses').value+'|الوحدة '+$('un-n').value}
+function PIO(){try{return localStorage.getItem('muh.mode')==='p'}catch(e){return false}}
+function U(){return PIO()?'المرحلة':'الوحدة'}
+function key(){return $('un-ses').value+'|'+U()+' '+$('un-n').value}
 window.UNITKEYS=function(c,ses){var o=ld()[c.id]||{},r=[];Object.keys(o).forEach(function(k){if(k.split('|')[0]==ses&&Object.keys(o[k]).some(function(n){return Object.keys(o[k][n]).length}))r.push(k.split('|')[1])});return r};
 document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class="panel" id="p-un"><div class="form">'+
 '<label>الدورة<select id="un-ses"><option>الدورة الأولى</option><option>الدورة الثانية</option></select></label>'+
-'<label>الوحدة<select id="un-n">'+Array.apply(null,Array(NU)).map(function(_,i){return '<option value="'+(i+1)+'">الوحدة '+(i+1)+'</option>'}).join('')+'</select></label>'+
-'<div class="full" id="un-subs"></div></div>'+
+'<label id="un-nl">الوحدة<select id="un-n"></select></label>'+
+'<div class="full" id="un-subs"></div></div><div id="un-pio" style="display:none;border:1px solid #2a8fa0;border-radius:12px;padding:8px 12px;margin:8px 0;background:#eef8fa"></div>'+
 '<div class="note" style="margin:6px 0">المستويات: <b style="background:#e5a3a3;padding:1px 8px;border-radius:6px">غ</b> غير متحكم &nbsp; <b style="background:#f2cd8a;padding:1px 8px;border-radius:6px">ط</b> في طور التحكم &nbsp; <b style="background:#9fd3a4;padding:1px 8px;border-radius:6px">م</b> متحكم. اضغط على الخانة لتغيير المستوى.</div>'+
 '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="go" id="un-dl" type="button">📥 تنزيل قالب Excel</button><button class="go" id="un-up" type="button" style="background:#2d6a4f">📤 رفع القالب بعد ملئه</button></div><input type="file" id="un-file" accept=".xlsx" style="display:none">'+
 '<div id="un-msg" class="note" style="margin:8px 0"></div><div class="scroll"><table class="sheet" id="un-tab" style="width:100%"></table></div>'+
 '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><button class="go" id="un-rep" type="button">📊 تقرير هذه الوحدة</button><button class="go" id="un-clr" type="button" style="background:#7a2a2a">مسح تقويم هذه الوحدة</button></div></section>');
-var tb=document.createElement('button');tb.setAttribute('role','tab');tb.setAttribute('aria-selected','false');tb.dataset.t='un';tb.id='tab-un';tb.style.cssText='--tb:#dff0e3;--tt:#1f5a2e';tb.textContent='تقرير الوحدة';
+var tb=document.createElement('button');tb.setAttribute('role','tab');tb.setAttribute('aria-selected','false');tb.dataset.t='un';tb.id='tab-un';tb.style.cssText='--tb:#dff0e3;--tt:#1f5a2e';tb.textContent='تقرير الوحدة';tb.id='tab-un';
 $('tab-rp').parentNode.insertBefore(tb,$('tab-rp'));
 tb.onclick=function(){cur='un';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-un').classList.add('on');$('bar').classList.remove('on');draw()};
 var USK='muh.usubs';function subs(){try{var a=JSON.parse(localStorage.getItem(USK));if(Array.isArray(a)&&a.length)return a}catch(e){}return (window.SUBS8||[]).filter(function(n){return n!='التربية البدنية'})}
-function draw(){var cs=subs();$('un-subs').innerHTML='<b>المواد (كل المواد ما عدا التربية البدنية)</b><div>'+(window.SUBS8||cs).map(function(n){return '<label style="display:inline-block;margin:3px 0 3px 14px"><input type="checkbox" class="us-c" value="'+E(n)+'"'+(cs.indexOf(n)>-1?' checked':'')+'> '+E(n)+'</label>'}).join('')+'</div>';draw0()}
+function relabel(){var p=PIO(),w=U(),sel=$('un-n'),cv=sel.value||'1',N=p?5:NU;
+ if(sel.options.length!=N||sel.options[0].textContent.indexOf(w)!=0){sel.innerHTML=Array.apply(null,Array(N)).map(function(_,i){return '<option value="'+(i+1)+'">'+w+' '+(i+1)+'</option>'}).join('');sel.value=(+cv<=N?cv:'1')}
+ $('un-nl').firstChild.nodeValue=w;tb.textContent='تقرير '+w;$('un-rep').textContent='📊 إنشاء تقرير '+w;$('un-clr').textContent='مسح مستويات هذه '+w;
+ var pb=$('un-pio');pb.style.display=p?'block':'none';if(p)drawPio()}
+document.addEventListener('click',function(){setTimeout(function(){tb.textContent='تقرير '+U()},60)});tb.textContent='تقرير '+U();
+function evList(){var c=ROSTER.cur(),B=window.SCORES?SCORES.of(c):{};return Object.keys(B).map(function(k){return {k:k,ev:B[k].ev,ses:B[k].ses}}).filter(function(x){return x.ses==$('un-ses').value})}
+function drawPio(){var L=evList(),c=ROSTER.cur(),LB=(window.LIVRETS&&LIVRETS.all()[c.id])||{},st=$('un-n').value,nl=Object.keys(LB).filter(function(k){return LB[k].stage==st}).length;
+ $('un-pio').innerHTML='<b>تحميل من الفروض والكفايات</b><div class="note">ملفات الكفايات المستوردة للمرحلة '+st+': <b>'+nl+'</b>. اختر الفروض المعتمدة في هذه المرحلة:</div>'+(L.length?L.map(function(x){return '<label style="display:block;margin:3px 0"><input type="checkbox" class="up-c" value="'+E(x.k)+'" checked> '+E(x.ev)+'</label>'}).join(''):'<div class="note">لا توجد فروض مستوردة لهذه الدورة (يمكنك إدخال المستويات يدوياً أو عبر Excel).</div>')+'<div class="note">التحويل إلى مستويات (النقطة على 10): أقل من 5 = غير متحكم، من 5 إلى أقل من 7 = في طور التحكم، 7 فأكثر = متحكم. المعدل بين الكفايات والفروض المختارة.</div><button class="go" id="up-go" type="button">⬇️ تحميل المستويات من الفروض والكفايات</button>';
+ $('up-go').onclick=loadPio}
+function eqs(a,b){return a==b||(supKey(a)&&supKey(a)==supKey(b))}
+function lvl(v){return v<5?1:v<7?2:3}
+function loadPio(){var c=ROSTER.cur(),B=SCORES.of(c),ks=[].map.call(document.querySelectorAll('.up-c:checked'),function(x){return x.value}),LB=(window.LIVRETS&&LIVRETS.all()[c.id])||{},st=$('un-n').value,sb=subs(),o=ld(),A=o[c.id]=o[c.id]||{},k=key(),T=A[k]=A[k]||{},cnt=0;
+ var lvs=Object.keys(LB).map(function(q){return LB[q]}).filter(function(z){return z.stage==st});
+ if(!ks.length&&!lvs.length){alert('لا توجد كفايات ولا فروض لتحميلها. أدخل المستويات يدوياً أو عبر Excel.');return}
+ if(Object.keys(T).some(function(n){return Object.keys(T[n]).length})&&!confirm('سيتم استبدال المستويات الحالية لهذه المرحلة. هل أنت متأكد؟'))return;
+ sb.forEach(function(n){var S=T[n]={};c.st.forEach(function(x){var id=sid(x),a=[];
+  lvs.forEach(function(z){if(eqs(z.sub,n))z.g.forEach(function(q){var v=q.d[id];if(isFinite(v))a.push(+v)})});
+  ks.forEach(function(kk){var t=B[kk];if(!t)return;Object.keys(t.subs).forEach(function(sn){if(eqs(sn,n)){var r=t.subs[sn],e=r.d[id];if(e&&e.s!=null&&e.s!==''&&isFinite(e.s)){a.push(+e.s*10/(r.max||10))}}})});
+  if(a.length){S[id]=lvl(a.reduce(function(p,z){return p+z},0)/a.length);cnt++}})});
+ sv(o);draw0();$('un-msg').innerHTML='<b>تم تحميل '+cnt+' مستوى</b> من الكفايات والفروض. يمكنك تعديل أي خانة يدوياً ثم إنشاء التقرير.'}
+function draw(){relabel();var cs=subs();$('un-subs').innerHTML='<b>المواد (كل المواد ما عدا التربية البدنية)</b><div>'+(window.SUBS8||cs).map(function(n){return '<label style="display:inline-block;margin:3px 0 3px 14px"><input type="checkbox" class="us-c" value="'+E(n)+'"'+(cs.indexOf(n)>-1?' checked':'')+'> '+E(n)+'</label>'}).join('')+'</div>';draw0()}
 $('un-subs').addEventListener('change',function(e){if(!e.target.classList.contains('us-c'))return;var v=[].map.call($('un-subs').querySelectorAll('.us-c:checked'),function(x){return x.value});try{localStorage.setItem(USK,JSON.stringify(v))}catch(x){}draw0()});
 function draw0(){var c=ROSTER.cur(),sb=subs(),T=(ld()[c.id]||{})[key()]||{},m=$('un-msg'),tab=$('un-tab');
  if(!c.st.length){m.innerHTML='لا يوجد تلاميذ في هذا القسم بعد. أضفهم من «قسمي» أو ارفع ملف مسار أولاً.';tab.innerHTML='';return}
@@ -7251,19 +7273,19 @@ function setv(c,n,id,v){var o=ld(),B=o[c.id]=o[c.id]||{},k=key(),T=B[k]=B[k]||{}
 $('un-tab').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var c=ROSTER.cur();
  if(b.classList.contains('ulv')){var v=((+b.dataset.v)+1)%4,x=c.st[+b.dataset.i];b.dataset.v=v;b.textContent=LS[v];b.style.background=LC[v];setv(c,b.dataset.n,sid(x),v)}
  else if(b.classList.contains('ufill')){c.st.forEach(function(x){setv(c,b.dataset.n,sid(x),3)});draw0()}});
-$('un-ses').onchange=draw0;$('un-n').onchange=draw0;
+$('un-ses').onchange=function(){relabel();draw0()};$('un-n').onchange=function(){relabel();draw0()};
 $('un-clr').onclick=function(){var c=ROSTER.cur(),o=ld();if(!o[c.id]||!o[c.id][key()]){alert('لا يوجد تقويم لهذه الوحدة.');return}if(!confirm('هل أنت متأكد؟ سيتم مسح تقويم هذه الوحدة لهذا القسم.'))return;delete o[c.id][key()];sv(o);draw0()};
 $('un-rep').onclick=function(){var c=ROSTER.cur(),T=(ld()[c.id]||{})[key()];if(!T||!Object.keys(T).some(function(n){return Object.keys(T[n]).length})){alert('أدخل مستويات التحكم أولاً لهذه الوحدة.');return}
- var ses=$('un-ses').value,ev='الوحدة '+$('un-n').value;$('tab-rp').click();$('rp-ses').value=ses;if(window.RPFILLEV)RPFILLEV(ev);$('rp-evx').value=ev;$('rp-go').click()};
+ var ses=$('un-ses').value,ev=U()+' '+$('un-n').value;$('tab-rp').click();$('rp-ses').value=ses;if(window.RPFILLEV)RPFILLEV(ev);$('rp-evx').value=ev;$('rp-go').click()};
 /* ---------- قالب Excel ---------- */
 function CL(n){var s='';n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
 function X(s){return String(s==null?'':s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 $('un-dl').onclick=async function(){var c=ROSTER.cur(),sb=subs();if(!c.st.length){alert('لا يوجد تلاميذ في هذا القسم بعد.');return}
  var SS=[],si={};function S(t){t=String(t);if(!(t in si)){si[t]=SS.length;SS.push(t)}return si[t]}
  var rows=[],T=(ld()[c.id]||{})[key()]||{},n=$('un-n').value;
- rows.push([[S('قالب تقويم الوحدة — معين الأستاذ'),0]]);
+ rows.push([[S('قالب تقرير '+U()+' — معين الأستاذ'),0]]);
  rows.push([[S('الدورة'),0],[S($('un-ses').value),0]]);
- rows.push([[S('الوحدة'),0],[n,'n']]);
+ rows.push([[S(U()),0],[n,'n']]);
  rows.push([[S('القسم'),0],[S(ROSTER_LABEL(ROSTER.get().cur)),0]]);
  rows.push([[S('طريقة الملء: اختر في كل خانة من القائمة: غير متحكم / في طور التحكم / متحكم'),0]]);
  rows.push([]);
@@ -7286,12 +7308,12 @@ $('un-dl').onclick=async function(){var c=ROSTER.cur(),sb=subs();if(!c.st.length
   {n:'xl/styles.xml',d:XL.u8(H+'<styleSheet '+N+'><fonts count="2"><font><sz val="11"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Arial"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1D3A8A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>'+bd+'</borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf></cellXfs><dxfs count="3"><dxf><font><color rgb="FF9C0006"/></font><fill><patternFill><bgColor rgb="FFF4B6B6"/></patternFill></fill></dxf><dxf><font><color rgb="FF7A4B00"/></font><fill><patternFill><bgColor rgb="FFFAD9A0"/></patternFill></fill></dxf><dxf><font><color rgb="FF1F5A2E"/></font><fill><patternFill><bgColor rgb="FFB7E1BB"/></patternFill></fill></dxf></dxfs></styleSheet>')},
   {n:'xl/sharedStrings.xml',d:XL.u8(H+'<sst '+N+' count="'+SS.length+'" uniqueCount="'+SS.length+'">'+SS.map(function(t){return '<si><t xml:space="preserve">'+X(t)+'</t></si>'}).join('')+'</sst>')},
   {n:'xl/worksheets/sheet1.xml',d:XL.u8(sh)}];
- var b=await XL.zip(files),blob=new Blob([b],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='قالب-تقويم-الوحدة-'+n+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)};
+ var b=await XL.zip(files),blob=new Blob([b],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='قالب-تقرير-'+U()+'-'+n+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)};
 $('un-up').onclick=function(){$('un-file').click()};
 function lvOf(x){x=String(x==null?'':x).trim();if(!x)return 0;if(/^[123]$/.test(x))return +x;if(/غير/.test(x))return 1;if(/طور|في/.test(x))return 2;if(/متحكم|م$/.test(x))return 3;return 0}
 $('un-file').onchange=async function(){var f=this.files[0];this.value='';if(!f)return;var rows;try{rows=await XL.read(await f.arrayBuffer())}catch(e){alert('تعذّرت قراءة الملف. استعمل القالب الذي نزّلته من التطبيق.');return}
  var hi=-1;rows.forEach(function(r,i){if(hi<0&&r&&String(r[0]).trim()==='ID')hi=i});if(hi<0){alert('هذا الملف ليس قالب التطبيق. نزّل القالب أولاً.');return}
- var ses=null,un=null;rows.slice(0,hi).forEach(function(r){var k=String(r[0]||'').trim();if(k=='الدورة'&&r[1])ses=String(r[1]).trim();if(k=='الوحدة'&&r[1]){var m=String(r[1]).match(/\d+/);if(m)un=m[0]}});
+ var ses=null,un=null;rows.slice(0,hi).forEach(function(r){var k=String(r[0]||'').trim();if(k=='الدورة'&&r[1])ses=String(r[1]).trim();if((k=='الوحدة'||k=='المرحلة')&&r[1]){var m=String(r[1]).match(/\d+/);if(m)un=m[0]}});
  if(ses&&/الثانية/.test(ses))$('un-ses').value='الدورة الثانية';else if(ses)$('un-ses').value='الدورة الأولى';if(un&&+un>=1&&+un<=NU)$('un-n').value=un;
  var hd=rows[hi],c=ROSTER.cur(),o=ld(),B=o[c.id]=o[c.id]||{},k=key(),T=B[k]=B[k]||{},cnt=0,miss=0,byId={},byN={};
  c.st.forEach(function(x){byId[sid(x)]=x;byN[String(x.n).replace(/\s+/g,' ').trim()]=x});
