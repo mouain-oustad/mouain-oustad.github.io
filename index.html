@@ -7571,15 +7571,15 @@ function ask(){
  m.innerHTML='<div class="rmb" role="dialog" aria-modal="true"><h3>🔔 هل تريد أن أذكّرك بتحضير المذكرة اليومية والخطاطات والجذاذات؟</h3><div class="rmrow"><button type="button" data-r="y">نعم</button><button type="button" class="o" data-r="n">لا</button></div><div class="rmmsg" id="rmmsg"></div></div>';
  document.body.appendChild(m);
  m.addEventListener('click',function(e){var a=e.target.dataset&&e.target.dataset.r;if(!a)return;
-  if(a=='n'){sv({asked:1});m.remove();return}
+  if(a=='n'){m.remove();return}
   var e2=m.querySelector('#rmmsg');e2.textContent='…';
-  enable(DEF).then(function(){sv({asked:1,on:1,rem:DEF});m.remove()}).catch(function(x){e2.textContent=typeof x=='string'?x:'تعذّر التفعيل.';setTimeout(function(){sv({asked:1});m.remove()},2500)})
+  enable(DEF).then(function(){sv({asked:1,on:1,rem:DEF});m.remove()}).catch(function(x){e2.textContent=typeof x=='string'?x:'تعذّر التفعيل.';setTimeout(function(){m.remove()},2500)})
  })}
 var o=ld();
 if(o.on&&ok()&&window.Notification&&Notification.permission==='granted'){getSub().then(function(s){if(s)return post('/sub',{sub:s.toJSON(),rem:o.rem}).then(function(){return cacheRem(o.rem)})}).catch(function(){})}
-else if(!o.asked&&ok()&&!(ios()&&!standalone())&&Notification.permission==='default'){
+else if(!o.on&&!o.off&&ok()&&!(ios()&&!standalone())&&Notification.permission==='default'){
  var n=0;try{n=+localStorage.getItem('muh.rem.v')||0;localStorage.setItem('muh.rem.v',n+1)}catch(e){}
- if(n>=1)setTimeout(function(){if(document.body.classList.contains('home')&&!document.querySelector('.rmm,.qrm'))ask()},6000)}
+ setTimeout(function(){if(!document.querySelector('.rmm,.qrm'))ask()},5000)}
 window.mouinRem={ask:ask,off:function(){return disable().then(function(){sv({asked:1})})}};
 })();
 </script>
