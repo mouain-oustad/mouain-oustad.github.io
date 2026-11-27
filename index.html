@@ -85,7 +85,7 @@ body.pio:not(.samep) .np,body.pio:not(.samep) #pick-l{display:none!important}bod
 .tt-day{border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px;background:var(--bg)}
 .tt-h{display:flex;gap:6px;align-items:center;margin-bottom:6px}.tt-h b{flex:1;font-family:Cairo,Tahoma,sans-serif}
 .tt-h button,.tt-row button{font:600 13px Cairo,Tahoma,sans-serif;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;padding:2px 8px;cursor:pointer}
-.tt-row{display:flex;gap:4px;align-items:center;margin:4px 0}.form>*{min-width:0}.tt-row input{font:14px Tahoma,sans-serif;width:6.4em;flex:none;min-width:0;padding:3px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}.tt-row select{flex:1;min-width:0;width:auto;font-size:14px;padding:4px}.tt-row span{display:none}
+.tt-row{display:flex;gap:4px;align-items:center;margin:4px 0}html,body{max-width:100%;overflow-x:hidden}.card,.form,.out,#p-j,#j-out,[id$='-out']{max-width:100%;box-sizing:border-box}[id$='-out'] table{display:block;overflow-x:auto;max-width:100%}.form>*{min-width:0}.tt-row input{font:14px Tahoma,sans-serif;width:6.4em;flex:none;min-width:0;padding:3px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}.tt-row select{flex:1;min-width:0;width:auto;font-size:14px;padding:4px}.tt-row span{display:none}
 .sheet table.memo{min-width:640px}.memo td.lvh{background:var(--soft);font-weight:700;text-align:right}.memo tr.sep td{border-top:2px solid var(--line)}.paper{width:680px;max-width:none}@media print{
 #ad-slot{display:none!important}.paper{zoom:1!important;width:auto}}.sheet table.memo td{font-size:14px}.sheet table.memo tr.brk td{background:var(--soft);color:var(--mute)}
 #p-m .subj-l{display:none}
@@ -1402,7 +1402,7 @@ function parseSession(slides,fname){
   let close=slides.length;for(let i=start;i<slides.length;i++){if(/ماذا تعلمت/.test(slides[i].join(' '))){close=i;break}}
   /* الهيكلة */
   let names=[],subs=[];
-  if(hi>=0){slides[hi].slice(1).forEach(x=>{if(/0[123]/.test(x)&&x.length<40)names.push(x.replace(/[-–ـ]*\s*0[123]\s*[-–ـ]*/g,' ').replace(/[ـ–-]+/g,' ').replace(/\s+/g,' ').trim());else subs.push(x)});
+  if(hi>=0){slides[hi].slice(1).forEach(x=>{if(/^[\s\-–ـ]*0[123](?!\d)/.test(x)&&x.length<90)names.push(x.replace(/[-–ـ]*\s*0[123]\s*[-–ـ]*/g,' ').replace(/[ـ–-]+/g,' ').replace(/\s+/g,' ').trim());else subs.push(x)});
     const dm=slides[hi][0].match(/اليوم\s*(\S+)/);if(dm&&!S.day){const W={'الأول':1,'الثاني':2,'الثالث':3,'الرابع':4,'الخامس':5,'السادس':6};S.day=W[dm[1]]||0}}
   if(oi>=0)S.obj=slides[oi].filter(x=>!/عند نهاية الحصة|على الأقل/.test(x)).map(x=>x.replace(/[؛;.]\s*$/,''));
   if(wi>=0)S.week=slides[wi].slice(1).filter(x=>/افتتاح الحصة/.test(x)).map(a=>a.replace(/افتتاح الحصة\s*\.?\s*/,'').replace(/\s*\.\s*/g,' • ').replace(/\s+/g,' ').replace(/^ ?• ?| ?• ?$/g,'').trim());
@@ -1414,7 +1414,7 @@ function parseSession(slides,fname){
   /* ربط كل اسم قسم بعنوانه */
   const pairs=[];const used=new Set();
   /* هيكلة متداخلة (العناوين قبل اسم المكون): كل عنوان يتبع المكون الذي يليه */
-  let inter=null;if(hi>=0){const H=slides[hi].slice(1),isN=x=>/0[123]/.test(x)&&x.length<40;const ni=H.map((x,i)=>isN(x)?i:-1).filter(i=>i>-1);if(ni.length>1&&H.slice(ni[0]+1,ni[ni.length-1]).some(x=>!isN(x))){inter={};let buf=[];H.forEach(x=>{if(isN(x)){const nm=x.replace(/[-–ـ]*\s*0[123]\s*[-–ـ]*/g,' ').replace(/[ـ–-]+/g,' ').replace(/\s+/g,' ').trim();inter[nm]=buf.filter(y=>!/^(ترحيب|تدبير السلوك)$/.test(y.trim())&&!/اعتيادي|^ا?لطلاقة\.?$/.test(y));buf=[]}else buf.push(x)})}}
+  let inter=null;if(hi>=0){const H=slides[hi].slice(1),isN=x=>/^[\s\-–ـ]*0[123](?!\d)/.test(x)&&x.length<90;const ni=H.map((x,i)=>isN(x)?i:-1).filter(i=>i>-1);if(ni.length>1&&H.slice(ni[0]+1,ni[ni.length-1]).some(x=>!isN(x))){inter={};let buf=[];H.forEach(x=>{if(isN(x)){const nm=x.replace(/[-–ـ]*\s*0[123]\s*[-–ـ]*/g,' ').replace(/[ـ–-]+/g,' ').replace(/\s+/g,' ').trim();inter[nm]=buf.filter(y=>!/^(ترحيب|تدبير السلوك)$/.test(y.trim())&&!/اعتيادي|^ا?لطلاقة\.?$/.test(y));buf=[]}else buf.push(x)})}}
   if(inter){names.forEach(n=>pairs.push({name:n,sub:(inter[n]||[]).join(' / ')}))}else{
   const sc=names.map(n=>{let b=-1,bs=0;subs.forEach((x,k)=>{const s=kwScore(n,x);if(s>bs){bs=s;b=k}});return {n:n,b:b,bs:bs}});
   const ord=sc.map((x,i)=>i).sort((i,j)=>sc[j].bs-sc[i].bs);const got={};
@@ -1577,6 +1577,7 @@ if(ok.length){var S=ok[0];$('subj').value=SUBC[S.sub]||$('subj').value;setSub();
 
 /* ===== بطاقة «ابدأ بتحميل الحصص» + استيراد الحصص من بوابة المذكرة ===== */
 (function(){
+var st0=document.createElement('style');st0.textContent='.form>*{min-width:0}#imp-msg,.stc,.stc *{overflow-wrap:anywhere;word-break:break-word;min-width:0}.stc{max-width:100%}';document.head.appendChild(st0);
 var st=document.createElement('style');st.textContent='.stc{grid-column:1/-1;border-radius:16px;padding:12px 14px;margin:0 0 6px;border:2px solid #e0a21b;background:#fff4d6;color:#4a3300;font-family:Cairo,Tahoma,sans-serif;line-height:1.7}.stc.ok{border-color:#2f7d4f;background:#e6f4ea;color:#12411f}.stc b.t{display:block;font:800 17px Cairo,Tahoma,sans-serif;margin-bottom:2px}.stc ol{margin:6px 0 8px;padding-inline-start:22px;font-size:14.5px}.stc .stb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:12px;padding:12px;background:#1d3a8a;color:#fff;font:800 16px Cairo,Tahoma,sans-serif;cursor:pointer}.stc.ok .stb{background:#2f7d4f}.stc .stm{font-size:13.5px;margin-top:6px;word-break:break-word}';document.head.appendChild(st);
 function nSess(){var n=0,u={};try{JSON.parse(localStorage.getItem('muh.sess')||'[]').forEach(function(x){u[x.sub+'|'+x.lv+'|'+(x.lv2||0)+'|'+x.ph+'|'+x.wk+'|'+x.day]=1})}catch(e){}for(var k in u)n++;return n}
 function hasTT(){try{return TT&&TT.days&&TT.days.some(function(d){return d&&d.length})}catch(e){return false}}
@@ -7192,7 +7193,7 @@ window.makePdf=async function(src,opt){opt=opt||{};var pnl=src.closest('[id^="p-
   try{cv=await htmlToImage.toCanvas(root,o1)}catch(e1){o1.skipFonts=true;cv=await htmlToImage.toCanvas(root,o1)}
   var pages=[],avail=Hpage-MT*2*(Hpage/ (land?595.28:841.89))*0;var HP=Math.round((land?595.28:841.89)-MT*2)*(W/(land?841.89:595.28));
   for(var f=0;f<forced.length-1;f++){var a=forced[f],b=forced[f+1];var st=a;
-   while(st<b-4){var lim=st+HP,en;if(lim>=b)en=b;else{en=lim;for(var i=cand.length-1;i>=0;i--){var c=cand[i];if(c<=lim&&c>st+HP*0.5){en=c;break}}}
+   while(st<b-4){if(pages.length&&b-st<70)break;var lim=st+HP,en;if(lim>=b)en=b;else{en=lim;for(var i=cand.length-1;i>=0;i--){var c=cand[i];if(c<=lim&&c>st+HP*0.5){en=c;break}}}
     var sy=Math.round(st*ratio),sh=Math.max(1,Math.round((en-st)*ratio)),sc=document.createElement('canvas');sc.width=cv.width;sc.height=sh;var x=sc.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,sc.width,sh);x.drawImage(cv,0,sy,cv.width,sh,0,0,cv.width,sh);
     var bl=await blobOf(sc);pages.push({jpg:new Uint8Array(await bl.arrayBuffer()),w:sc.width,h:sh,top:MT});st=en}}
   if(!pages.length)throw new Error('empty');
@@ -7487,12 +7488,19 @@ function load(){if(window.__gaOn||!navigator.onLine)return;window.__gaOn=1;
  window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());
  gtag('config',MUH_GA,{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
  try{if(matchMedia('(display-mode: standalone)').matches)gtag('event','pwa_open')}catch(e){}
- window.addEventListener('appinstalled',function(){gtag('event','pwa_installed')})}
+ window.addEventListener('appinstalled',function(){gtag('event','pwa_installed')});
+ document.addEventListener('click',function(e){try{var b=e.target.closest&&e.target.closest('button,.hcard,.choice');if(!b)return;var n=null,p={};
+  if(b.classList.contains('choice')){n='mode_select';p.mode=b.dataset.m}
+  else if(b.classList.contains('hcard')){n='section_open';p.section=b.dataset.s}
+  else if(b.closest('#tabs')&&b.dataset.t){n='tab_open';p.tab=b.dataset.t}
+  else if(/^(pdf|word|print)$/.test(b.id)){n='doc_export';p.type=b.id}
+  else if(b.id){n='action';p.id=b.id.slice(0,40)}
+  if(n)gtag('event',n,p)}catch(x){}},true)}
 if(v==='y')load();
 if(v===null){
  var st=document.createElement('style');st.textContent='.cnsb{position:fixed;left:10px;right:10px;bottom:10px;z-index:99998;background:#fffdf7;color:#1d2a5c;border:1.5px solid #cfc7ae;border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.28);font:600 14px/1.8 Cairo,Tahoma,sans-serif;direction:rtl;max-width:520px;margin:0 auto}.cnsb b{font-weight:800}.cnsb .r{display:flex;gap:8px;margin-top:8px}.cnsb button{flex:1;font:800 15px Cairo,Tahoma,sans-serif;border-radius:999px;padding:9px 12px;cursor:pointer;border:1.5px solid #1d3a8a}.cnsb .y{background:#1d3a8a;color:#fff}.cnsb .n{background:transparent;color:#1d3a8a}@media print{.cnsb{display:none!important}}';document.head.appendChild(st);
  function mk(){var d=document.createElement('div');d.className='cnsb';d.setAttribute('role','dialog');
-  d.innerHTML='<b>ملفات تعريف الارتباط (Cookies)</b><br>نستعمل ملفات تعريف الارتباط لإحصاء عدد الزوار فقط. لا نطّلع على أسماء التلاميذ ولا وثائقك، فهي تبقى على هاتفك. <a href="privacy.html" style="color:#1d3a8a">التفاصيل</a><div class="r"><button class="y" type="button">قبول</button><button class="n" type="button">رفض</button></div>';
+  d.innerHTML='<b>ملفات تعريف الارتباط (Cookies)</b><br>نستعمل ملفات تعريف الارتباط لإحصاء الزوار والأقسام الأكثر استعمالاً فقط. لا نطّلع على أسماء التلاميذ ولا وثائقك، فهي تبقى على هاتفك. <a href="privacy.html" style="color:#1d3a8a">التفاصيل</a><div class="r"><button class="y" type="button">قبول</button><button class="n" type="button">رفض</button></div>';
   d.querySelector('.y').onclick=function(){try{localStorage.setItem(K,'y')}catch(e){}d.remove();load()};
   d.querySelector('.n').onclick=function(){try{localStorage.setItem(K,'n')}catch(e){}d.remove()};
   document.body.appendChild(d)}
