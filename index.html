@@ -294,6 +294,8 @@ body:not(.gate) h1::before{content:'';width:46px;height:46px;border-radius:13px;
 #f-out h2{font-size:1.25em!important}
 #f-out h3{font-size:1.12em!important;border-bottom-width:2px!important}
 #f-out th{font-weight:900!important}
+#f-out table:not(.plain),#f-out table.plain[style*="font-size:16px"]{display:table!important;width:100%!important;table-layout:auto}
+#f-out table:not(.plain) th,#f-out table:not(.plain) td,#f-out table.plain[style*="font-size:16px"] th,#f-out table.plain[style*="font-size:16px"] td{padding:9px 12px!important;font-size:1.08em!important;height:40px}
 @media print{#f-out.sheet{border:0!important}}
 </style>
 </head>
@@ -3232,7 +3234,7 @@ window.testHead=function(s,lv,no,parts){var D={};try{D=JSON.parse(localStorage.g
  '<td style="border:0;width:32%;padding:5px 10px;font-size:12px;line-height:1.6;vertical-align:middle">'+row('الأكاديمية',v(D.acad))+row('المديرية',v(D.dir))+row('المؤسسة',v(D.school))+unit+'</td>'+
  '<td style="border:0;border-inline:1.5px dashed #b9c6e4;text-align:center;vertical-align:middle;padding:5px 6px">'+(window.LOGO_MIN?'<img src="'+LOGO_MIN+'" alt="" style="height:34px;display:block;margin:0 auto 2px">':'')+'<div style="display:inline-block;background:linear-gradient(135deg,#1d3a8a,#3a6fd1);color:#fff;border-radius:18px;padding:3px 16px;font:800 16px Cairo,Tahoma,sans-serif">المراقبة المستمرة</div>'+
  '<div style="font:800 15px Cairo,Tahoma,sans-serif;color:#b5651d;margin-top:3px">'+esc(s)+'</div><div style="font:600 12px Cairo,Tahoma,sans-serif;color:#333">'+esc(sem)+' – '+esc(fn)+'</div></td>'+
- '<td style="border:0;width:32%;padding:5px 10px;font-size:12px;line-height:1.6;vertical-align:middle">'+row('الأستاذ(ة)',v(D.name))+row('المستوى',esc(lvn))+row('الموسم الدراسي','<span dir="ltr">'+v(D.year||'2026-2027')+'</span>')+'</td></tr></table>'+
+ '<td style="border:0;width:32%;padding:5px 10px;font-size:12px;line-height:1.6;vertical-align:middle">'+'<table class="plain" style="width:100%;border:0"><tr><td style="border:0;padding:0;vertical-align:middle;font-size:12px;line-height:1.6">'+row('الأستاذ(ة)',v(D.name))+row('المستوى',esc(lvn))+row('الموسم الدراسي','<span dir="ltr">'+v(D.year||'2026-2027')+'</span>')+'</td><td style="border:0;padding:0 4px 0 0;width:1%;white-space:nowrap;vertical-align:middle">'+circ('المعدل العام')+'</td></tr></table></td></tr></table>'+
  '<table class="plain" style="width:100%;border:0;margin-top:5px"><tr><td style="border:0;vertical-align:middle;padding:0">'+
  '<div style="border:1.5px solid #b9c6e4;border-radius:10px;padding:6px 12px;font-size:14px;background:#fafcff"><div style="white-space:nowrap;overflow:hidden"><span style="color:'+B+';font-weight:700">اسم التلميذ(ة):</span> …………………………………………</div><div style="white-space:nowrap;margin-top:4px"><span style="color:'+B+';font-weight:700">الرقم:</span> ……… &nbsp;&nbsp;&nbsp; <span style="color:'+B+';font-weight:700">التاريخ:</span> ………………</div></div>'+
  '</td><td style="border:0;width:1%;white-space:nowrap;vertical-align:middle;padding:0 8px 0 0">'+(parts?parts.map(circ).join(''):circ(''))+'</td></tr></table></div>'};
