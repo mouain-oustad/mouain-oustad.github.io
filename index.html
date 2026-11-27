@@ -2246,7 +2246,7 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
       mg.forEach(function(x,i){var R=x.R;rows+='<tr'+(x.first&&i?' class="sep"':'')+'>'+(i===0?'<td rowspan="'+mg.length+'" class="tm"><u>'+esc(B.f||'')+'</u><br><br><u>'+esc(B.t||'')+'</u></td>':'')+
         '<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s&&R.s!='اللغة العربية'?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
         '<td class="to"'+(R.fr?' dir="ltr" style="text-align:left"':'')+'>'+x.h+'</td>'+
-        (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?(x.R.num?'<b>'+x.R.num+'</b>':'-'):'')+'</td></tr>'})});
+        (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+(x.first?'<td class="dots" rowspan="'+mg.filter(function(y){return y.R===R}).length+'" style="vertical-align:middle">'+(R.num?'<b>'+R.num+'</b>':'-')+'</td>':'')+'</tr>'})});
     show('m-out','<div class="paper"><div class="memo-ar">'+head+'<div class="scroll"><table class="memo m2"><tr><th>التوقيت</th><th>المدة</th><th>المكون</th><th>الموضوع / الهدف التعلمي</th><th>المستوى</th><th style="white-space:nowrap">رقم جذ<br>أو خط</th></tr>'+rows+
       '<tr><td colspan="6" class="obs"><b>ملاحظات:</b><br>……………………………………………………………………</td></tr></table></div></div></div>'+note);fitPaper();onePage()}
   else{
