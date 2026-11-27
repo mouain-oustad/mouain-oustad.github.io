@@ -1983,11 +1983,11 @@ var LET='m|a|i|b|l|o|n|e|d|u|t|p|h|r|f|v|s (ss)|c (ce-ci)|k|c (ca-co-cu)|z|g (ge
 var PRJ=['Réaliser l’album de son école','Réaliser l’arbre généalogique de la famille','Réaliser un dépliant sur la nourriture et la santé','Réaliser un dossier sur son village','Réaliser un documentaire sur les animaux','Réaliser un dossier sur les fêtes'];
 var ORA=['Se présenter / présenter ses camarades, ses proches','Présenter sa fourniture, informer sur son école','Présenter les membres de sa famille','Informer sur sa grande famille','Informer, s’informer sur la nourriture et la santé','Conseiller, recommander, prescrire, interdire','Raconter un événement vécu','Décrire un lieu','Informer, s’informer sur des animaux','Décrire un animal','Raconter un événement vécu','Décrire'];
 var ORA_M=ORA.slice();ORA_M[1]='Informer sur son école';ORA_M[5]='Prescrire';ORA_M[7]='Raconter un événement vécu';ORA_M[8]='Informer sur les animaux : le chat';ORA_M[9]='Informer sur les animaux : le singe';ORA_M[11]='Raconter un événement vécu';
-var POE={'Mes apprentissages':['Dans la classe','La réunion de la famille','Brosse et frotte','Ville et village','La sauterelle','Pour ta fête'],'Le nouvel espace':['Je suis grand','J’aime ma famille','Je mange du pain','Dans les villes aujourd’hui','La sauterelle','Comment s’écrit le mot MAMAN ?'],'Le chemin des lettres':['Les enfants lisent','J’aime mon papa','La cuisine','Connais-tu mon beau village ?','Merie','La ronde'],'Mon livre de français':['C’est la rentrée','Pour ma mère','Oh ! Le gourmand !','Mon beau village','Le petit poussin','Pour ma mère']};
+var POE={'Mes apprentissages':['Dans la classe','La réunion de la famille','Brosse et frotte','Ville et village','La sauterelle','Pour ta fête'],'Le nouvel espace':['Je suis grand','J’aime ma famille','Je mange du pain','Dans les villes aujourd’hui','La sauterelle','Comment s’écrit le mot MAMAN ?'],'Le chemin des lettres':['Les enfants lisent','J’aime mon papa','La cuisine','Connais-tu mon beau village ?','Merie','La ronde'],'Mon livre de français':['C’est la rentrée','Pour ma mère','Oh ! Le gourmand !','Mon beau village','Le petit poussin','Pour ma mère'],'Pour communiquer':['Le joli matin','Mon école','Maman','Toute la famille','Petit ours est malade','On a faim','Mon village dort','L’embouteillage','Si un chien parlait','Promenons-nous dans le bois','Bonne fête maman','C’est demain dimanche']};
 Object.keys(POE).forEach(function(ref){var O=ref=='Mon livre de français'?ORA_M:ORA;
  putL(F,L2,'Activités orales',ref,O.map(function(t,i){return [t+' ('+TH[Math.floor(i/2)]+')',TW[i]]}));
  putL(F,L2,'Lecture / Écriture',ref,LET.map(function(l,i){return ['La lettre '+l,W[i]]}));
- putL(F,L2,'Poésie',ref,POE[ref].map(function(t,i){return [t,UW2[i]]}));
+ putL(F,L2,'Poésie',ref,POE[ref].map(function(t,i){return [t,(POE[ref].length>6?TW:UW2)[i]]}));
  putL(F,L2,'Projet de classe',ref,PRJ.map(function(t,i){return [t,UW2[i]]}))});
 })();
 
@@ -5811,7 +5811,7 @@ function sameLv(lv){lv=lv||cls().lv;return R.cl.filter(function(x){return x.lv==
 function goTo(lv,pos){var same=sameLv(lv);while(same.length<=pos){R.cl.push({id:Date.now()+same.length,lv:lv,st:[]});same=sameLv(lv)}R.cur=R.cl.indexOf(same[pos]);fire();$('ros-out').style.display='none';$('bar').classList.remove('on');draw()}
 function docI(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}var I=(typeof TT!='undefined'&&TT.info)||{};return {acad:D.acad||'',dir:D.dir||'',school:D.school||I.school||'',name:D.name||I.name||''}}
 function draw(){var c=cls();
- var same=sameLv(),pos=same.indexOf(c);$('r-cls').value=c.g!=null?String(c.g):(same.length>1?String(pos+1):'0');$('r-pick').innerHTML=R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>قسم '+E(lbl(i))+'</option>'}).join('');var D0=docI();['name','acad','dir','school'].forEach(function(k){$('ri-'+k).value=D0[k]});
+ var same=sameLv(),pos=same.indexOf(c);$('r-cls').value=c.g!=null?String(c.g):(same.length>1?String(pos+1):'0');$('r-pick').innerHTML=R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>'+(/^قسم/.test(lbl(i))?'':'قسم ')+E(lbl(i))+'</option>'}).join('');var D0=docI();['name','acad','dir','school'].forEach(function(k){$('ri-'+k).value=D0[k]});
  $('r-lv').value=c.lv;$('r-nm').value=lbl(R.cur);
  $('r-sum').textContent=c.st.length?('عدد التلاميذ: '+c.st.length):'اللائحة فارغة: استورد ملفا أو أضف تلاميذ.';
  $('r-tab').innerHTML='<tr><th>#</th><th>الاسم الكامل</th><th></th></tr>'+c.st.map(function(s,i){return '<tr><td>'+(i+1)+'</td><td><input data-i="'+i+'" data-f="n" value="'+E(s.n)+'" style="width:100%"></td><td><button type="button" data-del="'+i+'" style="border:0;background:none;color:#b3261e;font-size:18px">×</button></td></tr>'}).join('')}
@@ -7487,10 +7487,17 @@ var E=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g
 var st=document.createElement('style');st.textContent='.cpk{margin:0 0 12px;padding:8px 12px;border:1.5px solid #3f6f9a;border-radius:14px;background:#eef4fa}.cpk b{display:block;font-size:12px;color:#1d3a5a;margin-bottom:4px}.cpk select{width:100%;font:700 15px Cairo,Tahoma,sans-serif;padding:8px;border-radius:10px;border:1px solid #3f6f9a;background:#fff}@media print{.cpk{display:none!important}}';document.head.appendChild(st);
 var P=['p-gr','p-gc','p-un','p-rp','p-bl'],HID=[['gr-lv','gr-cls'],['rp-lv','rp-cls'],['bl-lv','bl-cls']];
 HID.forEach(function(a){a.forEach(function(id){var e=document.getElementById(id);if(e&&e.closest('label'))e.closest('label').style.display='none'})});
-function opts(){var R=ROSTER.get();return R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>قسم '+E(ROSTER_LABEL(i))+'</option>'}).join('')}
+function opts(){var R=ROSTER.get();return R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>'+(/^قسم/.test(ROSTER_LABEL(i))?'':'قسم ')+E(ROSTER_LABEL(i))+'</option>'}).join('')}
 P.forEach(function(id){var p=document.getElementById(id);if(!p)return;var d=document.createElement('div');d.className='cpk';d.innerHTML='<b>اختر القسم الذي تريد استخراج الوثيقة له</b><select class="cpick" aria-label="القسم"></select>';p.insertBefore(d,p.firstChild)});
-function fill(){[].forEach.call(document.querySelectorAll('.cpick'),function(s){s.innerHTML=opts()})}
 function fire(){ROSTER.save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}})}
+/* أقسام الأستاذ المعرّفة في «أقسامي وموادي» تظهر تلقائياً في كل لوائح اختيار القسم */
+function sv(l){return String(l||'').replace(' ابتدائي','')}
+function syncTT(){var added=false;try{if(typeof TT=='undefined'||!TT.classes)return false;var R=ROSTER.get();
+ TT.classes.forEach(function(c,i){if(!c||!c.lv)return;var n=String(c.n||'').trim(),nm=n||(c.lv2?sv(c.lv)+' و'+sv(c.lv2)+' (مشترك)':'');
+  var has=R.cl.some(function(x){return nm?(x.nm===nm):(x.lv===c.lv)});
+  if(!has){var em=nm&&R.cl.filter(function(x){return x.lv===c.lv&&!x.nm&&!(x.st&&x.st.length)&&x.g==null||x.lv===c.lv&&!x.nm&&!(x.st&&x.st.length)&&x.g===0})[0];if(em){em.nm=nm;added=true}else{R.cl.push({id:Date.now()+i,lv:c.lv,nm:nm||undefined,g:0,st:[]});added=true}}});
+ }catch(e){}return added}
+function fill(){if(syncTT())fire();[].forEach.call(document.querySelectorAll('.cpick'),function(s){s.innerHTML=opts()})}
 document.addEventListener('change',function(e){var t=e.target;if(!t.classList||!t.classList.contains('cpick'))return;ROSTER.get().cur=+t.value;fire();fill();var b=document.querySelector('#tabs button[aria-selected=true]');if(b)b.click()});
 ROSTER.onChange.push(fill);document.getElementById('tabs').addEventListener('click',function(){setTimeout(fill,60)});fill();
 })();
@@ -7600,6 +7607,21 @@ else if(!o.on&&!o.off&&ok()&&!(ios()&&!standalone())&&Notification.permission===
  var n=0;try{n=+localStorage.getItem('muh.rem.v')||0;localStorage.setItem('muh.rem.v',n+1)}catch(e){}
  setTimeout(function(){if(!document.querySelector('.rmm,.qrm'))ask()},5000)}
 window.mouinRem={ask:ask,off:function(){return disable().then(function(){sv({asked:1})})}};
+})();
+</script>
+<script>
+/* ===== تنبيه عند غياب الدروس: الخطاطة والمذكرة ===== */
+(function(){
+function nS(){var n=0;try{n=JSON.parse(localStorage.getItem('muh.sess')||'[]').length}catch(e){}return n}
+function msg(out,t){var h='<div style="border:2px solid #e0a21b;background:#fff4d6;color:#4a3300;border-radius:14px;padding:16px;text-align:center;font:700 16px/1.9 Cairo,Tahoma,sans-serif;direction:rtl">⚠️ '+t+'</div>';try{show(out,h)}catch(e){var o=document.getElementById(out);if(o)o.innerHTML=h}
+ var o2=document.getElementById(out);if(o2)o2.scrollIntoView({behavior:'smooth',block:'center'})}
+var PIO='لا توجد حصص محمّلة بعد. حمّل الدروس أولًا: اضغط «استيراد الحصص (ملفات pptx)» في أعلى الصفحة واختر ملفات الحصص التي نزّلتها من موقع الوزارة، ثم أعد المحاولة.';
+[['j-go','j-out'],['j-gs','j-out'],['m-go','m-out']].forEach(function(a){var b=document.getElementById(a[0]);if(!b)return;
+ b.addEventListener('click',function(e){
+  var pio=(typeof mode!='undefined'&&mode=='p');
+  if(pio&&nS()==0){e.stopImmediatePropagation();e.preventDefault();msg(a[1],PIO);return}
+  if(!pio&&a[0]!='m-go'){var pk=document.getElementById('j-pick');if(pk&&pk.offsetParent!==null&&pk.options.length<=1){e.stopImmediatePropagation();e.preventDefault();msg(a[1],'لا توجد دروس متوفرة لهذه المادة وهذا المستوى في المرجع المختار. جرّب مرجعًا آخر أو مادة أخرى.')}}
+ },true)});
 })();
 </script>
 <script>
