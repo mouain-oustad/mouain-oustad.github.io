@@ -7598,9 +7598,9 @@ function ask(){
  m.innerHTML='<div class="rmb" role="dialog" aria-modal="true"><h3>🔔 هل تريد أن أذكّرك بتحضير المذكرة اليومية والخطاطات والجذاذات؟</h3><div class="rmrow"><button type="button" data-r="y">نعم</button><button type="button" class="o" data-r="n">لا</button></div><div class="rmmsg" id="rmmsg"></div></div>';
  document.body.appendChild(m);
  m.addEventListener('click',function(e){var a=e.target.dataset&&e.target.dataset.r;if(!a)return;
-  if(a=='n'){m.remove();return}
+  if(a=='n'){try{window.mouinTrack&&mouinTrack('reminders_no')}catch(e){}m.remove();return}
   var e2=m.querySelector('#rmmsg');e2.textContent='…';
-  enable(DEF).then(function(){sv({asked:1,on:1,rem:DEF});m.remove()}).catch(function(x){e2.textContent=typeof x=='string'?x:'تعذّر التفعيل.';setTimeout(function(){m.remove()},2500)})
+  enable(DEF).then(function(){sv({asked:1,on:1,rem:DEF});try{window.mouinTrack&&mouinTrack('reminders_on')}catch(e){}m.remove()}).catch(function(x){e2.textContent=typeof x=='string'?x:'تعذّر التفعيل.';setTimeout(function(){m.remove()},2500)})
  })}
 var o=ld();
 if(o.on&&ok()&&window.Notification&&Notification.permission==='granted'){getSub().then(function(s){if(s)return post('/sub',{sub:s.toJSON(),rem:o.rem}).then(function(){return cacheRem(o.rem)})}).catch(function(){})}
@@ -7659,11 +7659,13 @@ function load(){if(window.__gaOn||!navigator.onLine)return;window.__gaOn=1;
  gtag('config',MUH_GA,{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
  try{if(matchMedia('(display-mode: standalone)').matches)gtag('event','pwa_open')}catch(e){}
  window.addEventListener('appinstalled',function(){gtag('event','pwa_installed')});
+ window.mouinTrack=function(n,p){try{gtag('event',n,p||{})}catch(e){}};
  document.addEventListener('click',function(e){try{var b=e.target.closest&&e.target.closest('button,.hcard,.choice');if(!b)return;var n=null,p={};
   if(b.classList.contains('choice')){n='mode_select';p.mode=b.dataset.m}
   else if(b.classList.contains('hcard')){n='section_open';p.section=b.dataset.s}
   else if(b.closest('#tabs')&&b.dataset.t){n='tab_open';p.tab=b.dataset.t}
   else if(/^(pdf|word|print)$/.test(b.id)){n='doc_export';p.type=b.id}
+  else if(/-go$|^j-gs$/.test(b.id)){n='generate_doc';p.id=b.id;try{p.subject=(document.getElementById('subj')||{}).value||'';p.level=(document.getElementById('j-lv')||{}).value||''}catch(x){}}
   else if(b.id){n='action';p.id=b.id.slice(0,40)}
   if(n)gtag('event',n,p)}catch(x){}},true)}
 if(v==='y')load();
