@@ -7630,6 +7630,19 @@ var PIO='لا توجد حصص محمّلة بعد. حمّل الدروس أول�
 fx();document.addEventListener('click',function(){setTimeout(fx,80)});new MutationObserver(fx).observe(document.body,{childList:true,subtree:true})})();
 </script>
 <script>
+/* ===== المادة داخل نموذج الجذاذة بدل أعلى الصفحة ===== */
+(function(){
+var st=document.createElement('style');st.textContent='body #subj{display:none!important}#subj2-l{display:block}';document.head.appendChild(st);
+var top=document.getElementById('subj'),lv=document.getElementById('j-lv');if(!top||!lv||!lv.closest('label'))return;
+var lab=document.createElement('label');lab.className='full';lab.id='subj2-l';lab.innerHTML='<span>المادة</span><select id="subj2" aria-label="المادة"></select>';
+lv.closest('label').parentNode.insertBefore(lab,lv.closest('label'));
+var b=document.getElementById('subj2');
+function sync(){var o=[].map.call(top.options,function(x){return x.value+'|'+x.textContent}).join('~');if(b.dataset.o!==o){b.dataset.o=o;b.innerHTML=top.innerHTML}if(b.value!==top.value)b.value=top.value}
+b.addEventListener('change',function(){top.value=b.value;['input','change'].forEach(function(n){top.dispatchEvent(new Event(n,{bubbles:true}))})});
+sync();setInterval(sync,400);document.addEventListener('click',function(){setTimeout(sync,60)});
+})();
+</script>
+<script>
 /* ===== إعدادات الإعلانات: ضع هنا معرّفك بعد قبول موقعك في Google AdSense ===== */
 var MUH_ADS={client:'',slot:''}; /* مثال: client:'ca-pub-1234567890123456', slot:'1234567890' */
 (function(){if(!MUH_ADS.client||!navigator.onLine)return;
