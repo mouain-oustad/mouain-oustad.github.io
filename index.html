@@ -7542,6 +7542,57 @@ document.getElementById('mc-go').addEventListener('click',function(){var c=docum
 })();
 </script>
 <script>
+(function(){
+var API='https://mouain-rappels.jamrani1995.workers.dev',LS='muh.rem';
+var TY=[{k:'kh',n:'تحضير الخطاطة',t:'20:00'},{k:'md',n:'كتابة المذكرة اليومية',t:'17:00'},{k:'jd',n:'تحضير الجذاذات',t:'19:00'}];
+var DN=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+function ld(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return {}}}
+function sv(o){try{localStorage.setItem(LS,JSON.stringify(o))}catch(e){}}
+function ok(){return 'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window&&location.protocol.indexOf('http')===0}
+function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)}
+function standalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone}
+function b64(s){var p='='.repeat((4-s.length%4)%4),b=(s+p).replace(/-/g,'+').replace(/_/g,'/'),r=atob(b),o=new Uint8Array(r.length);for(var i=0;i<r.length;i++)o[i]=r.charCodeAt(i);return o}
+function cacheRem(rem){try{return caches.open('mouin-rem').then(function(c){return c.put('rem.json',new Response(JSON.stringify({rem:rem})))})}catch(e){return Promise.resolve()}}
+function post(p,b){return fetch(API+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)})}
+function getSub(){return navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()})}
+function enable(rem){
+ if(!ok())return Promise.reject('هذا المتصفح لا يدعم الإشعارات.');
+ if(ios()&&!standalone())return Promise.reject('على iPhone: ثبّت التطبيق أولًا بزر المشاركة ثم «إضافة إلى الشاشة الرئيسية»، وافتحه من الأيقونة ثم فعّل التذكيرات.');
+ return Notification.requestPermission().then(function(p){
+  if(p!=='granted')throw 'لم يُسمح بالإشعارات. يمكنك السماح بها من إعدادات المتصفح لهذا الموقع.';
+  return fetch(API+'/vapid').then(function(r){return r.json()}).then(function(j){
+   return navigator.serviceWorker.ready.then(function(reg){return reg.pushManager.getSubscription().then(function(s){return s||reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(j.key)})})})
+  }).then(function(s){return post('/sub',{sub:s.toJSON(),rem:rem}).then(function(r){if(!r.ok)throw 'تعذّر الاتصال بالخادم، حاول لاحقًا.'})}).then(function(){return cacheRem(rem)})
+ })}
+function disable(){return getSub().then(function(s){if(s){post('/unsub',{endpoint:s.endpoint}).catch(function(){});return s.unsubscribe()}}).then(function(){return cacheRem([])})}
+var st=document.createElement('style');st.textContent='.rmm{position:fixed;inset:0;z-index:99999;background:rgba(15,25,50,.6);display:flex;align-items:flex-end;justify-content:center}.rmb{background:#fffdf7;width:100%;max-width:460px;max-height:94vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px;box-sizing:border-box;font-family:Cairo,Tahoma,sans-serif;color:#1d2a5c;direction:rtl}@media(min-width:600px){.rmm{align-items:center}.rmb{border-radius:22px}}.rmb h3{margin:0 0 4px;font:800 20px Cairo,Tahoma,sans-serif;text-align:center}.rmb>p{margin:0 0 12px;text-align:center;color:#5a6280;font-size:14px;line-height:1.6}.rmr{border:1.5px solid #e3dcc6;border-radius:14px;padding:10px 12px;margin-bottom:10px;background:#fff}.rmr label.h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}.rmr input[type=checkbox]{width:20px;height:20px}.rmr input[type=time]{margin-inline-start:auto;font:600 16px Cairo,Tahoma,sans-serif;border:1.5px solid #cfc7ad;border-radius:10px;padding:3px 6px}.rmd{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.rmd button{flex:1;min-width:38px;border:1.5px solid #cfc7ad;background:#fff;border-radius:10px;padding:6px 2px;font:600 13px Cairo,Tahoma,sans-serif;color:#1d2a5c}.rmd button.on{background:#14375f;color:#fff;border-color:#14375f}.rmrow{display:flex;gap:8px;margin-top:6px}.rmrow button,.rmx{flex:1;border:0;border-radius:12px;padding:11px;font:700 15px Cairo,Tahoma,sans-serif;background:#14375f;color:#fff}.rmrow button.o,.rmx{background:#fff;color:#14375f;border:1.5px solid #14375f}.rmx{width:100%;margin-top:8px}.rmmsg{min-height:20px;margin:8px 0 0;text-align:center;font-size:14px;color:#a33}.rmmsg.g{color:#25601a}.rmb small{display:block;margin-top:10px;color:#6b7290;font-size:12.5px;line-height:1.6;text-align:center}.hrem{display:flex;align-items:center;gap:10px;width:calc(100% - 24px);margin:8px 12px;padding:11px 14px;border:1.5px solid #e3dcc6;border-radius:14px;background:#fffdf7;font:700 15px Cairo,Tahoma,sans-serif;color:#1d2a5c;text-align:start}.hrem small{display:block;font-weight:500;font-size:12px;color:#6b7290}';document.head.appendChild(st);
+function open(){
+ var o=ld(),cur=o.rem||[],m=document.createElement('div');m.className='rmm';
+ var rows=TY.map(function(t){var c=cur.filter(function(r){return r.k==t.k})[0],d=c?c.d:[1,2,3,4,5];
+  return '<div class="rmr" data-k="'+t.k+'"><label class="h"><input type="checkbox"'+(c?' checked':'')+'>'+t.n+'<input type="time" value="'+(c?c.t:t.t)+'"></label><div class="rmd">'+DN.map(function(n,i){return '<button type="button" data-d="'+i+'" class="'+(d.indexOf(i)>-1?'on':'')+'">'+n+'</button>'}).join('')+'</div></div>'}).join('');
+ m.innerHTML='<div class="rmb" role="dialog" aria-modal="true"><h3>🔔 تذكيرات التحضير</h3><p>يصلك إشعار على هاتفك ولو كان التطبيق مغلقًا، في الوقت الذي تختاره (بتوقيت المغرب).</p>'+rows+'<div class="rmrow"><button type="button" data-r="save">حفظ وتفعيل</button><button type="button" class="o" data-r="test">إشعار تجريبي</button></div><div class="rmmsg" id="rmmsg"></div><button type="button" class="rmx" data-r="off">إيقاف كل التذكيرات</button><button type="button" class="rmx" data-r="x">إغلاق</button><small>تُحفظ على الخادم أوقات التذكير وعنوان الإشعار فقط، ولا تُرسل إليه جذاذاتك ولا بيانات تلاميذك. تسمح بالإشعارات مرة واحدة فقط، ويمكنك إيقافها متى شئت.</small></div>';
+ document.body.appendChild(m);
+ function msg(t,g){var e=m.querySelector('#rmmsg');e.textContent=t;e.className='rmmsg'+(g?' g':'')}
+ function collect(){return [].slice.call(m.querySelectorAll('.rmr')).filter(function(r){return r.querySelector('input[type=checkbox]').checked}).map(function(r){return {k:r.dataset.k,t:r.querySelector('input[type=time]').value||'20:00',d:[].slice.call(r.querySelectorAll('.rmd .on')).map(function(b){return +b.dataset.d})}}).filter(function(r){return r.d.length})}
+ m.addEventListener('click',function(e){var t=e.target,a=t.dataset&&t.dataset.r;
+  if(t===m||a=='x'){m.remove();return}
+  if(t.dataset&&t.dataset.d!==undefined){t.classList.toggle('on');return}
+  if(a=='save'){var rem=collect();if(!rem.length){msg('اختر تذكيرًا واحدًا على الأقل، مع يوم واحد على الأقل.');return}msg('جارٍ التفعيل…',1);
+   enable(rem).then(function(){sv({on:1,rem:rem});msg('تم التفعيل ✓ سيصلك أول تذكير في وقته.',1)}).catch(function(x){msg(typeof x=='string'?x:'تعذّر التفعيل، حاول لاحقًا.')})}
+  if(a=='off'){disable().then(function(){sv({});m.querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false});msg('تم إيقاف التذكيرات ✓',1);refresh()}).catch(function(){msg('تعذّر الإيقاف.')})}
+  if(a=='test'){getSub().then(function(s){if(!s){msg('فعّل التذكيرات أولًا بزر «حفظ وتفعيل».');return}return post('/test',{endpoint:s.endpoint}).then(function(){msg('أُرسل إشعار تجريبي، انتظر ثوانيَ قليلة.',1)})}).catch(function(){msg('تعذّر الإرسال.')})}
+ })}
+var btns=[];
+function refresh(){var o=ld();btns.forEach(function(b){b.querySelector('small').textContent=o.on?'مفعّلة: '+(o.rem||[]).length+' تذكير':'خطاطة، مذكرة، جذاذات: إشعار في وقتك'})}
+document.querySelectorAll('.ftr').forEach(function(f){var b=document.createElement('button');b.type='button';b.className='hrem';b.setAttribute('data-act','rem');b.innerHTML='<span style="font-size:22px">🔔</span><span>تذكيرات التحضير<small></small></span>';f.parentNode.insertBefore(b,f);btns.push(b)});
+refresh();
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act=rem]');if(b)open()});
+/* تجديد الاشتراك عند فتح التطبيق إن كانت التذكيرات مفعّلة */
+var o=ld();if(o.on&&ok()&&window.Notification&&Notification.permission==='granted'){getSub().then(function(s){if(s)return post('/sub',{sub:s.toJSON(),rem:o.rem}).then(function(){return cacheRem(o.rem)})}).catch(function(){})}
+window.mouinRem={open:open};
+})();
+</script>
+<script>
 /* ===== إعدادات الإعلانات: ضع هنا معرّفك بعد قبول موقعك في Google AdSense ===== */
 var MUH_ADS={client:'',slot:''}; /* مثال: client:'ca-pub-1234567890123456', slot:'1234567890' */
 (function(){if(!MUH_ADS.client||!navigator.onLine)return;
