@@ -2138,6 +2138,8 @@ var MSIDE={fr:['اللغة الفرنسية','الرياضيات','النشاط 
 function memoOK(s){if(['استراحة','الدعم','أخرى'].indexOf(s)>-1)return true;var st=$('m-style').value,mine=TT.subs||[];
   if(st=='fr'||st=='ar'){var side=MSIDE[st],both=mine.filter(function(x){return side.indexOf(x)>-1});return (both.length?both:side).indexOf(s)>-1}
   return !mine.length||mine.indexOf(s)>-1}
+/* رقم الجذاذة/الخطاطة: يبدأ من المرحلة 2 ويستمر عبر المراحل؛ الأسابيع 1–4 كاملة، الأسبوع 5 أربع حصص للعربية والفرنسية، والأسبوع 6 لا يُحسب */
+function jadNum(s,P,w,k,tot){if(s=='الدعم'||s=='أخرى'||P<2||w>5||w<1)return '';var core=(s=='اللغة العربية'||s=='اللغة الفرنسية'),w5=core?Math.min(4,tot):tot;if(w==5&&k>w5)return '';return String((P-2)*(4*tot+w5)+(w-1)*tot+k)}
 function memoData(day){var K=function(r){return (+r.c||0)+'|'+r.s},cnt={},tot={};
   TT.days.forEach(function(D){D.forEach(function(r){if(r.s!='استراحة')tot[K(r)]=(tot[K(r)]||0)+1})});
   for(var d=0;d<day-1;d++)TT.days[d].forEach(function(r){cnt[K(r)]=(cnt[K(r)]||0)+1});
@@ -2152,7 +2154,7 @@ function memoData(day){var K=function(r){return (+r.c||0)+'|'+r.s},cnt={},tot={}
     if(cl.lv2&&!CS&&P>1&&mode=='p'&&r.s=='اللغة العربية'&&nosh.indexOf(cl.lv+'+'+cl.lv2)<0)nosh.push(cl.lv+'+'+cl.lv2);
     if(r.s!='أخرى'&&(!C||C.src=='none'||C.les[0]=='……'))miss.push(r.s);
     var S=SESS[sKey(r.s,cl.lv,P,w,k)];
-    bk.rows.push({src:C?C.src:'',sub:C&&C.sub||'',s:r.s,d:tmins(r.f,r.t),k:k,n:tot[kk]||1,les:C?C.les:['……'],obj:C&&C.obj?C.obj:[],fr:!!(S&&S.lang=='fr')})});
+    bk.rows.push({num:jadNum(r.s,P,w,k,tot[kk]||1),src:C?C.src:'',sub:C&&C.sub||'',s:r.s,d:tmins(r.f,r.t),k:k,n:tot[kk]||1,les:C?C.les:['……'],obj:C&&C.obj?C.obj:[],fr:!!(S&&S.lang=='fr')})});
   while(blocks.length&&blocks[blocks.length-1].brk)blocks.pop();while(blocks.length&&blocks[0].brk)blocks.shift();
   blocks=snapPeriods(blocks);
   return {nosh:nosh,skip:skip,P:P,w:w,blocks:blocks,miss:miss.filter(function(x,i,a){return a.indexOf(x)==i})}}
@@ -2244,8 +2246,8 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
       mg.forEach(function(x,i){var R=x.R;rows+='<tr'+(x.first&&i?' class="sep"':'')+'>'+(i===0?'<td rowspan="'+mg.length+'" class="tm"><u>'+esc(B.f||'')+'</u><br><br><u>'+esc(B.t||'')+'</u></td>':'')+
         '<td class="du">'+(x.d?(/\(/.test(x.d)?String(x.d).replace(' (الحصة)','د<br><span class="t">للحصة</span>'):x.d+'د'):'')+'</td><td class="su">'+(x.first&&x.c!==R.s&&R.s!='اللغة العربية'?'<span class="t">'+esc(R.s)+'</span><br>':'')+'<b>'+esc(x.c)+'</b></td>'+
         '<td class="to"'+(R.fr?' dir="ltr" style="text-align:left"':'')+'>'+x.h+'</td>'+
-        (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?'……':'')+'</td></tr>'})});
-    show('m-out','<div class="paper"><div class="memo-ar">'+head+'<div class="scroll"><table class="memo m2"><tr><th>التوقيت</th><th>المدة</th><th>المكون</th><th>الموضوع / الهدف التعلمي</th><th>المستوى</th><th>رقم الجذاذة</th></tr>'+rows+
+        (i===0?'<td rowspan="'+mg.length+'" class="gr">'+lvCell(cl)+'</td>':'')+'<td class="dots">'+(x.first?(x.R.num?'<b>'+x.R.num+'</b>':'-'):'')+'</td></tr>'})});
+    show('m-out','<div class="paper"><div class="memo-ar">'+head+'<div class="scroll"><table class="memo m2"><tr><th>التوقيت</th><th>المدة</th><th>المكون</th><th>الموضوع / الهدف التعلمي</th><th>المستوى</th><th style="white-space:nowrap">رقم جذ<br>أو خط</th></tr>'+rows+
       '<tr><td colspan="6" class="obs"><b>ملاحظات:</b><br>……………………………………………………………………</td></tr></table></div></div></div>'+note);fitPaper();onePage()}
   else{
     var dt2=dIn?dIn.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'……………………';
