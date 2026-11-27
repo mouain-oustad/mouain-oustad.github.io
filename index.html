@@ -296,6 +296,7 @@ body:not(.gate) h1::before{content:'';width:46px;height:46px;border-radius:13px;
 #f-out th{font-weight:900!important}
 #f-out table:not(.plain),#f-out table.plain[style*="font-size:16px"]{display:table!important;width:100%!important;table-layout:auto}
 #f-out table:not(.plain) th,#f-out table:not(.plain) td,#f-out table.plain[style*="font-size:16px"] th,#f-out table.plain[style*="font-size:16px"] td{padding:9px 12px!important;font-size:1.08em!important;height:40px}
+.subj-l:not(:has(select)){display:none!important}
 @media print{#f-out.sheet{border:0!important}}
 </style>
 </head>
@@ -7623,6 +7624,10 @@ var PIO='لا توجد حصص محمّلة بعد. حمّل الدروس أول�
   if(!pio&&a[0]!='m-go'){var pk=document.getElementById('j-pick');if(pk&&pk.offsetParent!==null&&pk.options.length<=1){e.stopImmediatePropagation();e.preventDefault();msg(a[1],'لا توجد دروس متوفرة لهذه المادة وهذا المستوى في المرجع المختار. جرّب مرجعًا آخر أو مادة أخرى.')}}
  },true)});
 })();
+</script>
+<script>
+(function(){function fx(){[].forEach.call(document.querySelectorAll('.subj-l'),function(l){if(!l.querySelector('select'))l.style.display='none'})}
+fx();document.addEventListener('click',function(){setTimeout(fx,80)});new MutationObserver(fx).observe(document.body,{childList:true,subtree:true})})();
 </script>
 <script>
 /* ===== إعدادات الإعلانات: ضع هنا معرّفك بعد قبول موقعك في Google AdSense ===== */
