@@ -7647,7 +7647,7 @@ sync();top.addEventListener('change',sync);new MutationObserver(sync).observe(to
 })();
 </script>
 <script>
-/* ===== ألوان أشرطة عناوين الوثائق: الأسود افتراضياً مع اختيار موحد محفوظ ===== */
+/* ===== ألوان أشرطة عناوين الوثائق: الرمادي افتراضياً مع اختيار موحد محفوظ ===== */
 (function(){
 var K='muh.dth',
 PAL={
@@ -7665,17 +7665,17 @@ PAL={
 },
 VALID={k:1,b:1,g:1,p:1,c:1,a:1,r:1,t:1,n:1,v:1,br:1,rs:1},
 OPTIONS=[
- ['k','أسود (الافتراضي)'],['b','أزرق'],['g','أخضر'],['p','بنفسجي'],
+ ['n','رمادي (الافتراضي)'],['k','أسود'],['b','أزرق'],['g','أخضر'],['p','بنفسجي'],
  ['c','مرجاني'],['a','كهرماني'],['r','أحمر'],['t','فيروزي'],
- ['n','رمادي'],['v','كحلي'],['br','بني'],['rs','وردي']
+ ['v','كحلي'],['br','بني'],['rs','وردي']
 ];
 function cur(){
  try{
   var v=localStorage.getItem(K);
-  /* القيمة w كانت تعني الأبيض التلقائي في النسخة السابقة؛ أصبحت تعني الأسود الافتراضي. */
-  if(v==='w'){localStorage.setItem(K,'k');return 'k'}
-  return VALID[v]?v:'k';
- }catch(e){return 'k'}
+  /* ترحيل الاختيار الافتراضي القديم إلى الرمادي، مع الإبقاء على الألوان التي اختارها الأستاذ. */
+  if(v==='w'){localStorage.setItem(K,'n');return 'n'}
+  return VALID[v]?v:'n';
+ }catch(e){return 'n'}
 }
 var OUT=['ab-out','ac-out','bl-out','d-out','f-out','fl-out','gc-out','gr-out','j-out','rp-out','s-out','w-out','r-tab','s-tab','un-tab','myf-out','ros-out'];
 function palette(k){return k==='k'?['#000000','#000000','#FFFFFF']:PAL[k]}
