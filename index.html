@@ -5574,7 +5574,7 @@ $('j-go').onclick=function(){prev.apply(this,arguments);var k=kind();if(!k)retur
 /* ===== جذاذة مختصرة / مفصلة ===== */
 (function(){
 var gs=$('j-gs'),go=$('j-go');
-function lab(){var pm=(typeof mode!='undefined'&&mode=='p'),base=/الخطاطة/.test(go.textContent+gs.textContent)||pm?'خطاطة':'جذاذة',a='📖 أنشئ '+base+' مفصلة',b=pm?'⚡ أنشئ الخطاطة':'⚡ أنشئ '+base+' مختصرة';if(go.textContent!=a)go.textContent=a;if(gs.textContent!=b)gs.textContent=b;var hd=pm?'none':'';if(go.style.display!=hd)go.style.display=hd}
+function lab(){var pm=(typeof mode!='undefined'&&mode=='p'),mind=pm&&!SAMEP(),base=mind?'خطاطة':'جذاذة',a='📖 أنشئ '+base+' مفصلة',b=mind?'⚡ أنشئ الخطاطة':'⚡ أنشئ '+base+' مختصرة';if(go.textContent!=a)go.textContent=a;if(gs.textContent!=b)gs.textContent=b;var hd=mind?'none':'';if(go.style.display!=hd)go.style.display=hd}
 document.querySelectorAll('.choice').forEach(function(b){b.addEventListener('click',function(){setTimeout(lab,50)})});
 new MutationObserver(lab).observe(go,{childList:true,characterData:true,subtree:true});lab();
 function shorten(o){
@@ -8239,6 +8239,51 @@ OUT.forEach(function(i){
 });
 all();
 })();
+/* ===== زر مستقل للخطاطات الذهنية في بوابة المدرسة الرائدة ===== */
+(function(){
+ var MIND_SUBJECTS=['اللغة العربية','اللغة الفرنسية','الرياضيات','النشاط العلمي'];
+ window.MOUIN_PIONEER_MIND_SUBJECTS=MIND_SUBJECTS.slice();
+ /* في بوابة الريادة: الخطاطات الذهنية محصورة في المواد الأربع، وما عداها يستعمل الجذاذة. */
+ if(typeof SAMEP==='function'){SAMEP=function(s,lv){if(typeof mode==='undefined'||mode!=='p')return false;s=s||$('subj').value;return MIND_SUBJECTS.indexOf(s)<0;};}
+ var nav=$('tabs'),fiche=$('tab-j');
+ if(!nav||!fiche||$('tab-mm'))return;
+ var mind=document.createElement('button');
+ mind.type='button';mind.id='tab-mm';mind.dataset.t='mm';mind.setAttribute('role','tab');
+ mind.setAttribute('aria-selected','false');mind.setAttribute('aria-label','الخطاطات الذهنية');
+ mind.textContent='الخطاطات الذهنية';mind.style.display='none';
+ fiche.insertAdjacentElement('afterend',mind);
+ /* زر الخطاطات يستعمل مولّد الخطاطة الموجود نفسه، دون إنشاء مسار موازٍ أو المساس بالجذاذات. */
+ mind.addEventListener('click',function(){
+   fiche.click();
+   nav.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',b===mind?'true':'false')});
+ });
+ /* إدراج الزر ضمن قسم التحضير حتى يظهر في بوابة الأقسام، وليس في بوابة المدرسة العادية. */
+ if(window.SECS){
+   var prep=window.SECS.filter(function(x){return x.id==='prep'})[0];
+   if(prep&&prep.tabs.indexOf('mm')<0)prep.tabs.splice(1,0,'mm');
+ }
+ function sync(){
+   var pioneer=typeof mode!=='undefined'&&mode==='p';
+   var isMind=pioneer&&MIND_SUBJECTS.indexOf($('subj').value)>-1;
+   if(window.regSection)window.regSection({id:'prep',d:pioneer?'الخطاطات الذهنية والمذكرة اليومية والوثائق والملخصات':'الجذاذات والمذكرة اليومية والوثائق والملخصات'});
+   mind.style.display=isMind?'':'none';
+   fiche.style.display=isMind?'none':'';
+   if(isMind){
+     mind.textContent='الخطاطات الذهنية';
+     if(document.querySelector('#p-j.on')&&fiche.getAttribute('aria-selected')==='true')mind.click();
+   }else{
+     fiche.textContent=pioneer?'الجذاذة':'الجذاذة';
+     if(document.querySelector('#p-j.on')&&mind.getAttribute('aria-selected')==='true')fiche.click();
+   }
+ }
+ $('subj').addEventListener('change',sync);
+ $('subj').addEventListener('input',sync);
+ document.querySelectorAll('.choice').forEach(function(b){b.addEventListener('click',function(){setTimeout(sync,0)})});
+ /* تحديث الزر بعد فتح بوابة التحضير أو الانتقال بين أقسام التطبيق. */
+ nav.addEventListener('click',function(){setTimeout(sync,0)});
+ sync();
+})();
+
 </script>
 <script>
 /* ===== إعدادات الإعلانات: ضع هنا معرّفك بعد قبول موقعك في Google AdSense ===== */
