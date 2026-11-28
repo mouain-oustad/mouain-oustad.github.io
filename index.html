@@ -1543,12 +1543,14 @@ var BUILTIN_SESS=[{"file": "NE_AR_N5_6_P2_SEM1_S1.pptx", "day": 1, "secs": [{"n"
 var SUBC={AR:'اللغة العربية',FR:'اللغة الفرنسية',MA:'الرياضيات',MATH:'الرياضيات',SC:'النشاط العلمي',ES:'النشاط العلمي',EI:'التربية الإسلامية',HG:'الاجتماعيات'};
 var SESS={};
 function sKey(sub,lv,ph,wk,d){return sub+'|'+lv+'|'+ph+'|'+wk+'|'+d}
-function addSess(S){if(!S.sub||!S.lv||!S.ph||!S.wk||!S.day)return false;SESS[sKey(SUBC[S.sub]||S.sub,lvKey(S.lv,S.lv2),S.ph,S.wk,S.day)]=S;return true}
+/* لا نعدّ الملف مستورداً إلا إذا استُخرج منه مكوّن واحد على الأقل بعنوان قابل للعرض. */
+function sessionHasComponents(S){return !!(S&&Array.isArray(S.secs)&&S.secs.some(function(x){return x&&typeof x.name==='string'&&x.name.trim().length>0}))}
+function addSess(S){if(!S||!S.sub||!S.lv||!S.ph||!S.wk||!S.day||!sessionHasComponents(S))return false;SESS[sKey(SUBC[S.sub]||S.sub,lvKey(S.lv,S.lv2),S.ph,S.wk,S.day)]=S;return true}
 function lvKey(a,b){return b?LVS[Math.min(a,b)-1]+'+'+LVS[Math.max(a,b)-1]:LVS[a-1]}
 function lvKeyN(l1,l2){return l2?lvKey(LVS.indexOf(l1)+1,LVS.indexOf(l2)+1):l1}
 BUILTIN_SESS.forEach(addSess);
-try{JSON.parse(localStorage.getItem('muh.sess')||'[]').forEach(addSess)}catch(e){}
-function saveSess(list){try{var a=JSON.parse(localStorage.getItem('muh.sess')||'[]');list.forEach(function(S){a=a.filter(function(x){return !(x.sub==S.sub&&x.lv==S.lv&&(x.lv2||0)==(S.lv2||0)&&x.ph==S.ph&&x.wk==S.wk&&x.day==S.day)});a.push(S)});localStorage.setItem('muh.sess',JSON.stringify(a))}catch(e){}}
+try{var _storedSess=JSON.parse(localStorage.getItem('muh.sess')||'[]'),_validSess=[];_storedSess.forEach(function(S){if(addSess(S))_validSess.push(S)});if(_validSess.length!==_storedSess.length)localStorage.setItem('muh.sess',JSON.stringify(_validSess))}catch(e){}
+function saveSess(list){try{var a=JSON.parse(localStorage.getItem('muh.sess')||'[]');list.forEach(function(S){if(!sessionHasComponents(S))return;a=a.filter(function(x){return !(x.sub==S.sub&&x.lv==S.lv&&(x.lv2||0)==(S.lv2||0)&&x.ph==S.ph&&x.wk==S.wk&&x.day==S.day)});a.push(S)});localStorage.setItem('muh.sess',JSON.stringify(a))}catch(e){}}
 function cut(t,n){t=String(t);return t.length>n?t.slice(0,n-1)+'…':t}
 function sessMap(S,P,w,day){var col=COL,d=$('j-dur').value;
 if(S.lang=='fr')return sessMapFr(S,P,w,day);
@@ -1590,18 +1592,21 @@ $('j-go').insertAdjacentHTML('afterend','<label class="full" id="imp-l" style="d
 function impUI(){$('imp-l').style.display=mode=='p'?'':'none';$('imp-msg').style.display=mode=='p'?'':'none'}
 document.querySelectorAll('.choice').forEach(function(b){b.addEventListener('click',impUI)});impUI();
 $('imp').addEventListener('change',async function(e){var fs=[].slice.call(e.target.files||[]),ok=[],bad=[];$('imp-msg').textContent='جارٍ قراءة '+fs.length+' ملف…';
-for(var i=0;i<fs.length;i++){var f=fs[i];try{var sl=await readPptx(await f.arrayBuffer());var S=parseSession(sl,f.name);if(addSess(S))ok.push(S);else bad.push(f.name+' (اسم الملف لا يحدد المادة والمستوى والمرحلة والأسبوع والحصة)')}catch(err){bad.push(f.name+' ('+(err.message||'خطأ')+')')}}
+for(var i=0;i<fs.length;i++){var f=fs[i];try{var sl=await readPptx(await f.arrayBuffer());var S=parseSession(sl,f.name);if(!S.sub||!S.lv||!S.ph||!S.wk||!S.day)bad.push(f.name+' (تعذّر تحديد المادة والمستوى والمرحلة والأسبوع واليوم من اسم الملف)');else if(!sessionHasComponents(S))bad.push(f.name+' (قُرئ الملف لكن لم تُستخرج منه عناوين مكونات الحصة؛ لم يُحفظ حتى لا تظهر مذكرة فارغة)');else if(addSess(S))ok.push(S);else bad.push(f.name+' (تعذّر فهرسة الحصة)')}catch(err){bad.push(f.name+' ('+(err.message||'خطأ')+')')}}
 saveSess(ok);e.target.value='';
-var msg=ok.length?'تم استيراد '+ok.length+' حصة: '+ok.map(function(S){return (SUBC[S.sub]||S.sub)+' – المستوى '+S.lv+(S.lv2?'+'+S.lv2+' (قسم مشترك)':'')+' – المرحلة '+S.ph+' – الأسبوع '+S.wk+' – '+((SPW[SUBC[S.sub]]||6)==6?'اليوم ':'الحصة ')+S.day}).join('، '):'';
+var msg=ok.length?'تم استيراد '+ok.length+' حصة واستخراج '+ok.reduce(function(n,S){return n+S.secs.length},0)+' مكوناً: '+ok.map(function(S){return (SUBC[S.sub]||S.sub)+' – المستوى '+S.lv+(S.lv2?'+'+S.lv2+' (قسم مشترك)':'')+' – المرحلة '+S.ph+' – الأسبوع '+S.wk+' – '+((SPW[SUBC[S.sub]]||6)==6?'اليوم ':'الحصة ')+S.day}).join('، '):'';
 if(bad.length)msg+=(msg?'. ':'')+'تعذّر: '+bad.join('، ');$('imp-msg').textContent=msg;
-if(ok.length){var S=ok[0];$('subj').value=SUBC[S.sub]||$('subj').value;setSub();$('j-lv').value=lvKey(S.lv,S.lv2);fillPh();$('p-ph').value=String(S.ph);fillWk();$('p-wk').value=String(S.wk);fillDay();$('p-day').value=String(S.day);dailyMap()}});
+if(ok.length){var S=ok[0];$('subj').value=SUBC[S.sub]||$('subj').value;setSub();$('j-lv').value=lvKey(S.lv,S.lv2);fillPh();$('p-ph').value=String(S.ph);fillWk();$('p-wk').value=String(S.wk);fillDay();$('p-day').value=String(S.day);dailyMap();
+  /* مزامنة محددات بوابة المذكرة مع أول حصة مستوردة، لأنها مستقلة عن محددات الجذاذة. */
+  if($('m-ph')&&$('m-wk')&&$('m-day')){var _memoLv=(TT.classes&&TT.classes[0]&&TT.classes[0].lv)||LVS[S.lv-1];if(_memoLv){$('m-lv').value=_memoLv;$('m-lv').dispatchEvent(new Event('change',{bubbles:true}))}$('m-ph').value=String(S.ph);$('m-ph').dispatchEvent(new Event('change',{bubbles:true}));$('m-wk').value=String(S.wk);$('m-wk').dispatchEvent(new Event('change',{bubbles:true}));$('m-day').value=String(S.day);$('m-day').dispatchEvent(new Event('change',{bubbles:true}));if(document.querySelector('#p-m.on'))$('m-go').click()}
+}});
 
 
 /* ===== بطاقة «ابدأ بتحميل الحصص» + استيراد الحصص من بوابة المذكرة ===== */
 (function(){
 var st0=document.createElement('style');st0.textContent='.form>*{min-width:0}#imp-msg,.stc,.stc *{overflow-wrap:anywhere;word-break:break-word;min-width:0}.stc{max-width:100%}';document.head.appendChild(st0);
 var st=document.createElement('style');st.textContent='.stc{grid-column:1/-1;border-radius:16px;padding:12px 14px;margin:0 0 6px;border:2px solid #e0a21b;background:#fff4d6;color:#4a3300;font-family:Cairo,Tahoma,sans-serif;line-height:1.7}.stc.ok{border-color:#2f7d4f;background:#e6f4ea;color:#12411f}.stc b.t{display:block;font:800 17px Cairo,Tahoma,sans-serif;margin-bottom:2px}.stc ol{margin:6px 0 8px;padding-inline-start:22px;font-size:14.5px}.stc .stb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:12px;padding:12px;background:#1d3a8a;color:#fff;font:800 16px Cairo,Tahoma,sans-serif;cursor:pointer}.stc.ok .stb{background:#2f7d4f}.stc .stm{font-size:13.5px;margin-top:6px;word-break:break-word}';document.head.appendChild(st);
-function nSess(){var n=0,u={};try{JSON.parse(localStorage.getItem('muh.sess')||'[]').forEach(function(x){u[x.sub+'|'+x.lv+'|'+(x.lv2||0)+'|'+x.ph+'|'+x.wk+'|'+x.day]=1})}catch(e){}for(var k in u)n++;return n}
+function nSess(){var n=0,u={};try{JSON.parse(localStorage.getItem('muh.sess')||'[]').forEach(function(x){if(sessionHasComponents(x))u[x.sub+'|'+x.lv+'|'+(x.lv2||0)+'|'+x.ph+'|'+x.wk+'|'+x.day]=1})}catch(e){}for(var k in u)n++;return n}
 function hasTT(){try{return TT&&TT.days&&TT.days.some(function(d){return d&&d.length})}catch(e){return false}}
 var cards=[];
 function mk(parent,first){var c=document.createElement('div');c.className='stc';c.innerHTML='<b class="t"></b><div class="d"></div><button type="button" class="stb">📥 استيراد الحصص (ملفات pptx)</button><div class="stm"></div>';var f=parent.querySelector('.form');if(f)f.insertBefore(c,f.firstChild);else parent.insertBefore(c,parent.firstChild);c.querySelector('.stb').onclick=function(){var i=$('imp');if(i)i.click()};cards.push(c);return c}
@@ -2139,11 +2144,18 @@ $('tab-m').addEventListener('click',function(){cur='m';document.querySelectorAll
 function sessText(S){if(S.kind=='fr')return {les:S.secs.map(function(x){return x.name}),obj:S.obj||[]};
   if(S.kind=='phases')return {les:[(S.title?'درس اليوم: '+S.title:'')].concat(S.secs.map(function(x){return x.name})).filter(Boolean),obj:S.obj};
   return {les:S.secs.map(function(x,i){return i?x.name+': '+cut(String(x.sub||'').replace(/\s*(\.{2,}|…|ـ+)\s*/g,' – ').replace(/(–\s*){2,}/g,'– ').replace(/\s+/g,' ').trim(),260):'افتتاح الحصة: '+(x.sub.replace(/\.$/,'')||'الطلاقة')}),obj:S.obj}}
-function slotContent(s0,lv,P,w,k,nWeek){var mp=subjMap(s0),s=mp.s;
+function slotContent(s0,lv,P,w,k,nWeek,sessionDay){var mp=subjMap(s0),s=mp.s;
   if(s0=='الدعم')return {les:['حصة الدعم والتقوية'],obj:[]};
   if(s=='استراحة'||s=='أخرى')return null;
-  if(P==1)return TARL[s]?{les:['الدعم المكثف وفق المستوى المناسب (TaRL): العمل في مجموعات حسب المستوى'],obj:['تقدم المتعلمين نحو المستوى الموالي في مجموعتهم'],src:'tarl'}:{les:['……'],obj:[]};
-  var S=SESS[sKey(s,lv,P,w,k)];if(S){var t=sessText(S);t.src='sess';return t}
+  /* اليوم هو مفتاح الحصة الرسمية؛ k يبقى لترتيب الحصة داخل استعمال الزمن فقط. */
+  var S=SESS[sKey(s,lv,P,w,sessionDay||k)];if(S){var t=sessText(S);t.src='sess';return t}
+  if(P==1){
+    if(TARL[s])return {les:['الدعم المكثف وفق المستوى المناسب (TaRL): العمل في مجموعات حسب المستوى'],obj:['تقدم المتعلمين نحو المستوى الموالي في مجموعتهم'],src:'tarl'};
+    /* مواد خارج المواد الأربع للرائدة تستمر وفق توزيعها المرحلي العادي خلال المرحلة الأولى. */
+    var nonPioneer=['التربية الإسلامية','التاريخ','الجغرافيا','التربية المدنية','التربية الفنية'];
+    if(mode=='p'&&nonPioneer.indexOf(s0)>-1){var p1Items=[],p1ci=0;compsFor(s,lv).forEach(function(c){p1ci++;if(mp.c&&c!==mp.c)return;var a=LES[s+'|'+lv+'|'+c];if(!a||Array.isArray(a)||!a[NR])return;a[NR].forEach(function(x){if(inWk(x[1],w))p1Items.push({t:(mp.c||s!=='اللغة العربية'?'':c+': ')+x[0],o:x[2]||p1ci*1000})})});p1Items.sort(function(a,b){return a.o-b.o});if(p1Items.length)return {les:p1Items.map(function(x){return x.t}),obj:[],src:'dist'};}
+    return {les:['……'],obj:[]};
+  }
   var core=['اللغة العربية','اللغة الفرنسية'].indexOf(s)>-1;
   if(w==5&&core)return {les:['التوليف والمراجعة: أراجع ما تعلمته في المرحلة '+P],obj:[]};
   if(w==6&&core)return {les:['وضعيات التقويم الفردية والجماعية – المرحلة '+P],obj:[]};
@@ -2158,6 +2170,8 @@ function slotContent(s0,lv,P,w,k,nWeek){var mp=subjMap(s0),s=mp.s;
 function tmins(a,b){if(!a||!b)return 0;var x=a.split(':'),y=b.split(':');return (+y[0]*60+ +y[1])-(+x[0]*60+ +x[1])}
 var MSIDE={fr:['اللغة الفرنسية','الرياضيات','النشاط العلمي'],ar:['اللغة العربية','التربية الإسلامية','التاريخ','الجغرافيا','التربية المدنية','الاجتماعيات','التربية الفنية','التربية البدنية']};
 function memoOK(s){if(['استراحة','الدعم','أخرى'].indexOf(s)>-1)return true;var st=$('m-style').value,mine=TT.subs||[];
+  /* في المدرسة الرائدة تُدرج المواد غير الرائدة تلقائياً متى كانت موجودة في استعمال الزمن، بصرف النظر عن اختيار مواد الريادة الأربع. */
+  if(mode=='p'&&['التربية الإسلامية','التاريخ','الجغرافيا','التربية المدنية','التربية الفنية'].indexOf(s)>-1)return true;
   if(st=='fr'||st=='ar'){var side=MSIDE[st],both=mine.filter(function(x){return side.indexOf(x)>-1});return (both.length?both:side).indexOf(s)>-1}
   return !mine.length||mine.indexOf(s)>-1}
 /* رقم الجذاذة/الخطاطة: يبدأ من المرحلة 2 ويستمر عبر المراحل؛ الأسابيع 1–4 كاملة، الأسبوع 5 أربع حصص للعربية والفرنسية، والأسبوع 6 لا يُحسب */
@@ -2169,13 +2183,22 @@ function memoData(day){var K=function(r){return (+r.c||0)+'|'+r.s},cnt={},tot={}
   var skip=[];(TT.days[day-1]||[]).slice().sort(function(a,b){return (a.f||'').localeCompare(b.f||'')}).filter(function(r){if(r.s=='التربية البدنية')return false;var ok=memoOK(r.s);if(!ok&&skip.indexOf(r.s)<0)skip.push(r.s);return ok}).forEach(function(r){
     if(r.s=='استراحة'){blocks.push({brk:1,f:r.f,t:r.t,d:tmins(r.f,r.t)});bk=null;return}
     var c=+r.c||0;if(!bk||bk.c!==c){bk={c:c,rows:[],f:r.f,t:r.t};blocks.push(bk)}bk.t=r.t;
-    var kk=K(r);cnt[kk]=(cnt[kk]||0)+1;var k=cnt[kk],cl=TT.classes[c]||TT.classes[0],C=slotContent(r.s,cl.lv,P,w,k,tot[kk]||1);
-    var CS=cl.lv2?SESS[sKey(subjMap(r.s).s,lvKeyN(cl.lv,cl.lv2),P,w,k)]:null;if(CS){C=sessText(CS);C.les=['◄ حصة القسم المشترك '+cl.lv.replace(' ابتدائي','')+' و'+cl.lv2.replace(' ابتدائي','')+':'].concat(C.les);C.src='sess'}
-    else if(cl.lv2&&mode=='p'&&P>1&&r.s=='اللغة العربية'){var n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['لا توجد حصة مستوردة للقسم المشترك '+n1+' و'+n2+' لهذا اليوم'],obj:[],src:'none'}}
-    else if(cl.lv2&&C&&r.s!='الدعم'){var C2=slotContent(r.s,cl.lv2,P,w,k,tot[kk]||1)||{les:['……'],obj:[]},n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['◄ المستوى '+n1+':'].concat(C.les,['◄ المستوى '+n2+':'],C2.les),obj:(C.obj||[]).concat(C2.obj||[]),src:(C.src=='none'&&C2.src=='none')?'none':'mix'}}
-    if(cl.lv2&&!CS&&P>1&&mode=='p'&&r.s=='اللغة العربية'&&nosh.indexOf(cl.lv+'+'+cl.lv2)<0)nosh.push(cl.lv+'+'+cl.lv2);
-    if(r.s!='أخرى'&&(!C||C.src=='none'||C.les[0]=='……'))miss.push(r.s);
-    var S=SESS[sKey(r.s,cl.lv,P,w,k)];
+    var kk=K(r);cnt[kk]=(cnt[kk]||0)+1;var k=cnt[kk],cl=TT.classes[c]||TT.classes[0],baseSub=subjMap(r.s).s;
+    /* ملفات الوزارة مفهرسة باليوم الفعلي (1..6)، لا بعدد مرات ظهور المادة في جدول الأستاذ. */
+    var official=SESS[sKey(baseSub,cl.lv,P,w,day)]||null;
+    var shared=cl.lv2?SESS[sKey(baseSub,lvKeyN(cl.lv,cl.lv2),P,w,day)]:null;
+    var second=cl.lv2?SESS[sKey(baseSub,cl.lv2,P,w,day)]||null:null;
+    var C=official?sessText(official):slotContent(r.s,cl.lv,P,w,k,tot[kk]||1,day);
+    if(official)C.src='sess';
+    if(shared){C=sessText(shared);C.les=['◄ حصة القسم المشترك '+cl.lv.replace(' ابتدائي','')+' و'+cl.lv2.replace(' ابتدائي','')+':'].concat(C.les);C.src='sess'}
+    else if(cl.lv2&&mode=='p'&&P>1&&r.s=='اللغة العربية'&&!official&&!second){var n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['لا توجد حصة مستوردة للقسم المشترك '+n1+' و'+n2+' لهذا اليوم'],obj:[],src:'none'}}
+    else if(cl.lv2&&C&&r.s!='الدعم'){
+      var C2=second?sessText(second):(slotContent(r.s,cl.lv2,P,w,k,tot[kk]||1,day)||{les:['……'],obj:[]});if(second)C2.src='sess';
+      var n1=cl.lv.replace(' ابتدائي',''),n2=cl.lv2.replace(' ابتدائي','');C={les:['◄ المستوى '+n1+':'].concat(C.les||[],['◄ المستوى '+n2+':'],C2.les||[]),obj:(C.obj||[]).concat(C2.obj||[]),src:(C.src=='none'&&C2.src=='none')?'none':(C.src=='sess'&&C2.src=='sess'?'sess':'mix')}
+    }
+    if(cl.lv2&&!shared&&!official&&!second&&P>1&&mode=='p'&&r.s=='اللغة العربية'&&nosh.indexOf(cl.lv+'+'+cl.lv2)<0)nosh.push(cl.lv+'+'+cl.lv2);
+    if(r.s!='أخرى'&&(!C||C.src=='none'||!C.les||!C.les.some(function(x){return String(x||'').trim()&&String(x).trim()!=='……'})))miss.push(r.s);
+    var S=shared||official||second;
     bk.rows.push({num:jadNum(r.s,P,w,k,tot[kk]||1),src:C?C.src:'',sub:C&&C.sub||'',s:r.s,d:tmins(r.f,r.t),k:k,n:tot[kk]||1,les:C?C.les:['……'],obj:C&&C.obj?C.obj:[],fr:!!(S&&S.lang=='fr')})});
   while(blocks.length&&blocks[blocks.length-1].brk)blocks.pop();while(blocks.length&&blocks[0].brk)blocks.shift();
   blocks=snapPeriods(blocks);
@@ -2262,7 +2285,7 @@ function memo(){var day=+$('m-day').value,slots=TT.days[day-1]||[];
       var parts=[];B.rows.forEach(function(R){arParts(R).forEach(function(x,j){x.first=j===0;x.R=R;parts.push(x)})});
       var LVN=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],tag='',mg=[],seenR=[];
       parts.forEach(function(x){var R=x.R;R.__pi=R.__pi||0;R.__nP=R.__nP||parts.filter(function(y){return y.R===R&&!y.lv}).length;x.oi=x.lv?-1:R.__pi++;x.nR=R.__nP;
-        if(x.lv){var mm=String(x.t).match(/(الأول|الثاني|الثالث|الرابع|الخامس|السادس)/);tag=(mm&&!/القسم المشترك/.test(x.t))?'م '+(LVN.indexOf(mm[1])+1):'';return}
+        if(x.lv){var sm=String(x.t).match(/^.*حصة القسم المشترك\s+(.+?)\s*$/);if(sm)tag='قسم مشترك: '+sm[1].replace(/[:：]$/,'');else{var mm=String(x.t).match(/(الأول|الثاني|الثالث|الرابع|الخامس|السادس)/);tag=mm?'م '+(LVN.indexOf(mm[1])+1):''}return}
         var tg=(R.s=='الدعم'||x.c=='الدعم')?'':tag,h=x.t.map(function(y,yi){var o=R.fr?'':sessObj(R,x)||'';if(!o)o=R.fr?'':objFor(R.s,x.c,y);return '<div>'+(tg?'<b>'+tg+':</b> ':'')+esc(y)+(o?'<div class="ob" style="font-size:.86em;color:#355;margin:1px 0 4px">◂ الهدف: '+esc(o)+'</div>':'')+'</div>'}).join('');
         var k=R.s+'|'+x.c,ex=tg?mg.filter(function(m){return m.k==k})[0]:null;
         if(ex){ex.h+=h;return}
@@ -3405,7 +3428,7 @@ var _sc=slotContent;
 /* مرحلة الرائدة n ↔ وحدة n-1 في المواد غير الرائدة (لا تُدرَّس في المرحلة 1) */
 function unitWeek(P,w){P=+P||1;w=+w||1;if(P<=1)return 0;var u=P-1,ws=Object.keys(UN).filter(function(x){return UN[x]==u}).map(Number).sort(function(x,y){return x-y});if(!ws.length)return 99;return w<=ws.length?ws[w-1]:ws[ws.length-1]+1}
 slotContent=function(s0,lv,P,w,k,n){if(reg())return regContent(s0,lv,+$('m-wn').value,k,n);
- if(SAMEP(subjMap(s0).s,lv)){var uw=unitWeek(P,w);if(!uw)return {les:['لا تُدرَّس هذه المادة في المرحلة الأولى'],obj:[],src:'dist'};var rs=regContent(s0,lv,uw,k,n);if(rs&&rs.src!='none')return rs}
+ if(SAMEP(subjMap(s0).s,lv)){var uw=unitWeek(P,w);if(!uw){/* المرحلة الأولى: لا تُحذف مواد التفتح؛ تُدرج دروسها من الأسابيع الأولى للتوزيع العادي. */var p1wn=Math.min(6,Math.max(2,(+w||1)+1)),p1=regContent(s0,lv,p1wn,k,n);if(p1&&p1.src!='none')return p1;var p1base=_sc.apply(this,arguments);if(p1base&&p1base.les&&p1base.les.some(function(x){return String(x||'').trim()&&String(x).trim()!=='……'}))return p1base;return {les:['……'],obj:[],src:'none'}}var rs=regContent(s0,lv,uw,k,n);if(rs&&rs.src!='none')return rs}
  var r=_sc.apply(this,arguments);if(r&&r.src=='none'){var uw2=unitWeek(P,w);if(uw2){var r2=regContent(s0,lv,uw2,k,n);if(r2&&r2.src!='none')return r2}}return r};
 var _memo=memo;
 memo=function(){if(!reg())return _memo.apply(this,arguments);
