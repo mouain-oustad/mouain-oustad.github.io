@@ -5852,7 +5852,7 @@ document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class=
 '<details style="margin:12px 0"><summary style="cursor:pointer;color:var(--mute)">⚙ نسخة احتياطية وحذف القسم</summary><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button class="go" id="r-bak" type="button">⬇ نسخة احتياطية</button><label class="go" style="cursor:pointer">⬆ استعادة<input type="file" id="r-res" accept=".json" style="display:none"></label><button class="go" id="r-delc" type="button" style="background:#9a3a30">حذف هذا القسم</button><button class="go" id="r-dedup" type="button" style="background:#8a5a1a">🧹 حذف الأقسام المكررة</button></div><div class="note">🔒 الأسماء والنقط تُحفظ على هاتفك فقط. احتفظ بنسخة احتياطية لأن مسح بيانات المتصفح يحذفها.</div></details>'+
 '<div id="ros-out" class="sheet" style="display:none"></div></section>');
 document.querySelector('#tabs').insertAdjacentHTML('beforeend','<button role="tab" aria-selected="false" data-t="ros" id="tab-ros" style="--tb:#d7ecc9;--tt:#2c4d12">لائحة التلاميذ</button>');
-var tb=$('tab-ros');tb.onclick=function(){cur='ros';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-ros').classList.add('on');$('bar').classList.remove('on');draw()};
+var tb=$('tab-ros');var lastRosClass=null;tb.onclick=function(){var id=cls().id;if(lastRosClass!==id){$('ros-out').innerHTML='';$('ros-out').style.display='none';lastRosClass=id}cur='ros';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-ros').classList.add('on');$('bar').classList.remove('on');draw()};
 function sameLv(lv){lv=lv||cls().lv;return R.cl.filter(function(x){return x.lv==lv})}
 function goTo(lv,pos){var same=sameLv(lv);while(same.length<=pos){R.cl.push({id:Date.now()+same.length,lv:lv,st:[]});same=sameLv(lv)}R.cur=R.cl.indexOf(same[pos]);fire();$('ros-out').style.display='none';$('bar').classList.remove('on');draw()}
 function docI(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}var I=(typeof TT!='undefined'&&TT.info)||{};return {acad:D.acad||'',dir:D.dir||'',school:D.school||I.school||'',name:D.name||I.name||''}}
@@ -5875,7 +5875,7 @@ $('r-out').onclick=function(){var c=cls();if(!c.st.length){alert('اللائحة
  var I=docI(),V=function(x){return x?E(x):'……………………'},lg=window.LOGO_MIN?'<img src="'+window.LOGO_MIN+'" alt="" style="height:64px">':'',yr=c.yr||(function(){var d=new Date(),y=d.getFullYear();return d.getMonth()>=7?y+'/'+(y+1):(y-1)+'/'+y})(),T='border:1px solid #000;padding:3px 4px;',n=c.st.length,
  hasId=c.st.some(function(s){return s.id}),hasD=c.st.some(function(s){return s.dob});
  var rh=Math.max(5.4,Math.min(9,212/(n+1))).toFixed(1),fs=rh<6.5?12:13.5;
- var h='<div dir="rtl" style="font:13px/1.5 Cairo,Tahoma,sans-serif;color:#000"><table style="width:100%;border:2px solid #000;border-collapse:collapse;margin-bottom:8px"><tr><td style="width:36%;border:0;padding:6px 10px;font-size:12.5px;line-height:1.8"><b>الأكاديمية:</b> '+V(I.acad)+'<br><b>المديرية:</b> '+V(I.dir)+'<br><b>المؤسسة:</b> '+V(I.school)+'</td><td style="border:0;text-align:center;width:16%">'+lg+'</td><td style="border:0;padding:6px 10px;font-size:12.5px;line-height:1.8"><b>الأستاذ(ة):</b> '+V(I.name)+'<br><b>المستوى:</b> '+E(c.lv.replace(' ابتدائي',''))+(sameLv().length>1?' – الفوج '+(sameLv().indexOf(c)+1):'')+'<br><b>السنة الدراسية:</b> '+E(yr)+'</td></tr></table>'+
+ var h='<div dir="rtl" style="font:13px/1.5 Cairo,Tahoma,sans-serif;color:#000"><table style="width:100%;border:2px solid #000;border-collapse:collapse;margin-bottom:8px"><tr><td style="width:36%;border:0;padding:6px 10px;font-size:12.5px;line-height:1.8"><b>الأكاديمية:</b> '+V(I.acad)+'<br><b>المديرية:</b> '+V(I.dir)+'<br><b>المؤسسة:</b> '+V(I.school)+'</td><td style="border:0;text-align:center;width:16%">'+lg+'</td><td style="border:0;padding:6px 10px;font-size:12.5px;line-height:1.8"><b>الأستاذ(ة):</b> '+V(I.name)+'<br><b>المستوى:</b> '+E(c.lv.replace(' ابتدائي',''))+(c.g!=null?(+c.g?' – الفوج '+c.g:''):(sameLv().length>1?' – الفوج '+(sameLv().indexOf(c)+1):''))+'<br><b>السنة الدراسية:</b> '+E(yr)+'</td></tr></table>'+
  '<div style="text-align:center;font:800 20px Cairo,Tahoma,sans-serif;margin:6px 0">لائحة التلاميذ</div><div style="text-align:center;font-size:12px;margin-bottom:6px">عدد التلاميذ: '+n+'</div>'+
  '<table style="width:100%;border-collapse:collapse;font-size:'+fs+'px"><tr style="background:#d9d9d9;height:'+rh+'mm"><th style="'+T+'width:7%">ر.ت</th><th style="'+T+'">الاسم الكامل</th>'+(hasId?'<th style="'+T+'width:24%">رقم مسار</th>':'')+(hasD?'<th style="'+T+'width:24%">تاريخ الازدياد</th>':'')+'</tr>'+
  c.st.map(function(s,i){return '<tr style="height:'+rh+'mm"><td style="'+T+'text-align:center">'+(i+1)+'</td><td style="'+T+'white-space:nowrap">'+E(s.n)+'</td>'+(hasId?'<td style="'+T+'text-align:center">'+E(s.id||'')+'</td>':'')+(hasD?'<td style="'+T+'text-align:center">'+E(s.dob||'')+'</td>':'')+'</tr>'}).join('')+'</table></div>';
@@ -5978,9 +5978,12 @@ function massar(rows){var hasID=rows.some(function(r){return r.some(function(x){
  hdr.forEach(function(x,i){if(x==='النقطة'){var mx=parseFloat(String(sg[i]).replace(',','.'));grp.push({col:i,code:gr[i]||gr[i-1]||'',name:String(nr[i]||nr[i+1]||meta.sub||'').trim(),max:isFinite(mx)&&mx>0?mx:10})}});
  rows.forEach(function(r){var iD=-1;for(var i=0;i<r.length;i++){if(/^\d{5,}$/.test(String(r[i]||''))){iD=i;break}}if(iD<0)return;var o=st.filter(function(x){return x.id==String(r[iD])})[0];if(!o)return;o.sc=grp.map(function(g){var v=parseFloat(String(r[g.col]==null?'':r[g.col]).replace(',','.')),a=String(r[g.col+1]==null?'':r[g.col+1]).trim();return {s:isFinite(v)?v:null,a:a}})});
  meta.groups=grp;return {meta:meta,st:st}}
-$('r-file').onchange=async function(){var f=this.files[0];this.value='';if(!f)return;var nm=f.name.toLowerCase(),rows;
+$('r-file').onchange=async function(){var f=this.files[0];this.value='';if(!f)return;var nm=f.name.toLowerCase(),rows,initialRoster=cls(),fromRoster=$('p-ros').classList.contains('on');
  try{if(/\.docx$/.test(nm))rows=await readDocx(await f.arrayBuffer());else if(/\.doc$/.test(nm)){alert('صيغة doc القديمة غير مدعومة. افتح الملف في Word واحفظه بصيغة docx ثم أعد المحاولة.');return}else if(/\.xlsx$/.test(nm))rows=await readXlsx(await f.arrayBuffer());else if(/\.(csv|txt|tsv)$/.test(nm))rows=readCsv(await f.text());else{alert('الصيغة غير مدعومة. افتح الملف في Excel واحفظه بصيغة xlsx أو csv ثم أعد المحاولة.');return}}catch(e){alert('تعذرت قراءة الملف. جرّب حفظه بصيغة xlsx أو csv.');return}
- if(!rows||rows.length<2){alert('لم أجد بيانات في الملف.');return}var M=massar(rows);if(M)wizM(M,f.name);else{var EG=evaluationGrid(rows);if(EG)wizEvaluation(EG,f.name);else{var LK=livret(rows);if(LK)wizL(LK,f.name);else wiz(rows)}}};
+ if(fromRoster&&(cls()!==initialRoster||!$('p-ros').classList.contains('on'))){alert('تغير القسم أثناء القراءة. أعد اختيار الملف في القسم المطلوب.');return}
+ if(!rows||rows.length<2){alert('لم أجد بيانات في الملف.');return}var M=massar(rows),EG=M?null:evaluationGrid(rows),LK=(M||EG)?null:livret(rows),obj=M||EG||LK;
+ if($('p-ros').classList.contains('on')&&obj&&obj.meta&&obj.meta.lv){var lvFile=LV.filter(function(l){return xnorm(obj.meta.lv).indexOf(xnorm(l.split(' ')[0]))>-1})[0];if(lvFile&&lvFile!==cls().lv){alert('مستوى الملف مختلف عن المستوى المختار. اختر المستوى الصحيح ثم أعد الاستيراد.');return}}
+ if(M)wizM(M,f.name);else if(EG)wizEvaluation(EG,f.name);else if(LK)wizL(LK,f.name);else wiz(rows)};
 
 function wizM(M,fname){var m=M.meta,c=cls(),have=c.st.length;
  var h='<div class="note" style="margin:10px 0"><b>تعرّفتُ على ملف مسار.</b><br>'+['المادة: '+(m.sub||'—'),'النقطة: '+(m.ev||'—'),'الدورة: '+(m.ses||'—'),'المستوى: '+(m.lv||'—'),'عدد التلاميذ: '+M.st.length,'أعمدة النقط: '+M.meta.groups.length+' (المملوءة: '+M.st.reduce(function(n,x){return n+(x.sc||[]).filter(function(y){return y.s!=null}).length},0)+')'].map(E).join(' | ')+'</div>'+
@@ -6017,7 +6020,7 @@ function wizL(Lv,fname){var m=Lv.meta,c=cls(),SUBL=['اللغة العربية',
   if(m.yr)c.yr=m.yr;window.LIVRETS.save();fire();$('r-wiz').innerHTML='';draw();alert('تم استيراد ملف الكفايات ('+sub+' – المرحلة '+Lv.stage+')'+(add?'، وأُضيف '+add+' تلميذا.':'.'))};
  function have0(){return false}}
 /* ---- استيراد تلقائي لعدة ملفات (نقط الدورة) ---- */
-window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{},bad:[]};var firstC=null,usedC=[];
+window.BLIMPORT=async function(files,targetClass){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{},bad:[]};var firstC=null,usedC=[];
  function pickCls(t){var cur=cls(),lf=t?LV.filter(function(l){return String(t).indexOf(l.split(' ')[0])>-1})[0]:null;if(!lf)return cur;
   if(cur.lv==lf)return cur;var f=R.cl.filter(function(x){return x.lv==lf});if(f.length)return f[0];
   if(!cur.st.length){cur.lv=lf;return cur}
@@ -6025,7 +6028,7 @@ window.BLIMPORT=async function(files){var out={n:0,add:0,sc:0,lv:0,ses:{},subs:{
  for(var q=0;q<files.length;q++){var f=files[q],nm=f.name.toLowerCase(),rows;
   try{if(/\.xlsx$/.test(nm))rows=await readXlsx(await f.arrayBuffer());else if(/\.(csv|txt|tsv)$/.test(nm))rows=readCsv(await f.text());else{out.bad.push(f.name);continue}}catch(e){out.bad.push(f.name);continue}
   if(!rows||rows.length<2){out.bad.push(f.name);continue}
-  var M=massar(rows),EG=null,Lv=null;if(!M){EG=evaluationGrid(rows);if(!EG)Lv=livret(rows)}var mm=M?M.meta:(EG?EG.meta:(Lv?Lv.meta:{})),c=pickCls(mm.lv);if(!firstC)firstC=c;if(usedC.indexOf(c)<0)usedC.push(c);
+  var M=massar(rows),EG=null,Lv=null;if(!M){EG=evaluationGrid(rows);if(!EG)Lv=livret(rows)}var mm=M?M.meta:(EG?EG.meta:(Lv?Lv.meta:{})),c=targetClass||pickCls(mm.lv);if(targetClass&&mm.lv){var fileLv=LV.filter(function(l){return xnorm(mm.lv).indexOf(xnorm(l.split(' ')[0]))>-1})[0];if(fileLv&&fileLv!==targetClass.lv){out.bad.push(f.name+' (مستوى مختلف)');continue}}if(!firstC)firstC=c;if(usedC.indexOf(c)<0)usedC.push(c);
   if(M){var m=M.meta,have=c.st.length;
    if(!have)c.st=M.st.map(function(x){return Object.assign({},x)});
    else M.st.forEach(function(x){var o=c.st.filter(function(y){return y.id==x.id||(x.code&&y.code==x.code)})[0];if(o){o.id=x.id;o.code=x.code||o.code;o.dob=x.dob||o.dob}else{c.st.push(Object.assign({},x));out.add++}});
@@ -6749,7 +6752,7 @@ document.querySelector('#bar').insertAdjacentHTML('beforebegin','<section class=
 '<div id="gr-st" class="note" style="margin:8px 0"></div><div class="sheet" id="gr-out"></div></section>');
 document.querySelector('#tabs').insertAdjacentHTML('beforeend','<button role="tab" aria-selected="false" data-t="gr" id="tab-gr" style="--tb:#ffe8c7;--tt:#6a4300">شبكة التنقيط</button>');
 var tb=$('tab-gr'),tbl=$('tab-bl');if(tbl)tbl.parentNode.insertBefore(tb,tbl);
-tb.onclick=function(){cur='gr';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-gr').classList.add('on');$('bar').classList.toggle('on',!!$('gr-out').innerHTML.trim());fill()};
+var lastGrClass=null;tb.onclick=function(){var id=C().id;if(lastGrClass!==id){$('gr-out').innerHTML='';lastGrClass=id}cur='gr';document.querySelectorAll('#tabs button').forEach(function(x){x.setAttribute('aria-selected',x===tb?'true':'false')});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});$('p-gr').classList.add('on');$('bar').classList.toggle('on',!!$('gr-out').innerHTML.trim());fill()};
 function C(){return ROSTER.cur()}
 function sameLv(lv){var R=ROSTER.get();lv=lv||C().lv;return R.cl.filter(function(x){return x.lv==lv})}
 function goTo(lv,pos){var R=ROSTER.get(),same=sameLv(lv);while(same.length<=pos){R.cl.push({id:Date.now()+same.length,lv:lv,st:[]});same=sameLv(lv)}R.cur=R.cl.indexOf(same[pos]);ROSTER.save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}});$('gr-out').innerHTML='';$('bar').classList.remove('on');fill()}
@@ -6762,14 +6765,14 @@ $('gr-cls').onchange=function(){var v=+this.value;goTo(C().lv,v>0?v-1:0)};
 ['name','ppr','acad','dir','school'].forEach(function(k){$('gi-'+k).addEventListener('input',function(){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}D[k]=this.value.trim();try{localStorage.setItem('muh.doc',JSON.stringify(D))}catch(e){}if(k=='acad')try{localStorage.setItem('muh.aca',D[k])}catch(e){}if(k=='dir')try{localStorage.setItem('muh.dir',D[k])}catch(e){}if(typeof TT!='undefined'&&(k=='name'||k=='school')){TT.info=TT.info||{};TT.info[k]=D[k];try{ttSave()}catch(e){}}})});
 $('gr-imp').onclick=function(){$('gr-file').click()};
 $('gr-file').onchange=async function(){var fs=[].slice.call(this.files);this.value='';if(!fs.length)return;$('gr-st').textContent='جارٍ قراءة الملفات…';
- var o=await window.BLIMPORT(fs),ss=Object.keys(o.ses);if(ss.length==1)$('gr-ses').value=/الثانية|2/.test(ss[0])?'2':'1';
+ var o;try{o=await window.BLIMPORT(fs,C())}catch(e){$('gr-st').textContent='تعذرت قراءة الملفات. أعد المحاولة.';return}var ss=Object.keys(o.ses);if(ss.length==1)$('gr-ses').value=/الثانية|2/.test(ss[0])?'2':'1';
  fill();$('gr-st').innerHTML='<b>تم استيراد '+o.n+' ملف'+(o.bad.length?'، وتعذّر '+o.bad.length+': '+o.bad.map(E).join('، '):'')+'.</b> المواد: '+(Object.keys(o.subs).map(E).join('، ')||'—')+'. اضغط «استخراج شبكة التنقيط».'};
 /* ---------- بناء الشبكات ---------- */
 var BD='1.5px solid #000',CB='#cfe2f3',CG='#e2f0d9';
 function cell(t,st,ex){return '<td style="border:'+BD+';padding:2px 4px;text-align:center;'+(st||'')+'"'+(ex||'')+'>'+t+'</td>'}
 function banner(){return window.LOGO_BAN?'<div style="text-align:center"><img src="'+window.LOGO_BAN+'" alt="" style="height:70px"></div>':''}
 function yrOf(c){return c.yr||(function(){var d=new Date(),y=d.getFullYear();return d.getMonth()>=7?y+'/'+(y+1):(y-1)+'/'+y})()}
-function grpName(c){var s=sameLv();return (LVL.indexOf(c.lv)+1)+'APG'+(s.length>1?s.indexOf(c)+1:1)}
+function grpName(c){var s=sameLv(),g=c.g!=null?+c.g:(s.length>1?s.indexOf(c)+1:0);return (LVL.indexOf(c.lv)+1)+'APG'+(g?'-'+g:'')}
 function topBox(title,c){return banner()+'<table style="width:100%;border-collapse:separate;border-spacing:6px;margin:2px 0"><tr><td style="width:26%;border:'+BD+';padding:0"><table style="width:100%;border-collapse:collapse"><tr><td style="border:0;border-left:'+BD+';padding:5px;text-align:center;background:'+CB+';font-weight:700;width:45%">الموسم الدراسي</td><td style="border:0;padding:5px;text-align:center;font-weight:700">'+E(yrOf(c).replace('/',' - '))+'</td></tr></table></td><td style="border:'+BD+';padding:7px;text-align:center;font:800 17px Cairo,Tahoma,sans-serif">'+E(title)+'</td></tr></table>'}
 function infoA(c,I,sub){var lv=c.lv,g=grpName(c),L=function(t){return cell('<b>'+t+'</b>','background:'+CB+';width:11%')},V=function(t){return cell(E(t||''),'width:22%')};
  return '<table style="width:100%;border-collapse:collapse;margin:6px 0;font-size:12px"><tr>'+V(I.acad)+L('الأكاديمية')+V(I.dir)+L('المديرية الإقليمية')+V(I.school)+L('المؤسسة')+'</tr><tr>'+V(I.name)+L('اسم الأستاذ')+V(lv)+L('المستوى الدراسي')+V(sub)+L('المادة')+'</tr><tr>'+cell('','','colspan="2"')+cell('<b>'+E(g)+'</b>','background:'+CG)+L('الفوج')+cell('','','colspan="2"')+'</tr></table>'}
@@ -6795,7 +6798,7 @@ function gridB(c,I,sesN,skip){var B=window.SCORES.of(c),keys=Object.keys(B).filt
  cl.forEach(function(x){H3+='<th style="border:'+BD+';padding:2px;background:#fff;font-size:11px">'+E(x.e)+'</th>'});
  var rows=c.st.map(function(s,ri){var id=window.SCORES.sid(s);return '<tr><td style="border:'+BD+';text-align:center;width:3%">'+(ri+1)+'</td><td style="border:'+BD+';padding:2px 6px;white-space:nowrap;font-weight:600">'+E(s.n)+'</td>'+cl.map(function(x){var a=[];x.S.forEach(function(S){var o=S.d[id];if(o&&o.s!=null)a.push(o.s/(S.max||10)*10)});return '<td style="border:'+BD+';text-align:center;font-size:11px">'+(a.length?nv2(a.reduce(function(p,q){return p+q},0)/a.length):'')+'</td>'}).join('')+'</tr>'}).join('');
  var L=function(t,v){return '<div style="margin:2px 0"><b>'+t+'</b> '+E(v||'……………')+'</div>'};
- return '<div class="grpage" style="page-break-after:always;break-after:page"><table style="width:100%;border:'+BD+';border-collapse:collapse;margin-bottom:6px"><tr><td style="border:0;width:36%;padding:6px 10px;font-size:12.5px;line-height:1.7;text-align:right">'+L('المستوى:',c.lv.replace(' ابتدائي','')+(sameLv().length>1?' – الفوج '+(sameLv().indexOf(c)+1):''))+L('المديرية الإقليمية:',I.dir)+L('المؤسسة:',I.school)+'</td><td style="border:0;text-align:center;width:28%">'+(window.LOGO_BAN?'<img src="'+window.LOGO_BAN+'" alt="" style="width:100%;max-height:78px;object-fit:contain">':'')+'</td><td style="border:0;padding:6px 10px;font-size:12.5px;line-height:1.7;text-align:right">'+L('الأستاذ(ة):',I.name)+L('رقم التأجير:',I.ppr)+L('الموسم الدراسي:',yrOf(c))+'</td></tr></table>'+
+ return '<div class="grpage" style="page-break-after:always;break-after:page"><table style="width:100%;border:'+BD+';border-collapse:collapse;margin-bottom:6px"><tr><td style="border:0;width:36%;padding:6px 10px;font-size:12.5px;line-height:1.7;text-align:right">'+L('المستوى:',c.lv.replace(' ابتدائي','')+(c.g!=null?(+c.g?' – الفوج '+c.g:''):(sameLv().length>1?' – الفوج '+(sameLv().indexOf(c)+1):'')))+L('المديرية الإقليمية:',I.dir)+L('المؤسسة:',I.school)+'</td><td style="border:0;text-align:center;width:28%">'+(window.LOGO_BAN?'<img src="'+window.LOGO_BAN+'" alt="" style="width:100%;max-height:78px;object-fit:contain">':'')+'</td><td style="border:0;padding:6px 10px;font-size:12.5px;line-height:1.7;text-align:right">'+L('الأستاذ(ة):',I.name)+L('رقم التأجير:',I.ppr)+L('الموسم الدراسي:',yrOf(c))+'</td></tr></table>'+
  '<div style="border:'+BD+';text-align:center;font:800 16px Cairo,Tahoma,sans-serif;padding:4px;margin:6px 0">شبكة تفريغ نتائج المراقبة المستمرة '+E(sesN)+'</div>'+
  '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr><th rowspan="3" style="border:'+BD+';width:3%;background:#000;color:#fff">#</th><th rowspan="3" style="border:'+BD+';background:#fff;min-width:130px">الاسم والنسب</th>'+H1+'</tr><tr>'+H2+'</tr><tr>'+H3+'</tr>'+rows+'</table></div>'}
 $('gr-go').onclick=function(){var c=C();if(!c.st.length){alert('لا يوجد تلاميذ في هذا القسم. أدخل ملفات مسار أولا.');return}
@@ -8106,16 +8109,22 @@ var PAGES=[
  {id:'gc',panel:'p-gc',tab:'tab-gc',required:false},
  {id:'un',panel:'p-un',tab:'tab-un',required:true},
  {id:'rp',panel:'p-rp',tab:'tab-rp',required:true},
- {id:'bl',panel:'p-bl',tab:'tab-bl',required:true}
+ {id:'bl',panel:'p-bl',tab:'tab-bl',required:true},
+ {id:'gr',panel:'p-gr',tab:'tab-gr',required:true},
+ {id:'ros',panel:'p-ros',tab:'tab-ros',required:false}
 ];
 var css=document.createElement('style');
 css.textContent='.cpk{margin:0 0 12px;padding:8px 12px;border:1.5px solid #3f6f9a;border-radius:14px;background:#eef4fa}.cpk b{display:block;font-size:12px;color:#1d3a5a;margin-bottom:4px}.cpk select{width:100%;font:700 15px Cairo,Tahoma,sans-serif;padding:8px;border-radius:10px;border:1px solid #3f6f9a;background:#fff}.mctx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 12px;padding:10px;border:1.5px solid #d5dfeb;border-radius:14px;background:#f7faff}.mctx-opt{min-width:0;border:1px solid #cbd6e4;border-radius:11px;background:#fff;overflow:hidden}.mctx-opt summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 11px;font:700 14px Cairo,Tahoma,sans-serif;color:#203957}.mctx-opt summary::-webkit-details-marker{display:none}.mctx-opt summary:after{content:"⌄";font-size:18px;color:#52708f}.mctx-opt[open] summary:after{content:"⌃"}.mctx-val{font-size:12px;color:#315e91;font-weight:800;white-space:nowrap}.mctx-body{padding:0 10px 10px}.mctx-body select{width:100%;box-sizing:border-box;border:1px solid #c7d2df;border-radius:9px;background:#fff;padding:9px 10px;font:700 14px Cairo,Tahoma,sans-serif;color:#203957}.mctx-excel{grid-column:1/-1;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;border-radius:11px;background:#2d6a4f;color:#fff;padding:11px 13px;font:700 14px Cairo,Tahoma,sans-serif;cursor:pointer}.mctx-excel small{font:700 12px Cairo,Tahoma,sans-serif;color:#fff}.mctx-excel .req{color:#ffe2e2}.mctx-status{grid-column:1/-1;margin:0;font:500 12px/1.7 Cairo,Tahoma,sans-serif;color:#5b6878}.mctx-status.ok{color:#24613c}.mctx-status.warn{color:#a33}.mctx-wiz-host:empty{display:none}.mctx-wiz-host{grid-column:1/-1}@media(max-width:420px){.mctx{grid-template-columns:1fr}}@media print{.cpk,.mctx{display:none!important}}#p-rp #rp-up,#p-bl #bl-imp,#p-un #up-imp{display:none!important}';
+css.textContent+='#p-ros #r-tab{min-width:0}#p-ros #r-tab input{box-sizing:border-box;min-width:0}#p-ros #r-wiz .scroll{max-width:100%;overflow-x:auto}#p-ros #r-out{display:block}#p-gr #gr-imp,#p-ros #r-ok{display:none!important}';
 document.head.appendChild(css);
-var HID=[['gr-lv','gr-cls'],['rp-lv','rp-cls'],['bl-lv','bl-cls']];
+var HID=[['gr-lv','gr-cls'],['rp-lv','rp-cls'],['bl-lv','bl-cls'],['r-lv','r-cls','r-nm','r-file']];
 HID.forEach(function(a){a.forEach(function(id){var e=document.getElementById(id);if(e&&e.closest('label'))e.closest('label').style.display='none'})});
 function opts(){var R=ROSTER.get();return R.cl.map(function(x,i){return '<option value="'+i+'"'+(i==R.cur?' selected':'')+'>'+( /^قسم/.test(ROSTER_LABEL(i))?'':'قسم ')+E(ROSTER_LABEL(i))+'</option>'}).join('')}
-/* تبقى آلية اختيار القسم القديمة في «شبكة التنقيط» فقط؛ لم تُدرج ضمن البوابات الأربع المستهدفة. */
-var pg=document.getElementById('p-gr');if(pg){var d=document.createElement('div');d.className='cpk';d.innerHTML='<b>اختر القسم الذي تريد استخراج الوثيقة له</b><select class="cpick" aria-label="القسم"></select>';pg.insertBefore(d,pg.firstChild)}
+/* v85: إخفاء أدوات تسمية القسم القديمة، مع إبقاء عناصرها البرمجية للتوافق. */
+var oldPick=document.getElementById('r-pick');if(oldPick){var oldRow=oldPick.parentElement;oldRow.style.display='none';var backup=document.getElementById('r-bak');var advanced=backup&&backup.closest('details');if(advanced){var legacy=document.createElement('label');legacy.style.cssText='display:block;margin:8px 0';legacy.textContent='الأقسام السابقة المحفوظة (بما فيها المشتركة)';oldPick.style.cssText='display:block;width:100%;margin-top:6px';legacy.appendChild(oldPick);advanced.insertBefore(legacy,backup.parentElement)}}
+['r-ok','gr-imp'].forEach(function(id){var b=document.getElementById(id);if(b)b.style.display='none'});
+var rosGo=document.getElementById('r-out'),rosPanel=document.getElementById('p-ros');
+if(rosGo&&rosPanel){rosGo.textContent='أنشئ لائحة التلاميذ';rosGo.style.width='100%';rosGo.style.margin='10px 0';var add=document.getElementById('r-add');if(add){add.parentElement.insertAdjacentElement('afterend',rosGo);add.textContent='+ إضافة تلميذ يدوياً'}var sum=document.getElementById('r-sum');if(sum){var label=document.createElement('div');label.style.cssText='font-weight:700;margin-top:12px';label.textContent='لائحة الأسماء – إدخال وتعديل يدوي';sum.parentNode.insertBefore(label,sum)}}
 function sv(l){return String(l||'').replace(' ابتدائي','')}
 function syncTT(){var added=false;try{if(typeof TT=='undefined'||!TT.classes)return false;var R=ROSTER.get();
  TT.classes.forEach(function(c,i){if(!c||!c.lv)return;var n=String(c.n||'').trim(),nm=n||(c.lv2?sv(c.lv)+' و'+sv(c.lv2)+' (مشترك)':'');
@@ -8132,23 +8141,26 @@ function renderOne(P){var root=pageRoot(P.id);if(!root)return;var c=current();if
  var lvSum=root.querySelector('[data-sum="level"]'),gSum=root.querySelector('[data-sum="group"]');
  if(lvSum)lvSum.textContent='المستوى '+(LV.indexOf(c.lv)+1||'—');
  if(gSum)gSum.textContent=g?'الفوج '+g:'لا شيء';
- var status=root.querySelector('.mctx-status');if(status){status.className='mctx-status'+(c.st&&c.st.length?' ok':P.required?' warn':'');status.textContent=c.st&&c.st.length?'لائحة التلاميذ متوفرة: '+c.st.length+' تلميذ(ة).':(P.required?'استيراد Excel إجباري قبل إنشاء الوثيقة.':'استيراد Excel اختياري؛ يمكن إنشاء الشبكة دون أسماء.');}
+ var status=root.querySelector('.mctx-status');if(status){status.className='mctx-status'+(c.st&&c.st.length?' ok':P.required?' warn':'');status.textContent=c.st&&c.st.length?'لائحة التلاميذ متوفرة: '+c.st.length+' تلميذ(ة).':(P.required?'استيراد Excel إجباري قبل إنشاء الوثيقة.':P.id==='ros'?'الاستيراد اختياري؛ يمكنك إضافة التلاميذ يدوياً.':'استيراد Excel اختياري؛ يمكن إنشاء الشبكة دون أسماء.');}
+ if(status&&P.id==='gr'){var marks=window.SCORES&&SCORES.of?SCORES.of(c):{},liv=window.LIVRETS&&LIVRETS.all?LIVRETS.all()[c.id]||{}:{};var has=Object.keys(marks||{}).length||Object.keys(liv).length;status.className='mctx-status'+(has?' ok':' warn');status.textContent=has?'بيانات مستوردة متوفرة لهذا القسم — '+c.st.length+' تلميذ(ة).':'استيراد ملفات Excel من مسار إجباري لاستخراج شبكة التنقيط.';}
 }
 function renderAll(){[].forEach.call(PAGES,function(P){renderOne(P)});var cp=document.querySelector('#p-gr .cpick');if(cp)cp.innerHTML=opts()}
 function fire(){ROSTER.save();ROSTER.onChange.forEach(function(f){try{f()}catch(e){}});renderAll()}
 function getOrCreate(lv,g){var a=same(lv),c=null;for(var i=0;i<a.length;i++){if(gval(a[i],a)===g){c=a[i];break}}
- if(!c){c={id:Date.now()+ROSTER.get().cl.length,lv:lv,g:g,st:[]};ROSTER.get().cl.push(c)}
+ if(!c){var legacyGroups=a.map(function(x){return gval(x,a)});a.forEach(function(x,i){if(x.g==null||x.g==='')x.g=legacyGroups[i]});c={id:Date.now()+ROSTER.get().cl.length,lv:lv,g:g,st:[]};ROSTER.get().cl.push(c)}
  ROSTER.get().cur=ROSTER.get().cl.indexOf(c);fire();return c}
+function clear85(P){if(P.id==='ros'||P.id==='gr'){var o=document.getElementById(P.id+'-out');if(o){o.innerHTML='';if(P.id==='ros')o.style.display='none'}document.getElementById('bar').classList.remove('on');if(P.id==='ros')document.getElementById('r-wiz').innerHTML='';}}
 function chooseLevel(P,lv){var root=pageRoot(P.id),gs=root&&root.querySelector('.mctx-group'),wanted=gs?+gs.value:0,a=same(lv),c=null;
+ if(P.id==='ros'||P.id==='gr'){clear85(P);getOrCreate(lv,wanted);var dl=root.querySelector('details[data-kind="level"]');if(dl)dl.open=false;return;}
  for(var i=0;i<a.length;i++){if(gval(a[i],a)===wanted){c=a[i];break}}
  if(!c&&a.length)c=a[0];if(c){ROSTER.get().cur=ROSTER.get().cl.indexOf(c);fire()}else getOrCreate(lv,0);
  var d=root&&root.querySelector('details[data-kind="level"]');if(d)d.open=false;renderAll()}
-function chooseGroup(P,g){var root=pageRoot(P.id),lv=root&&root.querySelector('.mctx-level')?root.querySelector('.mctx-level').value:current().lv;getOrCreate(lv,+g||0);var d=root&&root.querySelector('details[data-kind="group"]');if(d)d.open=false;renderAll()}
+function chooseGroup(P,g){var root=pageRoot(P.id),lv=root&&root.querySelector('.mctx-level')?root.querySelector('.mctx-level').value:current().lv;clear85(P);getOrCreate(lv,+g||0);var d=root&&root.querySelector('details[data-kind="group"]');if(d)d.open=false;renderAll()}
 function build(P){var panel=document.getElementById(P.panel);if(!panel||pageRoot(P.id))return;
  var root=document.createElement('div');root.className='mctx';root.id='mctx-'+P.id;
  root.innerHTML='<details class="mctx-opt" data-kind="level"><summary><span>المستوى</span><span class="mctx-val" data-sum="level"></span></summary><div class="mctx-body"><select class="mctx-level" aria-label="اختيار المستوى">'+LV.map(function(x,i){return '<option value="'+E(x)+'">المستوى '+(i+1)+'</option>'}).join('')+'</select></div></details>'+
  '<details class="mctx-opt" data-kind="group"><summary><span>الفوج</span><span class="mctx-val" data-sum="group"></span></summary><div class="mctx-body"><select class="mctx-group" aria-label="اختيار الفوج"><option value="0">لا شيء</option><option value="1">الفوج 1</option><option value="2">الفوج 2</option><option value="3">الفوج 3</option><option value="4">الفوج 4</option></select></div></details>'+
- '<button type="button" class="mctx-excel"><span>📥 استيراد Excel من مسار</span><small class="'+(P.required?'req':'')+'">'+(P.required?'إجباري':'اختياري')+'</small></button><p class="mctx-status"></p><div class="mctx-wiz-host"></div>';
+ '<button type="button" class="mctx-excel"><span>'+(P.id==='ros'?'📥 استيراد Excel أو Word':P.id==='gr'?'📥 استيراد Excel من مسار (الكفايات والفروض)':'📥 استيراد Excel من مسار')+'</span><small class="'+(P.required?'req':'')+'">'+(P.required?'إجباري':'اختياري')+'</small></button><p class="mctx-status"></p><div class="mctx-wiz-host"></div>';
  var form=panel.querySelector('.form');if(form)panel.insertBefore(root,form);else panel.insertBefore(root,panel.firstChild);
  root.querySelector('.mctx-level').addEventListener('change',function(){chooseLevel(P,this.value)});
  root.querySelector('.mctx-group').addEventListener('change',function(){chooseGroup(P,this.value)});
@@ -8165,7 +8177,7 @@ function openRosterImport(P){var file=document.getElementById('r-file'),wiz=docu
  if(!file.dataset.mctxWrapped){var oldChange=file.onchange;file.onchange=async function(e){var r;try{r=oldChange?await oldChange.call(this,e):null}finally{if(wizardHome&&!wiz.innerHTML.trim())returnWizard()}return r};file.addEventListener('cancel',returnWizard);file.dataset.mctxWrapped='1'}
  file.click();
 }
-function openExcel(P){var status=pageRoot(P.id).querySelector('.mctx-status');if(status){status.className='mctx-status';status.textContent='اختر ملف Excel من مسار لاستيراد البيانات…'}
+function openExcel(P){if(P.id==='ros'){document.getElementById('r-file').click();return}if(P.id==='gr'){document.getElementById('gr-file').click();return}var status=pageRoot(P.id).querySelector('.mctx-status');if(status){status.className='mctx-status';status.textContent='اختر ملف Excel من مسار لاستيراد البيانات…'}
  var b=null;
  if(P.id==='rp')b=document.getElementById('rp-up');
  else if(P.id==='bl')b=document.getElementById('bl-imp');
@@ -8176,7 +8188,7 @@ function openExcel(P){var status=pageRoot(P.id).querySelector('.mctx-status');if
 }
 /* رسائل إلزامية واضحة عند غياب لائحة التلاميذ في البوابات التي تتطلبها. */
 function requireRoster(buttonId){var b=document.getElementById(buttonId);if(!b)return;b.addEventListener('click',function(e){if(!current()||!current().st||!current().st.length){e.preventDefault();e.stopImmediatePropagation();alert('استيراد Excel إجباري في هذه البوابة. اضغط «استيراد Excel من مسار» وأدخل ملف التلاميذ أولاً.')}},true)}
-requireRoster('rp-go');requireRoster('bl-bul');requireRoster('un-rep');
+requireRoster('rp-go');requireRoster('bl-bul');requireRoster('un-rep');requireRoster('gr-go');
 /* تبقى شبكة التنقيط وحدها على قائمة اختيار القسم القديمة. */
 document.addEventListener('change',function(e){var t=e.target;if(!t.classList||!t.classList.contains('cpick'))return;ROSTER.get().cur=+t.value;fire()});
 PAGES.forEach(build);
