@@ -7,10 +7,27 @@
 <title>معين الأستاذ – أدوات الأستاذ للتعليم الابتدائي</title>
 <meta name="theme-color" content="#1c2a44">
 <link rel="manifest" href="manifest.webmanifest">
+<script>
+/* تسجيل عامل الخدمة مبكراً حتى يبدأ فحص التحديثات دون انتظار تهيئة جميع أدوات التطبيق. */
+(function(){
+ if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+ navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(reg){
+  var last=0;
+  function checkUpdate(){if(!navigator.onLine||Date.now()-last<60000)return;last=Date.now();if(reg&&reg.update)reg.update().catch(function(){});}
+  window.addEventListener('online',checkUpdate,{passive:true});
+  window.addEventListener('pageshow',function(){setTimeout(checkUpdate,5000)},{once:true});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkUpdate()});
+  setTimeout(checkUpdate,8000);
+ }).catch(function(){});
+})();
+</script>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="معين الأستاذ: جذاذات وخطاطات ذهنية يومية وفروض ودعم لأساتذة التعليم الابتدائي بالمغرب">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{--bg:#eef2f6;--paper:#fff;--ink:#1c2a44;--mute:#5b6b85;--line:#cfdcec;--red:#c8372d;--blue:#2d5fa8;--soft:#e3ecf7;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -8344,8 +8361,7 @@ if(v===null){
   document.body.appendChild(d)}
  if(document.body)setTimeout(mk,1500);else addEventListener('DOMContentLoaded',function(){setTimeout(mk,1500)})}
 })();
-/* العمل دون إنترنت */
-if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').then(function(reg){var last=0;function checkUpdate(){if(!navigator.onLine||Date.now()-last<60000)return;last=Date.now();if(reg&&reg.update)reg.update().catch(function(){})}window.addEventListener('online',checkUpdate,{passive:true});document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkUpdate()})}).catch(function(){})}
+/* عامل الخدمة مسجّل مبكراً داخل head لتقليل زمن بدء التشغيل. */
 </script>
 </body>
 </html>
