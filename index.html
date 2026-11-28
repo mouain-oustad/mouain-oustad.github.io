@@ -3227,20 +3227,22 @@ $('w-go').onclick=function(){if(LG.value=='fr'&&F[ty.value]){show('w-out','<div 
 })();
 
 /* ===== ترويسة الفروض ===== */
-window.testHead=function(s,lv,no,parts){var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}var v=function(x){return x?esc(x):'………………'},
- F="font-family:Cairo,'Noto Naskh Arabic',Tahoma,sans-serif",B='#1d3a8a',sem=/الثانية/.test(no)?'الدورة الثانية':'الدورة الأولى',fn=String(no).replace(/.*–\s*/,''),lvn=String(lv).replace(' ابتدائي','');
- var circ=function(lbl){return '<div style="display:inline-block;text-align:center;margin:0 4px;vertical-align:top"><div style="width:62px;height:62px;border:2.5px solid '+B+';border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff"><div style="border-bottom:1.5px solid #555;width:34px;height:20px"></div><div style="font:800 15px Cairo,Tahoma,sans-serif;color:'+B+'">10</div></div>'+(lbl?'<div style="font:600 10px Cairo,Tahoma,sans-serif;color:#555;margin-top:2px;max-width:76px">'+esc(lbl)+'</div>':'')+'</div>'};
- var row=function(k,x){return '<div style="margin:1px 0"><span style="color:#555">'+k+':</span> <b style="font-weight:600">'+x+'</b></div>'};
+window.testHead=function(s,lv,no,parts){
+ var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}
+ var v=function(x){return x?esc(x):'………………'},F="font-family:Cairo,'Noto Naskh Arabic',Tahoma,sans-serif",B='#1d3a8a',sem=/الثانية/.test(no)?'الدورة الثانية':'الدورة الأولى',fn=String(no).replace(/.*–\\s*/,''),lvn=String(lv).replace(' ابتدائي','');
+ var circ=function(lbl){return '<div style="display:inline-block;text-align:center;margin:0 4px;vertical-align:top"><div style="width:62px;height:62px;border:2px solid '+B+';border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff"><div style="border-bottom:1px solid #aeb8c7;width:34px;height:20px"></div><div style="font:800 15px Cairo,Tahoma,sans-serif;color:'+B+'">10</div></div>'+(lbl?'<div style="font:700 10px Cairo,Tahoma,sans-serif;color:#3f4b5e;margin-top:2px;max-width:76px">'+esc(lbl)+'</div>':'')+'</div>'};
+ var row=function(k,x){return '<div style="margin:1px 0"><span style="color:#3f4b5e;font-weight:600">'+k+':</span> <b style="font-weight:700;color:#1f2937">'+x+'</b></div>'};
  var unit=D.unit?row('الوحدة المدرسية',v(D.unit)):'';
- return '<div style="'+F+';direction:rtl;margin-bottom:6px">'+
- '<table class="plain" style="width:100%;border-collapse:separate;border-spacing:0;border:2px solid '+B+';border-radius:12px;overflow:hidden;background:#fff"><tr>'+
- '<td style="border:0;width:32%;padding:5px 10px;font-size:12px;line-height:1.6;vertical-align:middle">'+row('الأكاديمية',v(D.acad))+row('المديرية',v(D.dir))+row('المؤسسة',v(D.school))+unit+'</td>'+
- '<td style="border:0;border-inline:1.5px dashed #b9c6e4;text-align:center;vertical-align:middle;padding:5px 6px">'+(window.LOGO_MIN?'<img src="'+LOGO_MIN+'" alt="" style="height:34px;display:block;margin:0 auto 2px">':'')+'<div style="display:inline-block;background:linear-gradient(135deg,#1d3a8a,#3a6fd1);color:#fff;border-radius:18px;padding:3px 16px;font:800 16px Cairo,Tahoma,sans-serif">المراقبة المستمرة</div>'+
- '<div style="font:800 15px Cairo,Tahoma,sans-serif;color:#b5651d;margin-top:3px">'+esc(s)+'</div><div style="font:600 12px Cairo,Tahoma,sans-serif;color:#333">'+esc(sem)+' – '+esc(fn)+'</div></td>'+
- '<td style="border:0;width:32%;padding:5px 10px;font-size:12px;line-height:1.6;vertical-align:middle">'+'<table class="plain" style="width:100%;border:0"><tr><td style="border:0;padding:0;vertical-align:middle;font-size:12px;line-height:1.6">'+row('الأستاذ(ة)',v(D.name))+row('المستوى',esc(lvn))+row('الموسم الدراسي','<span dir="ltr">'+v(D.year||'2026-2027')+'</span>')+'</td><td style="border:0;padding:0 4px 0 0;width:1%;white-space:nowrap;vertical-align:middle">'+circ('المعدل العام')+'</td></tr></table></td></tr></table>'+
+ return '<div style="'+F+';direction:rtl;margin-bottom:7px">'+
+ '<table class="plain" style="width:100%;border-collapse:separate;border-spacing:0;border:1.5px solid #cbd5e1;border-top:3px solid '+B+';border-radius:9px;overflow:hidden;background:#fff"><tr>'+
+ '<td style="border:0;width:32%;padding:6px 10px;font-size:12px;line-height:1.65;vertical-align:middle;background:#fff">'+row('الأكاديمية',v(D.acad))+row('المديرية',v(D.dir))+row('المؤسسة',v(D.school))+unit+'</td>'+
+ '<td style="border:0;border-inline:1px solid #d9e0e9;text-align:center;vertical-align:middle;padding:6px 7px;background:#fbfcfe">'+(window.LOGO_MIN?'<img src="'+LOGO_MIN+'" alt="" style="height:34px;display:block;margin:0 auto 3px">':'')+'<div style="display:inline-block;background:#eef2f7;color:'+B+';border:1px solid #d9e1ec;border-radius:7px;padding:4px 14px;font:800 16px Cairo,Tahoma,sans-serif">المراقبة المستمرة</div>'+
+ '<div style="font:800 15px Cairo,Tahoma,sans-serif;color:'+B+';margin-top:4px">'+esc(s)+'</div><div style="font:700 12px Cairo,Tahoma,sans-serif;color:#3f4b5e">'+esc(sem)+' – '+esc(fn)+'</div></td>'+
+ '<td style="border:0;width:32%;padding:6px 10px;font-size:12px;line-height:1.65;vertical-align:middle;background:#fff">'+'<table class="plain" style="width:100%;border:0"><tr><td style="border:0;padding:0;vertical-align:middle;font-size:12px;line-height:1.65">'+row('الأستاذ(ة)',v(D.name))+row('المستوى',esc(lvn))+row('الموسم الدراسي','<span dir="ltr">'+v(D.year||'2026-2027')+'</span>')+'</td><td style="border:0;padding:0 4px 0 0;width:1%;white-space:nowrap;vertical-align:middle">'+circ('المعدل العام')+'</td></tr></table></td></tr></table>'+
  '<table class="plain" style="width:100%;border:0;margin-top:5px"><tr><td style="border:0;vertical-align:middle;padding:0">'+
- '<div style="border:1.5px solid #b9c6e4;border-radius:10px;padding:6px 12px;font-size:14px;background:#fafcff"><div style="white-space:nowrap;overflow:hidden"><span style="color:'+B+';font-weight:700">اسم التلميذ(ة):</span> …………………………………………</div><div style="white-space:nowrap;margin-top:4px"><span style="color:'+B+';font-weight:700">الرقم:</span> ……… &nbsp;&nbsp;&nbsp; <span style="color:'+B+';font-weight:700">التاريخ:</span> ………………</div></div>'+
- '</td><td style="border:0;width:1%;white-space:nowrap;vertical-align:middle;padding:0 8px 0 0">'+(parts?parts.map(circ).join(''):circ(''))+'</td></tr></table></div>'};
+ '<div style="border:1px solid #d5dde8;border-radius:8px;padding:6px 12px;font-size:14px;background:#f8fafc"><div style="white-space:nowrap;overflow:hidden"><span style="color:'+B+';font-weight:700">اسم التلميذ(ة):</span> …………………………………………</div><div style="white-space:nowrap;margin-top:4px"><span style="color:'+B+';font-weight:700">الرقم:</span> ……… &nbsp;&nbsp;&nbsp; <span style="color:'+B+';font-weight:700">التاريخ:</span> ………………</div></div>'+
+ '</td><td style="border:0;width:1%;white-space:nowrap;vertical-align:middle;padding:0 8px 0 0">'+(parts?parts.map(circ).join(''):circ(''))+'</td></tr></table></div>';
+};
 /* ===== أسئلة مباشرة: اختيار من متعدد + تعريف ===== */
 window.MCQ=(function(){
  function cl(t){return String(t).replace(/^[-•§]\s*/,'').trim()}
@@ -7682,18 +7684,20 @@ function restore(e,p,k){try{var x=JSON.parse(e.dataset[k]||'null');if(!x)return;
 function set(e,p,v){e.style.setProperty(p,v,'important')}
 function paint(el){
  if(!el)return;
- var c=palette(cur());if(!c)return;
+ var k=cur(),c=palette(k);if(!c)return;
  [].forEach.call(el.querySelectorAll('th,td,h2,h3'),function(e){
   var t=e.tagName;
   if(t==='TH'){
+   /* رؤوس الجداول تبقى فاتحة حتى مع اختيار الأسود؛ أشرطة التمارين فقط تتلون باللون المختار. */
    remember(e,'background','dthBg');remember(e,'color','dthColor');remember(e,'border-color','dthBorder');
    restore(e,'background','dthBg');restore(e,'color','dthColor');restore(e,'border-color','dthBorder');
-   set(e,'background',c[0]);set(e,'color',c[2]);set(e,'border-color',c[1]);
+   var thBg=k==='k'?'#EEF1F5':c[0],thFg=k==='k'?'#263247':c[2],thBorder=k==='k'?'#C8D0DC':c[1];
+   set(e,'background',thBg);set(e,'color',thFg);set(e,'border-color',thBorder);
   }else if(t==='TD'){
    remember(e,'border-color','dthBorder');remember(e,'background','dthBg');
    restore(e,'border-color','dthBorder');restore(e,'background','dthBg');
    var cs=getComputedStyle(e),hasBorder=['Top','Right','Bottom','Left'].some(function(side){return (parseFloat(cs['border'+side+'Width'])||0)>0&&cs['border'+side+'Style']!=='none'});
-   if(hasBorder)set(e,'border-color',c[1]);
+   if(hasBorder)set(e,'border-color',k==='k'?'#C8D0DC':c[1]);
    var bg=cs.backgroundColor,m=/rgba\([^)]*,\s*([0-9.]+)\)/.exec(bg);
    if(m&&+m[1]>0&&+m[1]<=.2)set(e,'background','transparent');
   }else{
