@@ -287,7 +287,7 @@ html:not([data-dth]) #f-out h2{border:2px solid #000!important;border-radius:0!i
 html:not([data-dth]) #f-out h3{border:0!important;border-bottom:1.5px solid #000!important;border-radius:0!important;padding:2px 0!important;margin:12px 0 6px!important}
 html:not([data-dth]) #f-out table:not(.plain) th,html:not([data-dth]) #f-out table:not(.plain) td{border-color:#000!important}
 html:not([data-dth]) #f-out *{border-color:#000!important;box-shadow:none!important;text-shadow:none!important}
-#f-out img{filter:grayscale(1) contrast(1.2)}
+#f-out img:not(.ministry-logo){filter:grayscale(1) contrast(1.2)}
 html:not([data-dth]) #f-out li::marker{color:#000!important}
 html:not([data-dth]) #f-out .sheet,html:not([data-dth]) #f-out.sheet{border-color:#000!important}
 #f-out h2,#f-out h3{font-weight:900!important;-webkit-text-stroke:.6px #000}
@@ -3229,14 +3229,15 @@ $('w-go').onclick=function(){if(LG.value=='fr'&&F[ty.value]){show('w-out','<div 
 /* ===== ترويسة الفروض ===== */
 window.testHead=function(s,lv,no,parts){
  var D={};try{D=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}
- var v=function(x){return x?esc(x):'………………'},F="font-family:Cairo,'Noto Naskh Arabic',Tahoma,sans-serif",B='#1d3a8a',sem=/الثانية/.test(no)?'الدورة الثانية':'الدورة الأولى',fn=String(no).replace(/.*–\\s*/,''),lvn=String(lv).replace(' ابتدائي','');
+ var v=function(x){return x?esc(x):'………………'},F="font-family:Cairo,'Noto Naskh Arabic',Tahoma,sans-serif",B='#1d3a8a',rawNo=String(no||'').trim(),sem=/الثانية/.test(rawNo)?'الدورة الثانية':'الدورة الأولى',fn=rawNo.replace(/^.*?[–—-]\s*/,'').trim(),lvn=String(lv).replace(' ابتدائي','');
+ if(!fn||/^الدورة\s+(الأولى|الثانية)\b/.test(fn))fn=fn.replace(/^الدورة\s+(الأولى|الثانية)\s*/,'').trim()||'الفرض';
  var circ=function(lbl){return '<div style="display:inline-block;text-align:center;margin:0 4px;vertical-align:top"><div style="width:62px;height:62px;border:2px solid '+B+';border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff"><div style="border-bottom:1px solid #aeb8c7;width:34px;height:20px"></div><div style="font:800 15px Cairo,Tahoma,sans-serif;color:'+B+'">10</div></div>'+(lbl?'<div style="font:700 10px Cairo,Tahoma,sans-serif;color:#3f4b5e;margin-top:2px;max-width:76px">'+esc(lbl)+'</div>':'')+'</div>'};
  var row=function(k,x){return '<div style="margin:1px 0"><span style="color:#3f4b5e;font-weight:600">'+k+':</span> <b style="font-weight:700;color:#1f2937">'+x+'</b></div>'};
  var unit=D.unit?row('الوحدة المدرسية',v(D.unit)):'';
  return '<div style="'+F+';direction:rtl;margin-bottom:7px">'+
  '<table class="plain" style="width:100%;border-collapse:separate;border-spacing:0;border:1.5px solid #cbd5e1;border-top:3px solid '+B+';border-radius:9px;overflow:hidden;background:#fff"><tr>'+
  '<td style="border:0;width:32%;padding:6px 10px;font-size:12px;line-height:1.65;vertical-align:middle;background:#fff">'+row('الأكاديمية',v(D.acad))+row('المديرية',v(D.dir))+row('المؤسسة',v(D.school))+unit+'</td>'+
- '<td style="border:0;border-inline:1px solid #d9e0e9;text-align:center;vertical-align:middle;padding:6px 7px;background:#fbfcfe">'+(window.LOGO_MIN?'<img src="'+LOGO_MIN+'" alt="" style="height:34px;display:block;margin:0 auto 3px">':'')+'<div style="display:inline-block;background:#eef2f7;color:'+B+';border:1px solid #d9e1ec;border-radius:7px;padding:4px 14px;font:800 16px Cairo,Tahoma,sans-serif">المراقبة المستمرة</div>'+
+ '<td style="border:0;border-inline:1px solid #d9e0e9;text-align:center;vertical-align:middle;padding:6px 7px;background:#fff">'+'<img class="ministry-logo" src="./ministry-logo.jpg" alt="شعار وزارة التربية الوطنية والتعليم الأولي والرياضة" style="display:block;width:190px;max-width:100%;height:auto;max-height:116px;object-fit:contain;margin:0 auto 5px;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact">'+'<div style="display:inline-block;background:#eef2f7;color:'+B+';border:1px solid #d9e1ec;border-radius:7px;padding:4px 14px;font:800 16px Cairo,Tahoma,sans-serif">المراقبة المستمرة</div>'+
  '<div style="font:800 15px Cairo,Tahoma,sans-serif;color:'+B+';margin-top:4px">'+esc(s)+'</div><div style="font:700 12px Cairo,Tahoma,sans-serif;color:#3f4b5e">'+esc(sem)+' – '+esc(fn)+'</div></td>'+
  '<td style="border:0;width:32%;padding:6px 10px;font-size:12px;line-height:1.65;vertical-align:middle;background:#fff">'+'<table class="plain" style="width:100%;border:0"><tr><td style="border:0;padding:0;vertical-align:middle;font-size:12px;line-height:1.65">'+row('الأستاذ(ة)',v(D.name))+row('المستوى',esc(lvn))+row('الموسم الدراسي','<span dir="ltr">'+v(D.year||'2026-2027')+'</span>')+'</td><td style="border:0;padding:0 4px 0 0;width:1%;white-space:nowrap;vertical-align:middle">'+circ('المعدل العام')+'</td></tr></table></td></tr></table>'+
  '<table class="plain" style="width:100%;border:0;margin-top:5px"><tr><td style="border:0;vertical-align:middle;padding:0">'+
@@ -6721,18 +6722,20 @@ var MFR={'يناير':'janvier','فبراير':'février','مارس':'mars','أ�
 function sessOf(o){var c=(window.EX6&&window.EX6.cfg)||{},m=c.month,y=c.year;if(!m)return o.ar?'………………':'………………';return o.ar?m+' '+y:(MFR[m]||m)+' '+y}
 function pt(x){return String(x).replace('.',',')}
 var B='#000';
-function head(o){/* o:{ar,sub,tot,dur,sess} */
- var D=DOC(),v=function(x){return x?E(x):'………………………'},logo=window.LOGO_MIN?'<img src="'+LOGO_MIN+'" alt="" style="height:58px">':'';
- var tit=o.ar?'الامتحان الموحد المحلي':'Examen normalisé local',s2=o.ar?'دورة: '+sessOf(o):'Session : '+sessOf(o);
- var lines=o.ar?['الأكاديمية الجهوية: '+v(D.acad),'المديرية الإقليمية: '+v(D.dir),'المؤسسة: '+v(D.school)]:['Académie : '+(D.acad?E(D.acad):'……………'),'Direction : '+(D.dir?E(D.dir):'……………'),'Établissement : '+(D.school?E(D.school):'……………')];
- var sub=o.ar?'مادة '+E(o.sub)+' – المستوى: السادس ابتدائي':E(o.sub)+' – 6ème AEP';
- var dir=o.ar?'rtl':'ltr';
- return '<div dir="'+dir+'" style="font-family:Cairo,Tahoma,sans-serif;margin-bottom:8px"><table class="plain" style="width:100%;border:2px solid '+B+';border-collapse:collapse"><tr>'+
- '<td style="border:0;width:30%;text-align:center;vertical-align:middle;padding:6px">'+logo+'</td>'+
- '<td style="border:0;border-inline:1.5px dashed #555;text-align:center;padding:6px"><div style="font:800 20px Cairo,Tahoma,sans-serif;color:'+B+'">'+tit+'</div><div style="font:700 16px Cairo,Tahoma,sans-serif;color:#000">'+s2+'</div><div style="font:600 14px Cairo,Tahoma,sans-serif">'+sub+'</div></td>'+
- '<td style="border:0;width:32%;font-size:12.5px;line-height:1.8;padding:6px 10px">'+lines.join('<br>')+'</td></tr></table>'+
- '<table class="plain" style="width:100%;border:0;margin-top:6px"><tr><td style="border:0;vertical-align:middle"><div style="border:1.5px solid #555;border-radius:10px;padding:6px 12px;font-size:14px;background:#fff">'+(o.ar?'<b style="color:'+B+'">الاسم الكامل:</b> ……………………………………… &nbsp; <b style="color:'+B+'">رقم الامتحان:</b> ………<br><b style="color:'+B+'">التاريخ:</b> ……/……/ …… &nbsp;&nbsp; <b style="color:'+B+'">المدة:</b> '+o.dur:'<b style="color:'+B+'">Nom et prénom :</b> …………………………………… &nbsp; <b style="color:'+B+'">N° d’examen :</b> ………<br><b style="color:'+B+'">Date :</b> ……/……/…… &nbsp;&nbsp; <b style="color:'+B+'">Durée :</b> '+o.dur)+'</div></td>'+
- '<td style="border:0;width:1%;white-space:nowrap;padding:0 8px"><div style="width:84px;height:62px;border:2.5px solid '+B+';border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 20px Cairo,Tahoma,sans-serif;color:'+B+'" dir="ltr"><span style="border-bottom:1.5px solid #555;margin-inline-end:6px;width:26px;height:22px;display:inline-block"></span>/'+o.tot+'</div></td></tr></table></div>'}
+function schoolYear(){var c=(window.EX6&&window.EX6.cfg)||{},y=Number(c.year)||2027,m=c.month||'يناير',i=['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'].indexOf(m);return i>=8?y+'/'+(y+1):(y-1)+'/'+y}
+function head(o){/* تخطيط مطابق لنموذج التجميعية: المتعلم يسارا، عنوان الامتحان وسطا، بيانات المؤسسة يمينا */
+ var D=DOC(),v=function(x){return x?E(x):'………………………'},logo=window.LOGO_MIN?'<img src="'+window.LOGO_MIN+'" alt="" style="height:42px;max-width:76px;object-fit:contain;display:block;margin:0 auto 3px">':'';
+ var tit=o.ar?'الامتحان الموحد المحلي على صعيد المؤسسة':'Examen normalisé local';
+ var s2=o.ar?'دورة '+sessOf(o):'Session : '+sessOf(o);
+ var sub=o.ar?'امتحان مادة '+E(o.sub):'Examen de '+E(o.sub);
+ var level=o.ar?'السنة السادسة ابتدائي':'Sixième année primaire';
+ var info=o.ar?['الأكاديمية الجهوية: '+v(D.acad),'المديرية الإقليمية: '+v(D.dir),'المؤسسة: '+v(D.school),'السنة الدراسية: '+schoolYear(),'مدة الامتحان: '+E(o.dur)]:['Académie : '+v(D.acad),'Direction provinciale : '+v(D.dir),'Établissement : '+v(D.school),'Année scolaire : '+schoolYear(),'Durée de l’examen : '+E(o.dur)];
+ var student=o.ar?'<b>اسم ونسب المتعلم:</b><div style="border-bottom:1px dotted #555;height:20px;margin:0 0 4px"></div><b>رقم الامتحان:</b><div style="border-bottom:1px dotted #555;height:18px;margin:0 0 4px"></div><b>النقطة:</b> <span style="white-space:nowrap"><span style="display:inline-block;border-bottom:1px solid #222;width:30px;height:17px;vertical-align:middle"></span> /<b class="exam-total">'+o.tot+'</b></span>':'<b>Nom et prénom de l’apprenant :</b><div style="border-bottom:1px dotted #555;height:20px;margin:0 0 4px"></div><b>N° d’examen :</b><div style="border-bottom:1px dotted #555;height:18px;margin:0 0 4px"></div><b>Note :</b> <span style="white-space:nowrap"><span style="display:inline-block;border-bottom:1px solid #222;width:30px;height:17px;vertical-align:middle"></span> /<b class="exam-total">'+o.tot+'</b></span>';
+ var studentCell='<td style="width:27%;border:1px solid '+B+';padding:5px 7px;vertical-align:middle;text-align:start;font-size:12px;line-height:1.65">'+student+'</td>';
+ var centerCell='<td style="width:43%;border:1px solid '+B+';padding:5px 6px;vertical-align:middle;text-align:center">'+logo+'<div style="font:800 16px Cairo,Tahoma,sans-serif;color:'+B+';line-height:1.45">'+tit+'</div><div style="font:700 13px Cairo,Tahoma,sans-serif;margin-top:2px">'+level+'</div><div style="font:700 13px Cairo,Tahoma,sans-serif">'+s2+'</div><div style="font:700 13px Cairo,Tahoma,sans-serif">'+sub+'</div></td>';
+ var infoCell='<td style="width:30%;border:1px solid '+B+';padding:5px 7px;vertical-align:middle;text-align:start;font-size:11.5px;line-height:1.75">'+info.join('<br>')+'</td>';
+ var cells=o.ar?infoCell+centerCell+studentCell:studentCell+centerCell+infoCell,dir=o.ar?'rtl':'ltr';
+ return '<div dir="'+dir+'" style="font-family:Cairo,Tahoma,sans-serif;margin-bottom:10px"><table class="plain" style="width:100%;table-layout:fixed;border:1.8px solid '+B+';border-collapse:collapse;background:#fff"><tr>'+cells+'</tr></table></div>'}
 function band(t,p,ar){return '<div style="margin:14px 0 6px;break-after:avoid;page-break-after:avoid"><span style="display:inline-block;background:#000;color:#fff;border-radius:'+(ar?'0 22px 22px 0':'22px 0 0 22px')+';padding:4px 20px;font:700 17px Cairo,Tahoma,sans-serif">'+t+' ('+(ar?pt(p)+' نقط':pt(p)+' pts')+')</span></div>'}
 function Q(n,body,p,ar){return '<div style="display:flex;gap:8px;margin:7px 0;break-inside:avoid"><div style="flex:1;line-height:1.9">'+(n?'<b>'+n+'</b> ':'')+body+'</div><div style="width:46px;flex:none;text-align:center;color:#000;font-weight:700;border-inline-start:1.5px dashed #555;font-size:14px;display:flex;align-items:center;justify-content:center" dir="ltr">'+pt(p)+(ar?'ن':'')+'</div></div>'}
 function dots(k,w){var s='';for(var i=0;i<(k||1);i++)s+='<div style="border-bottom:1px dotted #777;height:24px"></div>';return s}
@@ -6807,7 +6810,7 @@ function mathExam(seed){var g=RG(seed),K=[],h='',tot=0;
  h+=Q('1)','حصل تلاميذ فصل على النقط التالية في الفرض الأول للرياضيات:<div dir="ltr" style="text-align:center;margin:4px 0;font-weight:600">'+mk.join(' – ')+'</div>أنظم هذه المعطيات في الجدول أسفله:<table style="width:100%;margin-top:4px"><tr><th>النقطة</th>'+[3,4,5,6,7,8,9,10].map(function(m){return '<th>'+m+'</th>'}).join('')+'</tr><tr><th>عدد التلاميذ</th>'+[3,4,5,6,7,8,9,10].map(function(){return '<td>&nbsp;</td>'}).join('')+'</tr></table>',1.5,1);
  h+=Q('2)','ما هو عدد التلاميذ الذين حصلوا على نقطة أقل من '+lim+' على 10؟'+dots(1),1.5,1);
  K.push('<b>المعطيات – 1)</b> '+[3,4,5,6,7,8,9,10].map(function(m){return m+' → '+cnt[m]}).join(' ؛ ')+' (1,5 ن)؛ <b>2)</b> '+below+' تلميذا (1,5 ن)');
- return {html:head({ar:1,sub:'الرياضيات',tot:40,dur:'1h30min',sess:g.sess||'يناير 2027'})+h,key:K,ar:1}}
+ return {html:head({ar:1,sub:'الرياضيات',tot:40,dur:'ساعة ونصف',sess:g.sess||'يناير 2027'})+h,key:K,ar:1}}
 window.EX6=window.EX6||{};window.EX6.math=mathExam;window.EX6._u={RG:RG,head:head,band:band,Q:Q,dots:dots,ktitle:ktitle,E:E,pt:pt};
 })();
 
@@ -6935,23 +6938,32 @@ function arExam(seed){var g=RG(seed),K=[],h='',T=g.p(AT),n=1;
  h+=Q('1)','أُرَتِّبُ الجُمَلَ التَّالِيَةِ لِتُكَوِّنَ فِقْرَةً مُتَرَابِطَةً (أَضَعُ الأَرْقَامَ مِنْ 1 إِلَى 4):'+sh.map(function(x){return ln('<span style="display:inline-block;width:24px;height:20px;border:1.5px dashed #000;vertical-align:-4px;margin-inline-end:6px"></span>'+E(x[0]))}).join(''),4,1)+Q('2)','أَكْتُبُ فِي سِتَّةِ أَسْطُرٍ عَلَى الأَقَلِّ مَوْضُوعًا: '+g.p(A_TOP)+'.'+dots(7),8,1);
  var ord=[3,0,1,2];
  K.push('<b>رابعا:</b> 1) الترتيب: '+[o[3],o[0],o[1],o[2]].map(function(x,i){return '('+(i+1)+') '+x}).join(' ')+' (1 ن لكل جملة) ؛ 2) معايير التنقيط (8 ن): ملاءمة الموضوع (2) ؛ تسلسل الأفكار (2) ؛ سلامة اللغة (2) ؛ الإملاء وعلامات الترقيم والتنظيم (2)');
- return {html:W(h,{ar:1,sub:'اللغة العربية',tot:40,dur:'1h30min',sess:'يناير 2027'}),key:K,ar:1}}
+ return {html:W(h,{ar:1,sub:'اللغة العربية',tot:40,dur:'ساعة ونصف',sess:'يناير 2027'}),key:K,ar:1}}
 /* ---------- التربية الإسلامية ---------- */
 var IV=[['﴿تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ','وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ﴾'],['﴿الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ','لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا وَهُوَ الْعَزِيزُ الْغَفُورُ﴾'],['﴿وَالْمُرْسَلَاتِ عُرْفًا فَالْعَاصِفَاتِ عَصْفًا','وَالنَّاشِرَاتِ نَشْرًا فَالْفَارِقَاتِ فَرْقًا﴾'],['﴿فَالْمُلْقِيَاتِ ذِكْرًا','عُذْرًا أَوْ نُذْرًا إِنَّمَا تُوعَدُونَ لَوَاقِعٌ﴾'],['﴿يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ','كَمَا كُتِبَ عَلَى الَّذِينَ مِنْ قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ﴾'],['﴿وَالْعَصْرِ إِنَّ الْإِنْسَانَ لَفِي خُسْرٍ','إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ﴾']];
 var IH=[['قَالَ رَسُولُ اللهِ ﷺ: «إِنَّمَا الأَعْمَالُ','بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى»'],['قَالَ رَسُولُ اللهِ ﷺ: «لا يُؤْمِنُ أَحَدُكُمْ حَتَّى','يُحِبَّ لأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ»'],['قَالَ رَسُولُ اللهِ ﷺ: «مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا','غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ»'],['قَالَ رَسُولُ اللهِ ﷺ: «الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ','مِنْ لِسَانِهِ وَيَدِهِ»']];
 var IVF=[['الصيام ركن من أركان الإسلام.',1],['يبطل الصيام بالأكل والشرب عمدا.',1],['النية شرط لصحة الصيام.',1],['يبدأ وقت الصيام بغروب الشمس.',0],['الصلاة تجب خمس مرات في اليوم والليلة.',1],['الكذب من صفات المؤمن.',0],['بر الوالدين من أعظم القربات إلى الله.',1],['تُعطى الزكاة للأغنياء وحدهم.',0],['التيمم يكون عند فقدان الماء أو العجز عن استعماله.',1],['من أركان الإيمان الإيمان باليوم الآخر.',1]];
 var ISQ=[['مَا اسْمُ أُمِّ النَّبِيِّ ﷺ؟','آمِنَةُ بِنْتُ وَهْبٍ.'],['فِي أَيِّ مَدِينَةٍ وُلِدَ النَّبِيُّ ﷺ؟','فِي مَكَّةَ المُكَرَّمَةِ.'],['مَاذَا تَعْنِي الهِجْرَةُ النَّبَوِيَّةُ؟','انْتِقَالُ النَّبِيِّ ﷺ وَأَصْحَابِهِ مِنْ مَكَّةَ إِلَى المَدِينَةِ المُنَوَّرَةِ.'],['لِمَاذَا فَرَضَ اللهُ الصِّيَامَ عَلَيْنَا؟','لِتَحْقِيقِ التَّقْوَى وَتَهْذِيبِ النَّفْسِ.'],['مَا اسْمُ الغَارِ الَّذِي اخْتَبَأَ فِيهِ النَّبِيُّ ﷺ أَثْنَاءَ الهِجْرَةِ؟','غَارُ ثَوْرٍ.']];
 var ISIT=['عِنْدَ دُخُولِ شَهْرِ رَمَضَانَ ذَهَبْتَ مَعَ صَدِيقِكَ إِلَى المَسْجِدِ، فَسَمِعْتَ الإِمَامَ يَتْلُو آيَاتٍ مِنَ القُرْآنِ الكَرِيمِ، ثُمَّ أَلْقَى دَرْسًا عَنْ سِيرَةِ النَّبِيِّ ﷺ وَعَنِ الصِّيَامِ وَمَا يَجِبُ أَنْ يَتَحَلَّى بِهِ المُسْلِمُ فِي هَذَا الشَّهْرِ. انْطِلاقًا مِمَّا دَرَسْتَهُ فِي مَادَّةِ التَّرْبِيَةِ الإِسْلامِيَّةِ:'];
-function islExam(seed){var g=RG(seed),K=[],h='';
+function islExam(seed,chosen){var g=RG(seed),K=[],h='';
+ chosen=Array.isArray(chosen)?chosen:['quran','hadith','fasting','seerah','values','pillars'];
  h+='<p style="line-height:2;text-align:justify"><b>الوَضْعِيَّةُ:</b> '+ISIT[0]+'</p>';
- var v=pk(g,IV,2),hd=g.p(IH),q=pk(g,ISQ,2),f=vf(g,IVF,5);
+ var v=pk(g,IV,2),hd=g.p(IH),seerahQ=ISQ.filter(function(x){return x!==ISQ[3]}),q=pk(g,seerahQ,2);
+ var ivfMap={fasting:IVF.slice(0,4),values:IVF.slice(5,7),pillars:IVF.slice(4,5).concat(IVF.slice(7,10))},ivfBank=[];
+ chosen.forEach(function(id){(ivfMap[id]||[]).forEach(function(x){if(ivfBank.indexOf(x)<0)ivfBank.push(x)})});
+ var f=ivfBank.length?vf(g,ivfBank,Math.min(5,ivfBank.length)):{a:[],h:'',k:''};
  h+=Q('1)','أُتَمِّمُ كِتَابَةَ الآيَاتِ الكَرِيمَةِ:'+v.map(function(x){return ln(E(x[0])+' …………………………………………')}).join(''),2,1);
  h+=Q('2)','أُتَمِّمُ الحَدِيثَ النَّبَوِيَّ الشَّرِيفَ:'+ln(E(hd[0])+' …………………………………………'),1.5,1);
- h+=Q('3)','أُجِيبُ بِـ «صَحِيحٍ» أَوْ «خَطَأٍ» مَعَ تَصْحِيحِ الخَطَإِ إِنْ وُجِدَ:'+f.h,2,1);
+ if(f.a.length)h+=Q('3)','أُجِيبُ بِـ «صَحِيحٍ» أَوْ «خَطَأٍ» مَعَ تَصْحِيحِ الخَطَإِ إِنْ وُجِدَ:'+f.h,2,1);
  h+=Q('4)','أُجِيبُ عَنِ السُّؤَالَيْنِ:'+q.map(function(x,i){return ln('أ'.replace('أ','أب'[i])+'. '+x[0])+dots(1)}).join(''),2,1);
  h+=Q('5)','أَقْتَرِحُ سُلُوكَيْنِ يَنْبَغِي أَنْ يَتَحَلَّى بِهِمَا المُسْلِمُ فِي شَهْرِ رَمَضَانَ:'+dots(2),1.5,1);
  h+=Q('6)','أَذْكُرُ رُكْنَيْنِ مِنْ أَرْكَانِ الإِسْلامِ:'+dots(1),1,1);
- K.push('1) '+v.map(function(x){return x[1]}).join(' ؛ ')+' (1 ن لكل آية) ؛ 2) '+hd[1]+' (1,5 ن) ؛ 3) '+f.k+' (0,4 ن لكل عبارة) ؛ 4) '+q.map(function(x){return x[1]}).join(' ؛ ')+' (1 ن لكل سؤال) ؛ 5) الصدق، الإحسان، الصبر، كظم الغيظ، كثرة الذكر… (0,75 ن لكل سلوك) ؛ 6) الشهادتان، الصلاة، الزكاة، الصوم، الحج (0,5 ن لكل ركن) <i>(الأستاذ مدعو لمراجعة الآيات حسب المقرر)</i>');
+ K.push('1) '+v.map(function(x){return x[1]}).join(' ؛ ')+' (1 ن لكل آية) <i>(الأستاذ مدعو لمراجعة الآيات حسب المقرر)</i>');
+ K.push('2) '+hd[1]+' (1,5 ن)');
+ if(f.a.length)K.push('3) '+f.k+' (2 ÷ '+f.a.length+' ن لكل عبارة)');
+ K.push('4) '+q.map(function(x){return x[1]}).join(' ؛ ')+' (1 ن لكل سؤال)');
+ K.push('5) الصدق، الإحسان، الصبر، كظم الغيظ، كثرة الذكر… (0,75 ن لكل سلوك)');
+ K.push('6) الشهادتان، الصلاة، الزكاة، الصوم، الحج (0,5 ن لكل ركن)');
  return {html:W(h,{ar:1,sub:'التربية الإسلامية',tot:10,dur:'45 دقيقة',sess:'يناير 2027'}),key:K,ar:1}}
 /* ---------- النشاط العلمي ---------- */
 var SVF=[['الهواء قابل للتقلص والانضغاط.',1],['يشكل ثنائي الأكسجين حوالي 21% من حجم الهواء.',1],['يشكل ثنائي الآزوت حوالي 78% من حجم الهواء.',1],['للهواء شكل خاص به.',0],['الهواء ضروري للاحتراق.',1],['الهواء ليست له كتلة.',0],['ثنائي الأكسجين يساعد على الاشتعال.',1]];
@@ -6959,8 +6971,8 @@ var SPH=['انصهار الثلج','قص الشعر','تبخر الماء','تم
 var SCOND=['ثنائي الأكسجين','مادة قابلة للاحتراق','درجة حرارة كافية'],SPRO=['ثنائي أكسيد الكربون','الرماد','بخار الماء'];
 var SBAR=[['Les composants du système nerveux sont :',['le cerveau','la fatigue','les nerfs','la moelle épinière'],[1]],['Les organes des sens sont :',['l’œil','l’oreille','le cerveau','le nez'],[2]],['Pour protéger le système nerveux, on doit :',['dormir suffisamment','consommer des drogues','faire du sport','utiliser trop les téléphones'],[1,3]]];
 var SRF=[['سحب اليد بسرعة عند ملامسة جسم ساخن','انعكاسية'],['التقاط القلم من الأرض','إرادية'],['إغماض العين عند التعرض لضوء قوي','انعكاسية'],['ركل الكرة بالقدم','إرادية'],['إبعاد الرجل عند وخزها بشوكة','انعكاسية'],['كتابة الدرس في الدفتر','إرادية']];
-var SDIS=[['السكري','ترسب مزيد من السكر في الدم'],['السمنة','السمنة المفرطة والعادات الغذائية الخاطئة'],['الأنيميا','انخفاض الهيموغلوبين ونقص الكريات الحمراء في الدم']];
-var SREL=[['التنافس','تفاعل بيولوجي بين كائنين حيين، حيث يقتل المفترس الفريسة ليقتات بها'],['التطفل','علاقة بين كائن حي يسمى المتطفل يستمد غذاءه وطاقته من كائن آخر يسمى العائل'],['التعاون','علاقة بين مجموعة من الحيوانات من النوع نفسه تتصارع على ضروريات الحياة'],['الافتراس','علاقة بين كائنين يستفيد أحدهما من الآخر دون أن يحدث ضررا للآخر']];
+var SDIS=[['السكري','اضطراب في إفراز الأنسولين أو الاستجابة له، مما يؤدي إلى ارتفاع نسبة السكر في الدم'],['السمنة','اختلال التوازن بين الطاقة المتناولة والطاقة المستهلكة، وقد تسهم فيه عادات غذائية غير متوازنة وقلة الحركة'],['الأنيميا','انخفاض الهيموغلوبين في الدم، وقد يرتبط بنقص الحديد أو أسباب أخرى']];
+var SREL=[['التنافس','علاقة بين كائنين حيين أو أكثر يتنافسون على مورد محدود مثل الغذاء أو الماء أو المجال'],['التطفل','علاقة بين كائن حي يسمى المتطفل يستمد غذاءه وطاقته من كائن آخر يسمى العائل، وقد يسبب له ضررا'],['التعاون','علاقة بين كائنين حيين أو أكثر يتعاونون لتحقيق منفعة مشتركة'],['الافتراس','علاقة يتغذى فيها كائن حي يسمى المفترس على كائن حي آخر يسمى الفريسة بعد صيده']];
 function sciExam(seed){var g=RG(seed),K=[],h='';
  h+='<div style="font-weight:800;text-decoration:underline;margin:6px 0">أولا: العلوم الفيزيائية</div>';
  var f=vf(g,SVF,4);h+=Q('1.','أجيب بـ «صحيح» أو «خطأ» أمام كل عبارة:'+f.h,1,1);
@@ -6979,27 +6991,420 @@ function sciExam(seed){var g=RG(seed),K=[],h='';
  var rl=pk(g,SREL,3);
  h+=Q('8.','أصل بسهم بين العلاقة والتعريف المناسب:'+match(g,rl,1.5),1.5,1);
  h+=Q('9.','أذكر سلوكين للحفاظ على التوازن البيئي:'+dots(2),0.5,1);
- var kk='1) '+f.k+' ؛ 2) فيزيائية: '+ph.join('، ')+' / كيميائية: '+ch.join('، ')+' ؛ 3) شروط: '+cd.join('، ')+' / نواتج: '+pr.join('، ')+' ؛ 4) أشطب: '+bq[2].map(function(i){return bq[1][i]}).join('، ')+' ؛ 5) '+rf.map(function(x){return x[1]}).join(' ، ')+' ؛ 6) '+ds.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' ؛ 7) حية: الحيوانات، النباتات / غير حية: الماء، التربة ؛ 8) '+rl.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' ؛ 9) عدم رمي النفايات، غرس الأشجار، ترشيد الماء… (0,25 لكل سلوك)';
- K.push(kk);
+ K.push('1) '+f.k);
+ K.push('2) فيزيائية: '+ph.join('، ')+' / كيميائية: '+ch.join('، '));
+ K.push('3) شروط: '+cd.join('، ')+' / نواتج: '+pr.join('، '));
+ K.push('4) أشطب: '+bq[2].map(function(i){return bq[1][i]}).join('، '));
+ K.push('5) '+rf.map(function(x){return x[1]}).join(' ، '));
+ K.push('6) '+ds.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ '));
+ K.push('7) حية: الحيوانات، النباتات / غير حية: الماء، التربة');
+ K.push('8) '+rl.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ '));
+ K.push('9) عدم رمي النفايات، غرس الأشجار، ترشيد الماء… (0,25 لكل سلوك)');
  return {html:W(h,{ar:1,sub:'النشاط العلمي',tot:10,dur:'45 دقيقة',sess:'يناير 2027'}),key:K,ar:1}}
 /* ---------- الاجتماعيات ---------- */
 var SOH=[['11 يناير 1944','تقديم وثيقة المطالبة بالاستقلال'],['20 غشت 1953','ثورة الملك والشعب'],['16 نونبر 1955','عودة محمد الخامس من المنفى'],['6 نونبر 1975','تنظيم المسيرة الخضراء'],['30 مارس 1912','توقيع معاهدة الحماية'],['18 نونبر','عيد الاستقلال']];
 var SOP=[['محمد بن عبد الكريم الخطابي','معركة أنوال'],['موحا أوحمو الزياني','معركة الهري'],['الحسن الثاني','المسيرة الخضراء'],['محمد الخامس','وثيقة الاستقلال والعودة من المنفى']];
-var SOV=[['وقعت معاهدة الحماية سنة 1912.',1],['نُظمت المسيرة الخضراء سنة 1956.',0],['عاد محمد الخامس من المنفى سنة 1955.',1],['عاصمة المملكة المغربية هي الدار البيضاء.',0],['يطل المغرب غربا على المحيط الأطلسي.',1],['توجد جبال الريف في جنوب المملكة.',0],['حقوق الطفل تشمل الحق في التعليم.',1]];
+var SOV=[['وقعت معاهدة الحماية سنة 1912.',1],['نُظمت المسيرة الخضراء سنة 1956.',0],['عاد محمد الخامس من المنفى سنة 1955.',1],['عاصمة المملكة المغربية هي الدار البيضاء.',0],['يطل المغرب غربا على المحيط الأطلسي.',1],['توجد جبال الريف في جنوب المملكة.',0],['حقوق الطفل تشمل الحق في التعليم.',1],['احترام القوانين من واجبات المواطن.',1],['حماية البيئة مسؤولية مشتركة بين أفراد المجتمع.',1]];
 var SOG=[['عاصمة المملكة المغربية هي ………','الرباط'],['أعلى قمة جبلية في المغرب هي جبل ………','توبقال'],['تمتد سلسلة جبال ……… في شمال المملكة.','الريف'],['يطل المغرب شمالا على البحر ……… ','الأبيض المتوسط'],['أكبر مدينة مغربية من حيث السكان هي ………','الدار البيضاء']];
 var SOC=[['أذكر حقين من حقوق الطفل.','الحق في التعليم، الحق في الصحة، الحق في الاسم والجنسية، الحق في اللعب (أي حقين)'],['أذكر واجبين من واجبات المواطن.','احترام القانون، المشاركة في الدفاع عن الوطن، أداء الضرائب، حماية البيئة (أي واجبين)'],['ما هو شعار المملكة المغربية؟','الله – الوطن – الملك']];
-function socExam(seed){var g=RG(seed),K=[],h='';
- var o=pk(g,SOH,4),pr=pk(g,SOP,3),f=vf(g,SOV,5),cl=pk(g,SOG,3),cv=pk(g,SOC,2);
+function socExam(seed,chosen){var g=RG(seed),K=[],h='';
+ chosen=Array.isArray(chosen)?chosen:['history','geography','civic'];
+ var socialVF={history:SOV.slice(0,3),geography:SOV.slice(3,6),civic:SOV.slice(6,9)},vfBank=[];
+ chosen.forEach(function(id){(socialVF[id]||[]).forEach(function(x){if(vfBank.indexOf(x)<0)vfBank.push(x)})});
+ var o=pk(g,SOH,4),pr=pk(g,SOP,3),f=vf(g,vfBank.length?vfBank:SOV,Math.min(5,vfBank.length||SOV.length)),cl=pk(g,SOG,3),cv=pk(g,SOC,2);
  h+=Q('1.','أصل بسهم بين التاريخ والحدث المناسب:'+match(g,o.map(function(x){return [x[0],x[1]]}),2),2,1);
  h+=Q('2.','أصل بسهم بين الشخصية والحدث أو الإنجاز المرتبط بها:'+match(g,pr,1.5),1.5,1);
  h+=Q('3.','أجيب بـ «صحيح» أو «خطأ»:'+f.h,2,1);
  h+=Q('4.','أتمم الجمل التالية بما يناسب:'+cl.map(function(x){return ln('• '+E(x[0]))}).join(''),1.5,1);
  h+=Q('5.','أجيب عن السؤالين:'+cv.map(function(x,i){return ln('أب'[i]+'. '+E(x[0]))+dots(1)}).join(''),1.5,1);
  h+=Q('6.','<b>الوضعية:</b> في السادس من نونبر من كل سنة يخلد المغاربة ذكرى حدث وطني كبير، شارك فيه مئات الآلاف من المغاربة والمغربيات حاملين القرآن الكريم والأعلام الوطنية، بدعوة من المغفور له الحسن الثاني.<div>أ. أسمّي هذا الحدث: ………………</div><div>ب. أذكر هدفه: ………………………………</div><div>ج. أذكر سنة وقوعه: ………………</div>',1.5,1);
- K.push('1) '+o.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' (0,5 لكل ربط) ؛ 2) '+pr.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' (0,5 لكل ربط) ؛ 3) '+f.k+' (0,4 لكل عبارة) ؛ 4) '+cl.map(function(x){return x[1]}).join('، ')+' (0,5 لكل جملة) ؛ 5) '+cv.map(function(x){return x[1]}).join(' ؛ ')+' (0,75 لكل سؤال) ؛ 6) أ. المسيرة الخضراء ؛ ب. استرجاع الأقاليم الجنوبية وتحقيق الوحدة الترابية ؛ ج. 1975 (0,5 لكل جواب)');
+ K.push('1) '+o.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' (0,5 لكل ربط)');
+ K.push('2) '+pr.map(function(x){return x[0]+'←'+x[1]}).join(' ؛ ')+' (0,5 لكل ربط)');
+ K.push('3) '+f.k+' ('+(f.a.length?('2 ÷ '+f.a.length+' ن لكل عبارة'):'')+')');
+ K.push('4) '+cl.map(function(x){return x[1]}).join('، ')+' (0,5 لكل جملة)');
+ K.push('5) '+cv.map(function(x){return x[1]}).join(' ؛ ')+' (0,75 لكل سؤال)');
+ K.push('6) أ. المسيرة الخضراء ؛ ب. استرجاع الأقاليم الجنوبية وتحقيق الوحدة الترابية ؛ ج. 1975 (0,5 لكل جواب)');
  return {html:W(h,{ar:1,sub:'الاجتماعيات',tot:10,dur:'45 دقيقة',sess:'يناير 2027'}),key:K,ar:1}}
 window.EX6.ar=arExam;window.EX6.isl=islExam;window.EX6.sci=sciExam;window.EX6.soc=socExam;
 })();
+
+/* بنك تمارين مستخرج ومصنف من تجميعية نماذج الامتحانات المحلية (72 صفحة).
+   النصوص القرائية أعيدت صياغتها بإيجاز، والأسئلة والأجوبة مستندة إلى نماذج التجميعية.
+   لا تُعرض مفاتيح التصحيح في ورقة المتعلم؛ بل تُضاف إلى قسم التصحيح المنفصل. */
+(function(){
+'use strict';
+var U=window.EX6&&window.EX6._u;
+if(!U)return;
+var E=U.E,band=U.band,Q=U.Q,dots=U.dots,head=U.head,RG=U.RG;
+var SRC={
+0:{sub:'اللغة العربية',ar:1,total:40,dur:'ساعة ونصف',sections:{
+read:{title:'أولا: القراءة والفهم',pts:12,variants:[
+{source:'ص 32–38',intro:'<div style="font-weight:800;text-align:center;margin:6px">العمل التطوعي</div><p style="line-height:2;text-align:justify">العمل التطوعي عطاء يقدمه الإنسان لمساعدة غيره دون انتظار مقابل. فهو يقوي روح التضامن والتعاون، ويساعد المحتاجين على تجاوز الصعوبات. كما يستفيد المتطوع من استثمار وقته وتنمية مهاراته والشعور بالرضا. وتزداد أهمية هذا العمل عند الأزمات والكوارث، حين يتعاون الناس لتخفيف المعاناة.</p>',qs:[
+['أحدد نوع النص: مقالة أم قصيدة أم رسالة؟',2,'مقالة.'],
+['أختار عنوانا مناسبا للنص من بين: العمل التطوعي – الحضارة والتقدم – قيمة التسامح.',2,'العمل التطوعي.'],
+['أقترح أربع كلمات تنتمي إلى شبكة مفردات «الصحة».',2,'مثل: مرض، رشاقة، رياضة، أدوية، طبيب، ممرض، مستشفى. يقبل كل جواب مناسب.'],
+['أذكر ثلاث كلمات من عائلة «خفّف».',2,'خفّف، تخفيف، مخفّف، يتخفف.'],
+['أبين فائدتين للعمل التطوعي.',2,'مساعدة الآخرين وتخفيف آلامهم، واستثمار الوقت وتنمية المهارات وتعزيز الصحة النفسية.'],
+['أحدد القيمة الأساسية في النص، وأميز بين الاستفهام والتعجب والنفي في أمثلته.',2,'القيمة: التضامن. الاستفهام: «ألا تتجلى…؟»؛ التعجب: «ما أروع…!»؛ النفي: «لا يطلبون…».'] ]},
+{source:'ص 58–63',intro:'<div style="font-weight:800;text-align:center;margin:6px">المنتخب المغربي: دروس الأخلاق والوطنية</div><p style="line-height:2;text-align:justify">انتشرت صور لاعبي المنتخب المغربي في وسائل الإعلام بعد مشاركتهم في كأس العالم بقطر. وقد أبرزت هذه الصور قيما إنسانية ووطنية، مثل التضامن والإخلاص والعمل والاعتزاز بالوطن.</p><p style="line-height:2;text-align:justify">كما أظهرت صور اللاعبين مع أمهاتهم وآبائهم وأفراد أسرهم مكانة الأسرة وبر الوالدين واحترام الكبار في المجتمع المغربي. وتفاعل الناس مع هذه المشاهد لما تحمله من معاني المحبة والأصالة.</p>',qs:[
+['أذكر كلمتين من عائلة «التواصل»، وأشرح معنى «يقدر» في: يقدر التلميذ معلمه؛ ويقدر الله ما شاء.',2,'من العائلة: وصل، تواصل، وصول، واصل، موصول، متواصل، صلة. يقدر التلميذ معلمه: يحترمه؛ ويقدر الله ما شاء: يحكم به/يقدّر.'],
+['ما الذي راج في وسائل التواصل والإعلام العالمي؟ وما الدروس التي قدمها المنتخب؟',2,'راجت صور لاعبي المنتخب الوطني لكرة القدم، وقدمت دروسا أخلاقية وإنسانية ووطنية لا تقدر بثمن.'],
+['أستخرج ثلاث قيم وردت في النص.',2,'الخير، التضامن، الإخلاص، الجهد، العمل، الروح الوطنية.'],
+['أرتب الأفكار حسب ورودها: صور المنتخب في الإعلام؛ إبراز القيم الإنسانية؛ صور اللاعبين مع أسرهم؛ إبراز بر الوالدين.',2,'رواج صور المنتخب؛ إعادة الاعتبار للقيم والروح الوطنية؛ صور اللاعبين مع عائلاتهم؛ إبراز قيمة الأسرة وبر الوالدين.'],
+['ألخص النص في أربعة أسطر على الأكثر.',4,'يقبل تلخيص يبين أن صور المنتخب المغربي نقلت للعالم قيما أخلاقية ووطنية، وأبرزت أصالة الأسرة المغربية وبر الوالدين.',3] ]}
+]},
+lang:{title:'ثانيا: الظواهر اللغوية',pts:12,variants:[
+{source:'ص 33–38',qs:[
+['أصنف الأفعال الآتية حسب نوعها: وقف – نجح – قال – قرأ – سعى – شدّ.',3,'وقف: معتل مثال؛ نجح: صحيح سالم؛ قال: معتل أجوف؛ قرأ: صحيح مهموز؛ سعى: معتل ناقص؛ شدّ: صحيح مضعف.'],
+['أحول إلى المثنى المذكر: «التلميذ المجد يهتم بدروسه وينجز واجباته».',2,'التلميذان المجدان يهتمان بدروسهما وينجزان واجباتهما.'],
+['أحدد الوزن الصرفي للكلمتين: قابل – مكنسة.',2,'قابل: فاعل؛ مكنسة: مفعلة.'],
+['أستخرج فعلا مضارعا منصوبا وحرف نصبه من جملة مناسبة، ثم أعرب «يغيثوا».',2,'مثال: لن يهملوا؛ حرف النصب لن. «يغيثوا»: فعل مضارع منصوب بحذف النون لأنه من الأفعال الخمسة، والواو فاعل.'],
+['أتمم: يساعد المحسن ........ في تجاوز محنته (أخوه/أخيه/أخاه)، ويحصل ........ النقطة الجيدة على جائزة (ذا/ذو/ذي).',2,'أخاه؛ ذو.'],
+['أعرب كلمة «حدودَ» إذا وردت مفعولا به في الجملة.',1,'مفعول به منصوب بالفتحة الظاهرة، وهو مضاف.'] ]},
+{source:'ص 59–63',qs:[
+['أعرب «يقدمون» و«للمقربين» في سياق الجملة.',2,'يقدمون: فعل مضارع مرفوع بثبوت النون لأنه من الأفعال الخمسة، والواو فاعل. للمقربين: اللام حرف جر، والمقربين اسم مجرور بالياء لأنه جمع مذكر سالم.'],
+['أميز الظواهر في: ينبغي أن تنجز واجباتك؛ اجتهد كي تنجح؛ لن أترك عمل اليوم إلى الغد.',2,'أن/كي/لن: حروف نصب؛ ويُستخرج الفعل المضارع المنصوب بعد كل منها.'],
+['أتمم بالأسماء الخمسة أو فعل الشرط أو المصدر المؤول: جاء .... أحمد؛ إن .... تنجح؛ اجتهد .... تحصل على أحسن النتائج.',2,'أبو أحمد؛ إن تجتهد تنجح؛ اجتهد كي تحصل/للحصول على أحسن النتائج.'],
+['أحول الأفعال إلى الزمن المطلوب: قرأ (الماضي)، عرض (المضارع)، جاد (الأمر).',2,'قرأ؛ يعرض؛ جُدْ.'],
+['أحول «زر المريض وقف مع المحتاج» حسب الضمائر: أنتما، أنتم، أنتن.',2,'أنتما: زورا المريض وقفا مع المحتاج؛ أنتم: زوروا المريض وقفوا مع المحتاج؛ أنتن: زرن المريض وقفن مع المحتاج.'],
+['أحدد اسم الفاعل واسم المفعول من «نظر»، وأذكر وزنيهما.',2,'ناظر: فاعل؛ منظور: مفعول.'] ]}
+]},
+orth:{title:'ثالثا: الإملاء',pts:4,variants:[
+{source:'ص 34–38',qs:[
+['أتمم بالألف المناسبة: دعـ...، رمـ...، مزايـ...، الفتـ....',1.5,'دعا، رمى، مزايا، الفتى.'],
+['أضع همزة الوصل أو القطع: ...يمان، ...جتهد، ...ستخراج، ...حسان.',1.5,'إيمان، اجتهد، استخراج، إحسان.'],
+['أكتب «ابن» أو «بن» في المكان المناسب: ... بطوطة؛ محمد ... عبد الله؛ عبد الرحمن ... خلدون.',1,'ابن بطوطة؛ محمد بن عبد الله؛ عبد الرحمن بن خلدون.'] ]},
+{source:'ص 60–63',qs:[
+['أضع همزة القطع أو الوصل: ...سرع يا ...حمد إلى ...لقاعة لإنجاز التمارين ثم ...سترح.',2,'أسرع يا أحمد إلى القاعة لإنجاز التمارين ثم استرح.'],
+['أكتب «ابن» أو «بن» في: عمر ... الخطاب؛ علي ... أبي طالب؛ ... بطوطة.',1,'عمر بن الخطاب؛ علي بن أبي طالب؛ ابن بطوطة.'],
+['أضبط الكلمات بالشكل التام: المشاركين – الاعتبار – ديننا.',1,'تقبل الصيغ المضبوطة وفق سياق النص.'] ]}
+]},
+write:{title:'رابعا: الكتابة',pts:12,variants:[
+{source:'ص 35–38',qs:[
+['أكتب طلبا موجها إلى مدير المؤسسة ألتمس فيه تخصيص ركن للقراءة لفائدة المتعلمين.',12,'شبكة التقويم: احترام عناصر الطلب (3 ن)، وضوح الموضوع والأفكار (3 ن)، سلامة الرصيد اللغوي والتراكيب (3 ن)، علامات الترقيم والإملاء (1.5 ن)، التنظيم والخط المقروء (1.5 ن).',8] ]},
+{source:'ص 60–63',intro:'<p style="line-height:1.9">موضوع الكتابة: يرغب صديق أجنبي في التعرف على مدينة مغربية. اكتب إليه رسالة تعرفه فيها بمدينة مراكش، وتصف بعض معالمها السياحية، وتشجعه على زيارتها.</p>',qs:[
+['أكتب رسالة منسجمة تتضمن التاريخ والتحية والمقدمة، ووصف معلمين أو أكثر، وخاتمة مناسبة.',12,'شبكة التقويم: احترام شكل الرسالة (2 ن)، تقديم معلومات مناسبة عن المدينة ومعالمها (4 ن)، تنظيم الأفكار وتسلسلها (2 ن)، سلامة اللغة والإملاء (2 ن)، علامات الترقيم وحسن العرض (2 ن).',9] ]}
+]}
+}},
+1:{sub:'Français',ar:0,total:40,dur:'1h 30 min',sections:{
+read:{title:'I. Compréhension de l’écrit',pts:15,variants:[
+{source:'ص 23–26',intro:'<div style="font-weight:800;text-align:center;margin:6px">Les droits et les devoirs du citoyen</div><p dir="ltr" style="text-align:left;line-height:1.8">Un citoyen possède des droits, comme voter, exprimer son opinion et pratiquer sa religion.</p><p dir="ltr" style="text-align:left;line-height:1.8">Il a aussi des devoirs : respecter les droits des autres, participer à la vie collective et contribuer aux services publics.</p><p dir="ltr" style="text-align:left;line-height:1.8">Les enfants ont également des droits essentiels, notamment l’éducation, la santé, les loisirs et la protection contre la maltraitance.</p>',qs:[
+['Quel est le titre du texte ?',2,'Les droits et les devoirs du citoyen.'],
+['Quel est le type du texte : informatif, narratif ou descriptif ?',1,'Informatif.'],
+['Combien de paragraphes compte le texte présenté ?',1,'Trois paragraphes dans cette version reformulée.'],
+['Quel est le thème principal : la protection de l’environnement, les droits et les devoirs, ou la sécurité routière ?',2,'Les droits et les devoirs.'],
+['Réponds par vrai ou faux : voter est un droit ; la liberté permet de nuire aux autres.',2,'Vrai ; faux.'],
+['Relève deux droits de l’enfant.',2,'Droit à l’éducation, à la santé, aux loisirs ou à la protection.'],
+['Pourquoi les citoyens contribuent-ils aux impôts ?',2,'Pour financer les services publics : écoles, hôpitaux et routes.'],
+['Quelle date est associée à la Convention internationale des droits de l’enfant ?',3,'Le 20 novembre 1989.'] ]},
+{source:'ص 28–31',intro:'<div style="font-weight:800;text-align:center;margin:6px">Québec : des idées originales pour la sécurité routière</div><p dir="ltr" style="text-align:left;line-height:1.8">Au Québec, des spécialistes ont imaginé des moyens originaux pour encourager les automobilistes à ralentir près des écoles. Des enfants portent des sacs à dos qui affichent la vitesse des véhicules. Un passage piéton peut aussi se transformer en barrière visuelle lorsque quelqu’un s’approche, afin d’inciter les voitures à s’arrêter.</p>',qs:[
+['Quel est le titre du texte ?',2,'Québec : des idées originales pour la sécurité routière.'],
+['Quel est le type du texte : informatif, narratif ou descriptif ?',1,'Informatif.'],
+['Quel est le thème principal du texte ?',1,'La sécurité routière.'],
+['Quelle est la première méthode proposée pour ralentir les automobilistes ?',2,'Des sacs à dos radars portés par les enfants.'],
+['Quelle est la seconde méthode ?',2,'Un passage piéton qui forme une barrière visuelle.'],
+['Que se passe-t-il quand un piéton s’approche du passage ?',2,'Les bandes jaunes se soulèvent/se détachent pour former une barrière devant la voiture.'],
+['Vrai ou faux : le Québec est une région francophone du Canada ; trois méthodes sont présentées.',2,'Vrai ; faux.'],
+['Relève dans le texte un mot contraire de « possible ».',3,'Impossible.'] ]},
+{source:'ص 39–43',intro:'<div style="font-weight:800;text-align:center;margin:6px">Les bons citoyens</div><p dir="ltr" style="text-align:left;line-height:1.8">Les bons citoyens participent à l’amélioration de leur pays et respectent les personnes qui les entourent.</p><p dir="ltr" style="text-align:left;line-height:1.8">Ils peuvent agir au quotidien : préserver l’eau, trier les déchets, aider les personnes âgées, respecter les règles et prendre soin des espaces communs. Chacun peut contribuer par des gestes simples.</p>',qs:[
+['Quel est le titre du texte ?',2,'Les bons citoyens.'],
+['Quel est le type du texte ?',2,'Informatif.'],
+['Combien de paragraphes contient la version présentée ?',1,'Deux paragraphes.'],
+['Pourquoi les bons citoyens sont-ils engagés ?',2,'Pour améliorer les conditions de vie de leurs concitoyens et de leur pays.'],
+['Choisis la bonne réponse : les bons citoyens sont fiers / tristes / indifférents de leur pays.',2,'Fiers.'],
+['Relève trois actes de citoyenneté mentionnés dans le texte.',3,'Préserver l’eau, trier/recycler les déchets, aider les personnes âgées, respecter les règles.'],
+['Donne une valeur défendue par le texte et justifie-la.',3,'La solidarité, la responsabilité ou le respect, avec justification pertinente.'] ]}
+]},
+gram:{title:'II. Grammaire',pts:6,variants:[
+{source:'ص 24–26',qs:[
+['Indique si la phrase est nominale ou verbale : « Les droits et les devoirs du citoyen. »',1,'Phrase nominale.'],
+['Souligne l’adjectif et indique sa fonction : « C’est un bon élève. »',1,'bon : adjectif qualificatif épithète.'],
+['Remplace le COD/COI par un pronom : « Hassan ferme la fenêtre » ; « Elle parle à sa mère ».',2,'Hassan la ferme ; elle lui parle.'],
+['Transforme en phrase interrogative : « Tu fais du sport. »',1,'Tu fais du sport ? / Fais-tu du sport ? / Est-ce que tu fais du sport ?'],
+['Mets à la forme négative : « Je marche sur le bord. »',1,'Je ne marche pas sur le bord.'] ]},
+{source:'ص 29–31، 40–42',qs:[
+['Indique le type : « Je parle français. » ; « Attention, descente dangereuse ! »',2,'Phrase verbale ; phrase nominale.'],
+['Souligne l’adjectif et indique sa fonction : « Ces filles sont gentilles. »',1,'gentilles : attribut du sujet.'],
+['Remplace le COD par un pronom : « Vous chantez l’hymne national. »',1,'Vous le chantez.'],
+['Indique si l’interrogation est totale ou partielle : « Qui passera l’examen ? » ; « Es-tu satisfait ? »',2,'Partielle ; totale.'] ]}
+]},
+conj:{title:'III. Conjugaison',pts:6,variants:[
+{source:'ص 24–26',qs:[
+['Conjugue au présent : Adam (corriger) les fautes ; je (prendre) soin de ma santé.',2,'Adam corrige ; je prends.'],
+['Conjugue à l’imparfait : nous (aimer) notre école.',1,'Nous aimions.'],
+['Conjugue au passé composé : elle (venir) en retard.',1,'Elle est venue.'],
+['Conjugue au futur simple : vous (finir) le travail.',1,'Vous finirez.'],
+['Conjugue à l’impératif présent : (regarder) ce beau film (1re personne du pluriel).',1,'Regardons ce beau film.'] ]},
+{source:'ص 29–31',qs:[
+['Conjugue au présent : je (vouloir) être jardinier.',1,'Je veux être jardinier.'],
+['Conjugue à l’imparfait : nous (sortir) nos vélos.',1,'Nous sortions nos vélos.'],
+['Conjugue au passé composé : vous (partir) ; il (chercher).',2,'Vous êtes partis ; il a cherché. Note de contrôle : le corrigé source donne « ont cherché » avec le sujet « il » ; la forme grammaticale attendue est « a cherché ».'],
+['Conjugue au futur simple : tu (sauter) le mur.',1,'Tu sauteras le mur.'],
+['Conjugue à l’impératif : (travailler) bien ! (2e personne du pluriel).',1,'Travaillez bien !'] ]},
+{source:'ص 40–43',qs:[
+['Conjugue au temps indiqué : vous (être) au bord des larmes (imparfait) ; nous (visiter) des sites (passé composé).',2,'Vous étiez ; nous avons visité.'],
+['Conjugue : il (parler) au téléphone tous les jours (présent) ; tu (avoir) plein de cadeaux (futur).',2,'Il parle ; tu auras.'],
+['Conjugue à l’impératif présent : donner et fabriquer à la 2e personne du singulier puis du pluriel.',2,'Donne / Donnez ; Fabrique / Fabriquez.'] ]}
+]},
+orth:{title:'IV. Orthographe',pts:3,variants:[
+{source:'ص 24–31',qs:[
+['Complète avec é, è ou ê : une r…gle ; une r…ponse.',1,'Une règle ; une réponse.'],
+['Accorde l’adjectif : cette femme est (grand).',1,'Cette femme est grande.'],
+['Complète : un trav… ; une f…uille (ail/aille/euil/euille/eil/eille).',1,'Un travail ; une feuille.'] ]},
+{source:'ص 29–43',qs:[
+['Accorde le participe passé : les volontaires sont arrivé… en retard ; elle a frappé… la porte.',1,'Arrivés ; frappé.'],
+['Accentue : les deux equipes etaient a egalite jusqu’a cette penalite.',1,'Les deux équipes étaient à égalité jusqu’à cette pénalité.'],
+['Choisis : mes (premiers/premières) jours étaient (agréables/agréable).',1,'Premiers ; agréables.'] ]}
+]},
+lex:{title:'V. Lexique',pts:3,variants:[
+{source:'ص 24–31',qs:[
+['Relève les synonymes de « obligations » et « habitant » dans le contexte.',1,'Devoirs ; citoyen.'],
+['Complète par le gentilé : Maroc : … ; Afrique : …',1,'Marocain/Marocaine ; Africain/Africaine.'],
+['Donne un antonyme de « lent » et de « possible ».',1,'Rapide ; impossible.'] ]},
+{source:'ص 39–43',qs:[
+['Souligne les antonymes dans : « J’ai vu un mort vivant ».',1,'mort / vivant.'],
+['Relie chaque mot à son contraire : nouveau, vieux, intelligent, bon avec ancien, jeune, idiot, mauvais.',1,'Nouveau–ancien ; vieux–jeune ; intelligent–idiot ; bon–mauvais. Remarque pédagogique : le modèle source intitule cet exercice « synonymes », mais les associations du corrigé sont des antonymes.'],
+['Donne un synonyme de « voyage ».',1,'Déplacement, séjour ou excursion selon le contexte.'] ]}
+]},
+prod:{title:'VI. Production de l’écrit',pts:7,variants:[
+{source:'ص 24–31',qs:[
+['Complète avec : gauche – passage – ceinture – traverser : « Je fais attention avant de … la route ; je mets ma … de sécurité ; je regarde à droite et à … ; j’utilise le … piéton. »',2,'Traverser ; ceinture ; gauche ; passage.'],
+['Mets en ordre les idées pour former un texte cohérent sur le smartphone : définition, batterie, chargeur et outils associés.',5,'Ordre attendu : Le smartphone est un téléphone mobile… ; deux outils de base… ; la batterie… ; le chargeur… (accepter une organisation cohérente des éléments).'] ]},
+{source:'ص 39–43',qs:[
+['Complète avec : Eiffel – symbole – 312 mètres – Gustave Eiffel. La tour … est le … de Paris ; elle a été construite par … et mesure … .',2,'Eiffel ; symbole ; Gustave Eiffel ; 312 mètres.'],
+['Tu as participé avec tes camarades au nettoyage d’une forêt. Décris le déroulement de cette action en cinq lignes au moins.',5,'Évaluation : respect du sujet (1), chronologie et cohérence (2), vocabulaire et correction grammaticale (1), orthographe et présentation (1).'] ]},
+{source:'ص 29',qs:[
+['Complète avec : regarder – feux de signalisation – les trottoirs – interdit, puis rédige un paragraphe de cinq lignes sur le respect du code de la route.',7,'Feux de signalisation ; interdit ; regarder ; les trottoirs. Pour le paragraphe : pertinence, conseils de sécurité, cohérence et correction de la langue.'] ]}
+]}
+}},
+2:{sub:'الرياضيات',ar:1,total:40,dur:'ساعة ونصف',sections:{
+count:{title:'المجال الأول: الأعداد والحساب',pts:13,variants:[
+{source:'ص 3–5',qs:[
+['أضع وأنجز العمليات عموديا:<table dir="ltr" style="width:100%;border-collapse:collapse;margin:6px 0"><tr><td style="border:1px solid #777;padding:7px">(341 763,84 − 337 309) × 2,5</td><td style="border:1px solid #777;padding:7px">376,74 ÷ 4,6</td></tr></table>',4,'11 137,1 ؛ 81,9.'],
+['أكمل كتابة العددين بالحروف والأرقام: <span dir="ltr" style="unicode-bidi:isolate">78 005 000,4</span> ؛ «سبعة ملايين وثمان مئة وثلاثة وستون ألفا ومئتان».',2,'ثمانية وسبعون مليونا وخمسة آلاف وأربعة أعشار؛ 7 863 200.'],
+['أحدد المضاعف المشترك الأصغر للعددين <span dir="ltr" style="unicode-bidi:isolate">8 و14</span>.',2,'56.'],
+['أحوط الأعداد القابلة للقسمة على <span dir="ltr" style="unicode-bidi:isolate">2 و9</span> معا: <span dir="ltr" style="unicode-bidi:isolate">5، 23، 8، 18، 27، 36، 324، 72، 294</span>.',2,'18، 36، 324، 72، 294.'],
+['أحسب وأختزل: <span dir="ltr" style="unicode-bidi:isolate">(15/12 − 2/5) ÷ 9</span>.',3,'17/180.'] ]},
+{source:'ص 7–8',qs:[
+['أحسب:<table dir="ltr" style="width:100%;border-collapse:collapse;margin:6px 0"><tr><td style="border:1px solid #777;padding:5px">(32 398,4 − 10 783,8) + 71 752</td><td style="border:1px solid #777;padding:5px">45,2 × 41</td><td style="border:1px solid #777;padding:5px">215,05 ÷ 23</td></tr></table>',6,'93 366,6 ؛ 1 853,2 ؛ 9,35.'],
+['أحسب وأختزل: <span dir="ltr" style="unicode-bidi:isolate">(4/3 + 5/6) × 1/7</span>.',2,'(8/6+5/6)×1/7=13/6×1/7=13/42.'],
+['أحدد مضاعفات العدد 7 المحصورة بين 60 و82.',2,'63، 70، 77.'],
+['تنقل 30 طائرة، سعة كل واحدة 302 مقعد، مشجعين إلى الدوحة. أحسب عدد المقاعد الإجمالي.',3,'30×302=9 060 مقعدا.'] ]},
+{source:'ص 10–13',qs:[
+['أضع وأنجز العمليات الأربع عموديا:<table dir="ltr" style="width:100%;border-collapse:collapse;margin:6px 0"><tr><td style="border:1px solid #777;padding:5px">2724,28 + 983,34</td><td style="border:1px solid #777;padding:5px">3830 − 292,4</td><td style="border:1px solid #777;padding:5px">216,7 × 32</td><td style="border:1px solid #777;padding:5px">1461,6 ÷ 56</td></tr></table>',5,'3707,62 ؛ 3537,6 ؛ 6934,4 ؛ 26,1.'],
+['أحسب: <span dir="ltr" style="unicode-bidi:isolate">5/4 + 11/6 ؛ 17/12 × 3/8</span>.',2,'37/12 أو 3 و1/12 ؛ 51/96=17/32.'],
+['أحدد قواسم العدد 32.',2,'1، 2، 4، 8، 16، 32.'],
+['يدخر سعيد 1200 درهم كل شهر. أحسب ادخاره في سنة، وعدد الأشهر اللازمة لادخار 21 600 درهم.',4,'14 400 درهم؛ 18 شهرا.'] ]},
+{source:'ص 3–5',qs:[
+['مسألة الأقفاص: بقيت دجاجة عند التوزيع في أقفاص سعتها 9، وبقيت دجاجتان عند السعة 5، ودجاجة عند السعة 3. العدد بين 37 و88. أجد العدد، ثم أقترح سعة أقل من 9 لا تترك بقايا.',6,'عدد الدجاجات 82؛ سعة القفص المقترحة دجاجتان.'],
+['أحدد مضاعفا مشتركا أصغر للعددين 8 و14، ثم أكتب قواسم 32.',3,'المضاعف المشترك الأصغر 56؛ القواسم 1،2،4،8،16،32.'],
+['أحسب عملية كسرية وأختزل: (15/12 − 2/5) ÷ 9.',4,'17/180.'] ]},
+{source:'ص 15–18',qs:[
+['أضع وأنجز العمليات الأربع عموديا:<table dir="ltr" style="width:100%;border-collapse:collapse;margin:6px 0"><tr><td style="border:1px solid #777;padding:5px">2724,28 + 983,34</td><td style="border:1px solid #777;padding:5px">3830 − 292,4</td><td style="border:1px solid #777;padding:5px">216,7 × 32</td><td style="border:1px solid #777;padding:5px">1461,6 ÷ 56</td></tr></table>',6,'3707,62 ؛ 3537,6 ؛ 6934,4 ؛ 26,1.'],
+['أرتب الأعداد تصاعديا: <span dir="ltr" style="unicode-bidi:isolate">47,2 – 0,28 – 28 – 373 – 41 – 84,93 – 39,21</span>.',2,'0,28 < 28 < 39,21 < 41 < 47,2 < 84,93 < 373.'],
+['أحدد قواسم العدد 32.',2,'1، 2، 4، 8، 16، 32.'],
+['يدخر سعيد 1200 درهم شهريا. أحسب ادخاره في سنة، وعدد الأشهر اللازمة لادخار 21 600 درهم.',3,'14 400 درهم؛ 18 شهرا.'] ]}
+]},
+geo:{title:'المجال الثاني: الهندسة',pts:11,variants:[
+{source:'ص 3–4',qs:[
+['أنشئ نقطتين مختلفتين A وB، ثم مستقيما d1 يمر من A، ومستقيما d2 عموديا على d1 ويمر من A، ومستقيما d3 عموديا على d2 ويمر من B.<div style="height:92px;border:1px solid #777;margin:6px 0"></div>',4,'الإنشاء بالأدوات الهندسية؛ يستنتج أن d1 وd3 متوازيان لأنهما عموديان على d2.'],
+['أنشئ دائرة نصف قطرها 2 cm.<div style="height:80px;border:1px solid #777;margin:6px 0"></div>',3,'دائرة مركزها مختار ونصف قطرها 2 cm.'],
+['أنشئ المستقيم d2 المار من B والموازي لـ d1، ثم d4 عموديا على d3.<div style="height:82px;border:1px solid #777;margin:6px 0"></div>',2,'إنشاء صحيح باستعمال المسطرة والكوس.'],
+['مثلث قائم قاعدته 34 m وارتفاعه 18 m. أحسب مساحته.',2,'(34×18)÷2=306 m².',2] ]},
+{source:'ص 10–13، 44–47',qs:[
+['أنشئ مستقيما يمر من A ويوازي d1، ثم مستقيما يمر من B ويعامد d4.<div style="height:82px;border:1px solid #777;margin:6px 0"></div>',3,'الإنشاء بالأدوات الهندسية مع احترام شرط التوازي والتعامد.'],
+['أرسم متوازي الأضلاع ABCD حيث <span dir="ltr" style="unicode-bidi:isolate">AB=5 cm</span> و<span dir="ltr" style="unicode-bidi:isolate">BC=4 cm</span>.<div style="height:82px;border:1px solid #777;margin:6px 0"></div>',3,'متوازي أضلاع بأضلاع متقابلة متوازية ومتساوية.'],
+['أنشئ مستقيمين متعامدين، ثم استنتج العلاقة بين مستقيمين عموديين على المستقيم نفسه.<div style="height:70px;border:1px solid #777;margin:6px 0"></div>',2,'المستقيمان متوازيان.'],
+['أحسب محيط مربع طول ضلعه 5 m.',3,'P=4×5=20 m.'] ]},
+{source:'ص 7–8',qs:[
+['أنشئ دائرة نصف قطرها 2 cm، ثم أنشئ من النقطة B مستقيما موازيا للمستقيم d1.<div style="height:90px;border:1px solid #777;margin:6px 0"></div>',5,'إنشاء الدائرة والمستقيم الموازي وفق المعطيات.'],
+['أنشئ مستقيما عموديا على d3، ثم أحسب مساحة مثلث قاعدته 34 m وارتفاعه 18 m.',6,'إنشاء صحيح؛ المساحة 306 m².'] ]},
+{source:'ص 15–18',qs:[
+['أنشئ مستقيما E يمر من النقطة A وعموديا على d1، ثم مستقيما F يمر من A وعموديا على E.<div style="height:92px;border:1px solid #777;margin:6px 0"></div>',6,'الإنشاءان صحيحان باستعمال الأدوات الهندسية.'],
+['ماذا تستنتج بالنسبة للمستقيمين F وd1؟',2,'المستقيمان F وd1 متوازيان لأنهما عموديان على المستقيم E.'],
+['أرسم متوازي الأضلاع ABCD حيث <span dir="ltr" style="unicode-bidi:isolate">AB=5 cm</span> و<span dir="ltr" style="unicode-bidi:isolate">BC=4 cm</span>.<div style="height:82px;border:1px solid #777;margin:6px 0"></div>',3,'متوازي أضلاع صحيح، أضلاعه المتقابلة متوازية ومتساوية.'] ]}
+]},
+measure:{title:'المجال الثالث: القياس',pts:13,variants:[
+{source:'ص 7–8',qs:[
+['أحول الوحدات التالية إلى ما هو مطلوب:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">8 hm 7 dam 2 m = … m<br>15,23 q = … t<br>542 cm³ = … l<br>1,15 Go = … Mo</div>',8,'872 m؛ 1,523 t؛ 0,542 l؛ 1 150 Mo (وفق التحويل العشري المعتمد في النموذج).'],
+['خزان مكعب طول حرفه 2 m. أحسب حجمه بالمتر المكعب ثم باللتر.',5,'V=2×2×2=8 m³؛ 8 000 l.'] ]},
+{source:'ص 10–13، 44–47',qs:[
+['أحول الوحدات التالية إلى ما هو مطلوب:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">86,5 m = … dam<br>5 t 7 q 64 kg = … kg<br>45,91 cm² = … dm²<br>512 Mo = … Go<br>0,35 m³ = … dm³</div>',10,'8,65 dam؛ 5 764 kg؛ 0,4591 dm²؛ 0,512 Go؛ 350 dm³.'],
+['حديقة طولها 7 m وعرضها 5 m، وتسقى بـ50 l يوميا. أحسب مساحتها وكمية الماء خلال أسبوع.',3,'35 m²؛ 350 l.'] ]},
+{source:'ص 3–5',qs:[
+['أحول الوحدات التالية إلى ما هو مطلوب:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">3,35 kg = … g<br>52,41 dm³ = … hl<br>512 Ko = … Mo<br>4 ha 52 a 0,1 ca = … dam²</div>',7,'3 350 g؛ 0,5241 hl؛ 0,512 Mo؛ 452,001 dam².'],
+['متوازي مستطيلات أبعاده 9 m و5 m و8 m. أحسب حجمه.',2,'V=9×5×8=360 m³.'],
+['محيط مربع ضلعه 5 m.',2,'20 m.'],
+['ثلاثة حقول مساحاتها 5 ha و14 ha و9 ha. غُرس نصف الحقل الأول وربع الثاني والحقل الثالث كاملا. أحسب الإنتاج الإجمالي إذا كانت مردودية الهكتار 80 t، ثم المساحة الإجمالية غير المغروسة.',2,'المساحة المغروسة: 2,5+3,5+9=15 ha؛ الإنتاج: 15×80=1 200 t. المساحة غير المغروسة: (14−3,5)+2,5=13 ha.'] ]},
+{source:'ص 15–18',qs:[
+['أحول الوحدات التالية إلى ما هو مطلوب:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">86,5 m = … dam<br>5 t 7 q 64 kg = … kg<br>45,91 cm² = … dm²<br>65 dm = … cm</div>',8,'8,65 dam؛ 5 764 kg؛ 0,4591 dm²؛ 650 cm.'],
+['أحول سعة التخزين الرقمي:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">6,2 Ko = … octets<br>27,6 Go = … To</div>',2,'6 200 octets؛ 0,0276 To.'],
+['حديقة طولها 7 m وعرضها 5 m وتسقى بـ50 l يوميا. أحسب المساحة وكمية الماء الأسبوعية.',3,'35 m²؛ 350 l.'] ]},
+{source:'ص 44–47',qs:[
+['أحول الوحدات التالية إلى ما هو مطلوب:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">86,5 m = … dam<br>5 t 7 q 64 kg = … kg<br>45,91 cm² = … dm²<br>512 Mo = … Go<br>0,35 m³ = … dm³</div>',10,'8,65 dam؛ 5 764 kg؛ 0,4591 dm²؛ 0,512 Go؛ 350 dm³.'],
+['خزان على شكل متوازي مستطيلات أبعاده <span dir="ltr" style="unicode-bidi:isolate">4 m و2 m و3 m</span>. أحسب حجمه.',2,'V=4×2×3=24 m³.'],
+['سعة كل برميل <span dir="ltr" style="unicode-bidi:isolate">2 000 l</span>. كم برميلا يلزم لملء الخزان؟',1,'24 m³=24 000 l؛ 24 000÷2 000=12 برميلا.'] ]},
+{source:'ص 4–5',qs:[
+['أحول الوحدات التالية:<div dir="ltr" style="text-align:left;line-height:1.9;margin:5px 0">18 m + 23 dm = … dam<br>3,35 kg = … g<br>52,41 dm³ = … hl<br>512 Ko = … Mo<br>4 ha 52 a 0,1 ca = … dam²</div>',10,'تنبيه تصحيحي: التصحيح المطبوع في التجميعية يذكر 1,823 dam، لكن المعطى المطبوع «18 m + 23 dm» يساوي حسابيا 2,03 dam. إذا كان المقصود 23 cm فالنتيجة 1,823 dam. يجب مراجعة هذا البند قبل اعتماده. باقي النتائج: 3 350 g؛ 0,5241 hl؛ 0,512 Mo؛ 452,001 dam².'],
+['متوازي مستطيلات أبعاده 9 m و5 m و8 m. أحسب حجمه.',1.5,'V=9×5×8=360 m³.'],
+['أحسب محيط الشكل P في الرسم المرفق بالنموذج.',1.5,'P=4×5=20 m.'] ]}
+]},
+data:{title:'المجال الرابع: تنظيم ومعالجة البيانات',pts:3,variants:[
+{source:'ص 7–8',qs:[
+['يبين الجدول عدد مرات الفوز بكأس العالم:<table style="width:100%;border-collapse:collapse;margin:6px 0"><tr><th>الدولة</th><th>عدد الكؤوس</th></tr><tr><td>إسبانيا</td><td dir="ltr">1</td></tr><tr><td>إنجلترا</td><td dir="ltr">1</td></tr><tr><td>فرنسا</td><td dir="ltr">2</td></tr><tr><td>الأوروغواي</td><td dir="ltr">2</td></tr><tr><td>الأرجنتين</td><td dir="ltr">3</td></tr><tr><td>ألمانيا</td><td dir="ltr">4</td></tr><tr><td>إيطاليا</td><td dir="ltr">4</td></tr><tr><td>البرازيل</td><td dir="ltr">5</td></tr></table>أجيب: من الأكثر فوزا؟ من فاز بكأسين؟ من فاز بثلاثة أو أربعة؟',3,'الأكثر: البرازيل؛ بكأسين: فرنسا والأوروغواي؛ بثلاثة أو أربعة: الأرجنتين وألمانيا وإيطاليا.'] ]},
+{source:'ص 3–5',qs:[
+['جدول تصويت تعاونية القسم:<table style="width:100%;border-collapse:collapse;margin:6px 0"><tr><th>المترشح</th><th>مصطفى</th><th>نوال</th><th>كريم</th><th>حكيم</th><th>خديجة</th></tr><tr><th>الأصوات</th><td dir="ltr">5</td><td dir="ltr">4</td><td dir="ltr">0</td><td dir="ltr">6</td><td dir="ltr">3</td></tr></table>أحدد الأقل والأكثر، ومن حصل على أكثر من 4 أصوات.',3,'الأقل: كريم؛ الأكثر: حكيم؛ أكثر من 4: مصطفى وحكيم.'] ]},
+{source:'ص 10–13، 44–47',qs:[
+['مخطط رفع الأثقال:<table style="width:100%;border-collapse:collapse;margin:6px 0"><tr><th>الاسم</th><th>فريد</th><th>عمر</th><th>خالد</th><th>علي</th></tr><tr><th>الوزن (kg)</th><td dir="ltr">270</td><td dir="ltr">210</td><td dir="ltr">180</td><td dir="ltr">240</td></tr></table>أنظم القيم في جدول وأحدد صاحب أكبر وزن.',3,'الجدول بالقيم المعطاة؛ أكبر وزن لفريد (270 kg).'] ]}
+]}
+}},
+3:{sub:'الاجتماعيات',ar:1,total:10,dur:'ساعة ونصف',sections:{
+history:{title:'التاريخ',pts:4,variants:[
+{source:'ص 54–56',intro:'<p style="line-height:1.9">عُثر في جبل إيغود قرب اليوسفية على بقايا بشرية أثناء استخراج معدن الباريت سنة 1960. وأظهرت الدراسات اللاحقة أن البقايا تعود إلى الإنسان العاقل، وأن عمرها يقارب 315 ألف سنة، مما جعل الموقع ذا أهمية عالمية في دراسة تاريخ الإنسان.</p>',qs:[
+['أملأ بطاقة دراسة الحدث: موضوع النص، زمن الحدث، مكانه، وسبب اكتشاف البقايا.',2,'الموضوع: بقايا الإنسان العاقل بجبل إيغود؛ الزمن: 1960؛ المكان: جبل إيغود/اليوسفية؛ السبب: العثور على جمجمة أثناء استخراج الباريت.'],
+['ما العمر الذي نُسب إلى أقدم بقايا الإنسان العاقل المذكورة؟',1,'نحو 315 000 سنة.'],
+['أكمل بإيجاز: نشاط اقتصاديان قديمان؛ معنى دار السكة؛ المقصود بكورونا؛ ومن هي زينب النفزاوية؟',1,'الفلاحة وتربية الماشية؛ دار السكة مؤسسة لضرب القطع النقدية وإنتاجها؛ كورونا مرض وبائي معد؛ زينب النفزاوية من قبيلة نفزاوة وزوجة يوسف بن تاشفين. توزع النقطة على العناصر الأربعة.'] ]},
+{source:'ص 54–56، 65–66',intro:'<p style="line-height:1.9">تقدم الوثائق التاريخية معلومات عن بناء مدينة فاس ومعالمها. وتفيد دراسة النصوص والوثائق في تحديد مصدرها وصاحبها وتاريخها وموضوعها، ثم ترتيب الأحداث في إطارها الزمني والمكاني.</p>',qs:[
+['أذكر المنهجية الأساسية لدراسة وثيقة تاريخية: المصدر، صاحبه، تاريخها، موضوعها.',2,'تحديد مصدر الوثيقة وصاحبها وتاريخها وموضوعها، ثم استخراج المعلومات ووضعها في إطار زمني ومكاني.'],
+['ما اسم العدوتين اللتين ارتبطتا بمدينة فاس، وما التاريخان الواردان في التصحيح؟',1,'عدوة الأندلس (808م) وعدوة القرويين (908م).'],
+['أحدد السنة الهجرية التي تذكرها الوثيقة لبدء بناء عدوة القرويين.',1,'192 هـ. تنبيه للمصحح: يورد تصحيح نموذج آخر في التجميعية تاريخ 908م لعدوة القرويين؛ أُبقي التاريخان مرتبطين بموضعيهما في المصدر دون توحيد.'] ]}
+]},
+geography:{title:'الجغرافيا',pts:3,variants:[
+{source:'ص 54–56، 64–66',qs:[
+['أذكر القارات الست كما وردت في تصحيح هذا النموذج.',1,'إفريقيا، أوقيانوسيا، أوروبا، آسيا، أمريكا، القارة المتجمدة الجنوبية. ملاحظة: نموذج الخريطة في صفحة أخرى يفصل أمريكا الشمالية والجنوبية ويستعمل تصنيفا مختلفا.'],
+['أكمل: يقع المغرب في شمال غرب قارة …، ويحده شرقا … وجنوبا …، ويطل غربا على … وشمالا على … .',1,'إفريقيا؛ الجزائر؛ موريتانيا؛ المحيط الأطلسي؛ البحر الأبيض المتوسط.'],
+['أذكر المناخين السائدين بالمغرب، وأعرف خطوط العرض بإيجاز.',1,'المتوسطي والصحراوي؛ خطوط وهمية متوازية تفيد في تحديد المواقع والنطاقات المناخية.'] ]},
+{source:'ص 54–56، 64–66',qs:[
+['أكمل عناصر خريطة المغرب: البحر شمالا، المحيط غربا، والدولتان المجاورتان شرقا وجنوبا.',1,'البحر الأبيض المتوسط؛ المحيط الأطلسي؛ الجزائر شرقا وموريتانيا جنوبا.'],
+['أكتب صحيحا أو خطأ: خط الاستواء هو الخط الأصلي لخطوط العرض؛ يقع المغرب شرق غرينيتش؛ يقع المغرب في أقصى غرب شمال إفريقيا.',1,'صحيح؛ خطأ؛ صحيح.'],
+['أذكر المناخين السائدين بالمغرب، وأوضح لماذا يختلف التوقيت في العالم.',1,'المتوسطي والصحراوي؛ يختلف التوقيت بسبب اختلاف النطاقات الزمنية بحسب خطوط الطول.'] ]}
+]},
+civic:{title:'التربية على المواطنة',pts:3,variants:[
+{source:'ص 55–56، 65–67',qs:[
+['أصنف: التنقل بحرية من البيت إلى المدرسة؛ احترام ميثاق القسم؛ التعبير عن الرأي؛ احترام قواعد المرور. إلى حق أو واجب أو مسؤولية.',1,'التنقل: حق؛ احترام ميثاق القسم: واجب؛ التعبير عن الرأي: حق؛ احترام قواعد المرور: مسؤولية/واجب بحسب صياغة العبارة.'],
+['أعرف الحياة الخاصة للشخص.',1,'هي المعلومات والمعطيات التي تخص الشخص وله حق تقرير نشرها واستعمالها، وعلى الآخرين احترام خصوصيتها.'],
+['أذكر ثلاثة سلوكات لحماية الحياة الخاصة على الإنترنت.',1,'عدم نشر الصور الشخصية دون إذن، عدم مشاركة كلمة السر، عدم تبادل المعلومات الشخصية مع مجهولين، وتجنب الروابط المجهولة.'] ]},
+{source:'ص 65–67',intro:'<p style="line-height:1.9">قد يتحول اختلاف الرأي بين شخصين إلى نزاع إذا تصاعد النقاش، وقد يتحول النزاع إلى عنف عندما تستعمل القوة لإلحاق الضرر. لذلك يساعد الحوار واحترام الرأي الآخر على حل الخلافات.</p>',qs:[
+['أميز بين الاختلاف والنزاع والعنف.',1,'الاختلاف: تباين وجهات النظر؛ النزاع: سوء تفاهم يتطور إلى مشادة؛ العنف: استعمال القوة لإلحاق ضرر مادي أو معنوي.'],
+['هل يحق لشخص نشر صور زميله دون إذنه؟ علل.',1,'لا؛ لأن ذلك يمس الحياة الخاصة والحق في الصورة.'],
+['أذكر مرحلتين من مراحل إعداد ميثاق القسم.',1,'تحديد القواعد والاتفاق عليها، ثم كتابتها وتوقيعها وإشهارها في القسم.'] ]}
+]}
+}},
+4:{sub:'النشاط العلمي',ar:1,total:10,dur:'45 دقيقة',sections:{
+air:{title:'العلوم الفيزيائية: الهواء والاحتراق والتحولات',pts:3,variants:[
+{source:'ص 20–21، 68–69',qs:[
+['أتمم: يتكون الهواء أساسا من غاز … بنسبة <span dir="ltr">78%</span>، وغاز … بنسبة <span dir="ltr">21%</span>، وغازات أخرى بنسبة <span dir="ltr">1%</span>.',1,'ثنائي الآزوت؛ ثنائي الأكسجين.'],
+['أجيب بصحيح أو خطأ: الهواء ضروري للاحتراق؛ خلال التحول الفيزيائي يتغير تركيب المادة؛ خلال التحول الكيميائي تظهر خواص جديدة.',1,'صحيح؛ خطأ؛ صحيح.'],
+['أحدد نوع التحول: انصهار الجليد؛ صدأ الحديد؛ تسوس الأسنان؛ احتراق الخشب.',1,'فيزيائي؛ كيميائي؛ كيميائي؛ كيميائي.'] ]},
+{source:'ص 20–21، 48–50، 68–69',qs:[
+['أكمل بالغازات: الهواء خليط من …، ومكوناه الأساسيان هما … بنسبة 21% و… بنسبة 78%.',0.75,'غازات؛ ثنائي الأكسجين؛ ثنائي الآزوت.'],
+['أكمل النص: أحادي أكسيد الكربون من الغازات … الناتجة عن الاحتراق، ويشكل … على صحة … .',0.75,'سامّة؛ خطرا؛ الإنسان.'],
+['أذكر شرطين من شروط الاحتراق.',0.75,'مادة قابلة للاحتراق، ثنائي الأكسجين، ودرجة حرارة كافية.'],
+['وضعت شمعة مشتعلة تحت وعاء زجاجي. ماذا يحدث بعد مدة؟',0.75,'تنطفئ الشمعة بعد مدة بسبب استهلاك جزء من ثنائي الأكسجين داخل الوعاء.'] ]}
+]},
+nervous:{title:'علوم الحياة: الجهاز العصبي وأعضاء الحس',pts:1,variants:[
+{source:'ص 20–21، 48–50',qs:[
+['أكمل أسماء مكونات الجهاز العصبي: المخ، المخيخ، البصلة السيسائية، و…؛ ثم أذكر عضوا من أعضاء الحس.',1,'النخاع الشوكي؛ ومن أعضاء الحس: العين أو الأذن أو الأنف أو الجلد أو اللسان.'] ]},
+{source:'ص 20–21، 48–50',qs:[
+['أربط بين: الشم، اللمس، السمع، الإحساس الواعي، الدماغ، النخاع الشوكي؛ ثم أرتب مسار الاستجابة عند لمس جسم ساخن.',1,'الشم واللمس والسمع من الحواس؛ الإحساس الواعي يرتبط بالدماغ. مسار الاستجابة: الجلد ← العصب الحسي ← النخاع الشوكي ← العصب الحركي ← العضلة.'] ]}
+]},
+movement:{title:'علوم الحياة: الحركات الإرادية والانعكاسية',pts:2,variants:[
+{source:'ص 20–21',qs:[
+['أحدد نوع الحركة: حمل قلم للكتابة بإرادة الشخص؛ سحب الرجل بسرعة بعد وخزها أثناء النوم.',1,'الأولى إرادية؛ الثانية انعكاسية/لا إرادية.'],
+['أكمل مسار الاستجابة الانعكاسية: الجلد ← … ← النخاع الشوكي ← … ← الرجل.',1,'الجلد ← العصب الحسي ← النخاع الشوكي ← العصب الحركي ← الرجل.'] ]},
+{source:'ص 51',qs:[
+['أصنف الأفعال: شم رائحة القهوة؛ رؤية آلة صنع القهوة؛ توجيه الآلة لصنع كوب؛ إزالة اليد بسرعة بعد لمس الكوب الساخن.',2,'شم الرائحة ورؤية الآلة: حساسية شعورية؛ توجيه الآلة: حركة إرادية؛ إزالة اليد بسرعة: حركة لا إرادية/انعكاسية.'] ]}
+]},
+health:{title:'علوم الحياة: الصحة والأمراض',pts:1.5,variants:[
+{source:'ص 20–21',qs:[
+['أصنف: الضجيج المتواصل، التدخين، السكري، قلة النوم، الأنيميا، السمنة إلى أخطار على الجهاز العصبي وأمراض سوء التغذية.',1.5,'الأخطار: الضجيج المتواصل، التدخين، قلة النوم. أمراض سوء التغذية: السكري، الأنيميا، السمنة.'] ]},
+{source:'ص 51',qs:[
+['أملأ جدولا حول مرضي الأنيميا والسمنة بذكر سبب أو أكثر، وعرضين، وطريقة أو أكثر للوقاية من كل مرض.',1.5,'مفتاح مقترح للمراجعة: الأنيميا قد ترتبط بنقص الحديد، ومن أعراضها التعب والشحوب، وتُتقى بالتغذية المتوازنة والأغذية الغنية بالحديد. السمنة ترتبط بالإفراط في الطاقة وقلة الحركة، ومن مظاهرها زيادة الوزن، وتُتقى بالغذاء المتوازن والنشاط البدني. ملاحظة: التجميعية تعرض الجدول دون تصحيح تفصيلي لهذه الخانات؛ هذا المفتاح مقترح للمراجعة وليس نقلا عن تصحيح المصدر.'] ]}
+]},
+environment:{title:'علوم الحياة: الوسط البيئي والعلاقات الغذائية',pts:2.5,variants:[
+{source:'ص 20–21، 68–69',qs:[
+['أصنف الأوساط: بحري، غابوي، صحراوي، ثم أكمل سلسلة غذائية من أربع حلقات.',1.5,'الأوساط: وسط بحري، وسط غابوي، وسط صحراوي. مثال السلسلة: نبات ← فأر ← ثعبان ← نسر.'],
+['أحدد نوع العلاقة: النحل والزهرة؛ القمل والإنسان؛ الأسود والغزلان؛ وحيد القرن والطائر فوق ظهره.',1,'تعاون/تبادل منفعة؛ تطفل؛ افتراس؛ تعاون.'] ]},
+{source:'ص 51',qs:[
+['أستخرج من الوسط الغابوي مكونات أحيائية ومكونات غير أحيائية.',1,'أحيائية: الحيوانات والنباتات والكائنات المجهرية؛ غير أحيائية: الهواء والتربة.'],
+['أكمل السلسلة الغذائية: الطاقة الشمسية ← نباتات خضراء ← … ← حيوانات لاحمة.',1,'نباتات خضراء ← حيوانات عاشبة ← حيوانات لاحمة.'],
+['أذكر سلوكا واحدا للمحافظة على التوازن البيئي.',0.5,'مثل حماية الغابة، عدم تلويثها، وعدم قطع الأشجار أو إيذاء الكائنات.'] ]},
+{source:'ص 20–21، 68–69',qs:[
+['أصنف العلاقات: النحل والزهرة؛ القمل والإنسان؛ الأسود والغزلان؛ وحيد القرن والطائر فوق ظهره.',1.5,'تعاون/تبادل منفعة؛ تطفل؛ افتراس؛ تعاون.'],
+['أفسر أثر اختفاء المفترسات من وسط بيئي إذا تكاثرت الحشرات العاشبة بشكل كبير.',1,'قد تتزايد العواشب فتستهلك المحاصيل والنباتات بكثرة ويختل التوازن البيئي.'] ]}
+]}
+}},
+5:{sub:'التربية الإسلامية',ar:1,total:10,dur:'45 دقيقة',sections:{
+quran:{title:'القرآن الكريم والتجويد',pts:2,variants:[
+{source:'ص 52–53، 70–72',qs:[
+['أتمم المقطع المقرر من سورة الملك ابتداء من قوله تعالى: «تبارك الذي بيده الملك»، ثم أكتب الآية الداعية إلى النظر في خلق الرحمن.',1.5,'يستظهر المتعلم الآيات المقررة من سورة الملك؛ ومن الآيات الداعية إلى التفكر: «ما ترى في خلق الرحمن من تفاوت فارجع البصر هل ترى من فطور».'],
+['أحدد الحكم التجويدي في كلمة «السماء»، وأشرح معنى «بمصابيح» في سياق الآية.',0.5,'المد المتصل؛ أي بنجوم مضيئة.'] ]},
+{source:'ص 52–53، 70–72',qs:[
+['أصل بين الكلمات ومعانيها: تفاوت؛ ليبلوكم؛ فطور.',0.75,'تفاوت: اختلاف/عدم تماثل؛ ليبلوكم: ليختبركم؛ فطور: شقوق وصدوع.'],
+['أوضح معنى قوله تعالى «ولقد زينا السماء الدنيا بمصابيح»، وأستخرج كلمة تتضمن حكم الإمالة وفق التصحيح.',0.75,'زينا السماء الدنيا بنجوم مضيئة؛ والكلمة: الدنيا.'],
+['أذكر لماذا يوجهنا القرآن إلى التفكر في خلق الله تعالى.',0.5,'لأن التفكر عبادة تزيد معرفة الإنسان بالله وتعظيما له ولقدرته.'] ]}
+]},
+hadith:{title:'الحديث الشريف',pts:1.5,variants:[
+{source:'بنك التطبيق الحالي؛ لا يتضمن ملف التجميعية تمرينا مستقلا في الحديث',qs:[
+['أتمم الحديث الشريف: «إنما الأعمال …، وإنما لكل امرئ ما …».',1.5,'بالنيات؛ نوى.'] ]},
+{source:'بنك التطبيق الحالي؛ لا يتضمن ملف التجميعية تمرينا مستقلا في الحديث',qs:[
+['أتمم الحديث الشريف: «لا يؤمن أحدكم حتى يحب لأخيه …».',1.5,'ما يحب لنفسه.'] ]}
+]},
+fasting:{title:'الصيام وأحكامه',pts:2,variants:[
+{source:'ص 52–53، 70–72',qs:[
+['أعرف الصيام تعريفا شرعيا.',1,'الإمساك عن شهوتي البطن والفرج من طلوع الفجر إلى غروب الشمس بنية التعبد لله.'],
+['أحدد شروط الصيام من بين: الأكل والشرب، البلوغ، النية، الإسلام، الصبر، العقل.',1,'البلوغ، النية، الإسلام، العقل.'] ]},
+{source:'ص 52–53، 70–72',qs:[
+['أذكر وقت بداية الصيام ونهايته، وأبين شرطين من شروط وجوبه أو صحته كما وردا في النموذج.',1,'من طلوع الفجر إلى غروب الشمس؛ من الشروط: الإسلام، البلوغ، العقل، النية.'],
+['أحدد الشرط المرتبط بثبوت رؤية هلال رمضان، والشرط المتوفر فيمن نطق بالشهادة، والشرط المنعدم عند الصبي.',1,'دخول زمن الصوم؛ الإسلام؛ البلوغ.'] ]}
+]},
+seerah:{title:'السيرة النبوية والدعوة',pts:2,variants:[
+{source:'ص 52–53، 70–72',qs:[
+['أذكر المرحلتين اللتين مرت بهما دعوة النبي ﷺ.',1,'الدعوة السرية، ثم الدعوة الجهرية.'],
+['أبين القيمة التي تحلى بها الرسول ﷺ رغم أذى المشركين، وأستدل بآية على الصبر.',1,'القيمة: الصبر. ومن الاستدلال: «فاصبر صبرا جميلا» أو «واصبر لحكم ربك».'] ]},
+{source:'ص 52–53، 70–72',qs:[
+['ما الموقف الذي اتخذه الرسول ﷺ أمام أذى المشركين؟',1,'الصبر والثبات على الدعوة.'],
+['أذكر مرحلتي الدعوة النبوية، مع الإشارة إلى مدة المرحلة السرية كما وردت في التصحيح.',1,'الدعوة السرية لمدة ثلاث سنوات، ثم الدعوة الجهرية.'] ]}
+]},
+values:{title:'القيم والسلوك: التفكر والحوار',pts:1.5,variants:[
+{source:'ص 52–53، 70–72',qs:[
+['كيف توصل سيدنا إبراهيم عليه السلام إلى حقيقة وجود الله؟',0.75,'بالتأمل في ملكوت السماوات والأرض والاستدلال بالمخلوقات.'],
+['أذكر أدبين من آداب الحوار.',0.75,'حسن الاستماع، احترام المخالف، الرفق، الحجة، عدم المقاطعة.'] ]},
+{source:'ص 52–53، 70–72',qs:[
+['أرتب خطوات إبراهيم عليه السلام في البحث عن الحقيقة: التساؤل عن الكون، رفض التقليد، التفكير والاستدلال، اعتقاد التوحيد بالحجة.',0.75,'التساؤل عن وظائف الكون؛ بناء العقيدة على التفكير ورفض التقليد؛ التشبث بحرية الرأي؛ اعتقاد التوحيد بالحجة والدليل.'],
+['أستخلص الحكمة من حوار إبراهيم عليه السلام مع أبيه.',0.75,'الدعوة إلى الله بالحوار والرفق وأدب الخطاب.'] ]}
+]},
+pillars:{title:'أركان الإسلام',pts:1,variants:[
+{source:'ص 52–53، 70–72',qs:[
+['أذكر أركان الإسلام الخمسة، وأحدد الركن الذي يمثله الصيام.',1,'الشهادتان، الصلاة، الزكاة، الصوم، الحج؛ الصيام هو الركن الرابع.'] ]},
+{source:'ص 52–53، 70–72',qs:[
+['أكمل: الصيام ركن من أركان الإسلام وعددها …، وأذكر ركنين آخرين.',1,'خمسة؛ الشهادتان والصلاة/الزكاة/الحج.'] ]}
+]}
+}}
+};
+var lastPick={};
+function pickVariant(key,arr,g){var i=g.i(0,arr.length-1);if(arr.length>1&&lastPick[key]===i)i=(i+1)%arr.length;lastPick[key]=i;return arr[i]}
+function buildSourceExam(si,chosen,seed){
+ var def=SRC[si];if(!def)return null;
+ var g=RG((seed>>>0)+((si+1)*104729)),ids=Array.isArray(chosen)?chosen.slice():[],body='',keys=[],total=0,missing=[];
+ var order=Object.keys(def.sections);
+ order.forEach(function(id){if(ids.indexOf(id)<0)return;var sec=def.sections[id],pack=pickVariant(si+'|'+id,sec.variants,g);if(!pack)return;
+  body+=band(sec.title,sec.pts,def.ar);
+  if(pack.intro)body+=pack.intro;
+  var answers=[];pack.qs.forEach(function(q,i){var prompt=q[0],pts=Number(q[1])||0,ans=q[2]||'يراجع الأستاذ الجواب وفق المطلوب.',lines=q.length>3&&q[3]!=null?Number(q[3]):1;body+=Q((i+1)+')',prompt+(lines?dots(lines):''),pts,def.ar);answers.push((i+1)+') '+ans+' ('+String(pts).replace('.',',')+' ن)')});
+  keys.push('<div style="font-weight:800;margin:8px 0 3px">'+E(sec.title)+'</div><div style="font-size:11px;color:#555;margin-bottom:4px">مرجع البنك: '+E(pack.source||'التجميعية')+'</div>'+answers.map(function(x){return '<div style="margin:3px 0;line-height:1.8">'+x+'</div>'}).join(''));
+  total+=sec.pts;
+ });
+ ids.forEach(function(id){if(!def.sections[id])missing.push(id)});
+ if(!total)return null;
+ var h=head({ar:def.ar,sub:def.sub,tot:total,dur:def.dur,sess:'يناير 2027'})+'<div dir="'+(def.ar?'rtl':'ltr')+'" style="font-size:16px">'+body+'</div>';
+ return {html:h,key:keys,total:total,sourceBased:true,missing:missing};
+}
+window.EX6.sourceBank=SRC;
+window.EX6.buildSourceExam=buildSourceExam;
+window.EX6.sourceBankStats=function(){var out={};Object.keys(SRC).forEach(function(si){var d=SRC[si],n=0;Object.keys(d.sections).forEach(function(k){n+=d.sections[k].variants.reduce(function(s,p){return s+p.qs.length},0)});out[si]={subject:d.sub,lessons:Object.keys(d.sections).length,variants:Object.keys(d.sections).reduce(function(s,k){return s+d.sections[k].variants.length},0),questionTemplates:n};});return out};
+})();
+
 
 /* ===== زرّا «الفروض» و«الامتحانات» (الامتحانات: السادس تلقائيا، محلي أو إقليمي) ===== */
 (function(){
@@ -7012,20 +7417,44 @@ var xs=document.createElement('div');xs.className='full';xs.id='f-xsw';xs.style.
 var D0={};try{D0=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}
 function ci(id,l,v){return '<label style="display:block;font-weight:700;margin:8px 0 4px">'+esc(l)+'</label><input id="'+id+'" style="width:100%" value="'+esc(v||'')+'">'}
 xs.innerHTML=ci('f-xa','الأكاديمية الجهوية',D0.acad)+ci('f-xd','المديرية الإقليمية',D0.dir)+ci('f-xsc','المؤسسة',D0.school)+'<label style="display:block;font-weight:700;margin:8px 0 4px">الدورة (الشهر والسنة)</label><div style="display:flex;gap:8px"><select id="f-xm" style="flex:2">'+MO.map(function(m){return '<option'+(m=='يناير'?' selected':'')+'>'+m+'</option>'}).join('')+'</select><input id="f-xy" type="number" style="flex:1" value="'+yr+'"></div><label style="display:block;font-weight:700;margin-bottom:4px">المادة</label><select id="f-xs" style="width:100%">'+SUBS.map(function(x,i){return '<option value="'+i+'">'+x+'</option>'}).join('')+'</select>';
+var lessonBox=document.createElement('div');lessonBox.id='f-ex-lessons';lessonBox.className='full';lessonBox.style.marginTop='10px';xs.appendChild(lessonBox);
+var exAgain=document.createElement('button');exAgain.type='button';exAgain.className='go';exAgain.id='f-ex-again';exAgain.textContent='↻ صيغة أخرى';exAgain.style.cssText='display:none;background:var(--blue)';
 var kd=document.createElement('div');kd.className='full seg sm';kd.id='f-kind';kd.style.display='none';kd.innerHTML='<button type="button" data-v="loc">امتحان محلي</button><button type="button" data-v="reg">امتحان إقليمي</button>';
 var note=document.createElement('div');note.className='full note';note.id='f-exn';note.style.display='none';
-form.insertBefore(top,form.firstChild);top.insertAdjacentElement('afterend',kd);kd.insertAdjacentElement('afterend',xs);xs.insertAdjacentElement('afterend',note);
+form.insertBefore(top,form.firstChild);top.insertAdjacentElement('afterend',kd);kd.insertAdjacentElement('afterend',xs);xs.insertAdjacentElement('afterend',note);$('f-go').insertAdjacentElement('afterend',exAgain);
+var lstyle=document.createElement('style');lstyle.textContent='#f-ex-lessons{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg)}#f-ex-lessons .exl-title{font:800 15px Cairo,Tahoma,sans-serif;color:var(--ink);margin-bottom:3px}#f-ex-lessons .exl-help{font-size:12px;color:var(--mute);margin-bottom:8px}#f-ex-lessons .checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:7px}#f-ex-lessons .checks label{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--paper);font-size:14px}#f-ex-lessons .checks input{accent-color:var(--blue);width:17px;height:17px;flex:none}#f-ex-lessons .exl-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#f-ex-lessons .exl-actions button{font:600 12px Cairo,Tahoma,sans-serif;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);padding:4px 9px;cursor:pointer}';document.head.appendChild(lstyle);
+var EX_LESSONS=[
+ [{id:'read',label:'فهم المقروء'},{id:'lang',label:'الظواهر اللغوية'},{id:'orth',label:'الإملاء'},{id:'write',label:'الإنتاج الكتابي'}],
+ [{id:'read',label:'Compréhension de l’écrit'},{id:'gram',label:'Grammaire'},{id:'conj',label:'Conjugaison'},{id:'orth',label:'Orthographe'},{id:'lex',label:'Lexique'},{id:'prod',label:'Production de l’écrit'}],
+ [{id:'count',label:'العد والحساب'},{id:'geo',label:'الهندسة'},{id:'measure',label:'القياس'},{id:'data',label:'تنظيم ومعالجة المعطيات'}],
+ [{id:'history',label:'التاريخ'},{id:'geography',label:'الجغرافيا'},{id:'civic',label:'التربية المدنية'}],
+ [{id:'air',label:'الهواء والاحتراق والتغيرات'},{id:'nervous',label:'الجهاز العصبي وأعضاء الحس'},{id:'movement',label:'الحركات الإرادية والانعكاسية'},{id:'health',label:'الصحة والأمراض'},{id:'environment',label:'الوسط البيئي والعلاقات'}],
+ [{id:'quran',label:'القرآن الكريم'},{id:'hadith',label:'الحديث الشريف'},{id:'fasting',label:'الصيام وأحكامه'},{id:'seerah',label:'السيرة النبوية'},{id:'values',label:'القيم والسلوك'},{id:'pillars',label:'أركان الإسلام'}]
+];
+var examSelections={},lastExamSubject=0;
+function selectedExamLessons(){return [].map.call(lessonBox.querySelectorAll('input:checked'),function(x){return x.value})}
+function renderExamLessons(){
+ var si=+$('f-xs').value,A=EX_LESSONS[si]||[],saved=examSelections[si];
+ if(!saved)saved=examSelections[si]=A.map(function(x){return x.id});
+ var st=window.EX6&&window.EX6.sourceBankStats?window.EX6.sourceBankStats()[si]:null;
+ var bankInfo=st?'يتضمن مخزن هذه المادة '+st.variants+' صيغ تدريبية و'+st.questionTemplates+' نموذج سؤال مصنفاً حسب المحور. أعيدت صياغة النصوص القرائية الطويلة؛ وفي محور الحديث يُستعمل بنك التطبيق لأن التجميعية لا تتضمن تمريناً مستقلاً فيه.':'تُستعمل الأسئلة المتاحة في بنك التطبيق.';
+ lessonBox.innerHTML='<div class="exl-title">الدروس والمحاور التي ستُقوَّم في الامتحان</div><div class="exl-help">اختر محوراً واحداً أو أكثر. ستظهر تمارينه فقط في النسخة المنشأة. '+bankInfo+' زر «صيغة أخرى» ينتقي صيغة بديلة عند توفرها.</div><div class="checks">'+A.map(function(x){return '<label><input type="checkbox" value="'+x.id+'"'+(saved.indexOf(x.id)>-1?' checked':'')+'><span>'+esc(x.label)+'</span></label>'}).join('')+'</div><div class="exl-actions"><button type="button" data-exl="all">تحديد الكل</button><button type="button" data-exl="none">إلغاء التحديد</button></div>';
+}
+lessonBox.addEventListener('change',function(){examSelections[+$('f-xs').value]=selectedExamLessons();show(exAgain,false)});
+lessonBox.addEventListener('click',function(e){var b=e.target.closest('button[data-exl]');if(!b)return;var all=b.dataset.exl=='all';lessonBox.querySelectorAll('input[type=checkbox]').forEach(function(x){x.checked=all});examSelections[+$('f-xs').value]=selectedExamLessons();show(exAgain,false)});
+$('f-xs').addEventListener('change',function(){examSelections[lastExamSubject]=selectedExamLessons();lastExamSubject=+this.value;renderExamLessons();$('f-out').innerHTML='';show(exAgain,false)});
+renderExamLessons();
 function lab(el){return el&&el.closest('label')}
 function show(el,on){if(el)el.style.display=on?'':'none'}
 function apply(){
  top.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',(b.dataset.v=='e')==EXM?'true':'false')});
  kd.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v==KIND?'true':'false')});
- show(kd,EXM);show(xs,EXM);
+ show(kd,EXM);show(xs,EXM);show(exAgain,false);
  if(EXM){
-  ['f-lv','f-no','f-sub','f-text','f-gram'].forEach(function(i){show(lab($(i)),false)});show($('f-lesw'),false);show($('f-again'),false);
+  ['f-lv','f-no','f-sub','f-text','f-gram'].forEach(function(i){show(lab($(i)),false)});show($('f-lesw'),false);show($('f-again'),false);renderExamLessons();
   note.style.display='';
-  note.innerHTML=KIND=='loc'?'<b>الامتحان المحلي – المستوى السادس:</b> لمادة واحدة تختارها من المواد الست، بالشكل الرسمي (رأس رسمي، نقط، عناصر الإجابة). اختر المادة وأدخل بيانات المؤسسة والدورة (الشهر والسنة).':'<b>الامتحان الإقليمي – المستوى السادس:</b> بالشكل الرسمي نفسه، وهو نموذج مبدئي إلى حين وصول النماذج الإقليمية فأعدّله عليها. اختر المادة وأدخل بيانات المؤسسة والدورة.';
-  $('f-go').textContent=KIND=='loc'?'أنشئ نموذج الامتحان المحلي':'أنشئ نموذج الامتحان الإقليمي';
+  note.innerHTML=KIND=='loc'?'<b>الامتحان المحلي – المستوى السادس:</b> اختر المادة والمحاور التي تريد تقويمها. تُنتقى التمارين تلقائياً من بنك التجميعية المصنف حسب المحاور، مع ترويسة الامتحان والتنقيط وعناصر الإجابة.':'<b>الامتحان الإقليمي – المستوى السادس:</b> اختر المادة والمحاور التي تريد تقويمها. تُنتقى التمارين تلقائياً من بنك التجميعية المصنف حسب المحاور، مع ترويسة الامتحان والتنقيط وعناصر الإجابة.';
+  $('f-go').textContent=KIND=='loc'?'أنشئ الامتحان المحلي':'أنشئ الامتحان الإقليمي';
  }else{
   note.style.display='none';
   ['f-lv','f-no','f-sub'].forEach(function(i){show(lab($(i)),true)});
@@ -7036,18 +7465,78 @@ top.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)
  if(on){lv0=LV.value;busy=true;LV.value=LVS6;LV.dispatchEvent(new Event('change'));busy=false}
  else if(lv0&&lv0!==LVS6){LV.value=lv0;LV.dispatchEvent(new Event('change'))}
  EXM=on;apply();$('f-out').innerHTML='';$('bar').classList.remove('on')});
-kd.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;KIND=b.dataset.v;apply()});
+kd.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;KIND=b.dataset.v;apply();$('f-out').innerHTML='';show(exAgain,false)});
 function ch(i){busy=true;NO.selectedIndex=i;NO.dispatchEvent(new Event('change'));busy=false}
 function checked(){return [].map.call($('f-les').querySelectorAll('input'),function(x){return x.checked})}
+var examSeed=(Date.now()>>>0);
+function examTotal(html,total){
+ var v=String(Number((+total).toFixed(2))).replace('.',',');
+ return html.replace(/(<b class="exam-total">)\d+(<\/b>)/,'$1'+v+'$2');
+}
+function filterBandExam(r,si,chosen){
+ var specs={
+  0:[{id:'read',title:'أولا: فهم المقروء',pts:12},{id:'lang',title:'ثانيا: الظواهر اللغوية',pts:12},{id:'orth',title:'ثالثا: الإملاء',pts:4},{id:'write',title:'رابعا: الإنتاج الكتابي',pts:12}],
+  1:[{id:'read',title:'I. Compréhension de l’écrit',pts:15},{id:'gram',title:'II. Grammaire',pts:6},{id:'conj',title:'III. Conjugaison',pts:6},{id:'orth',title:'IV. Orthographe',pts:3},{id:'lex',title:'V. Lexique',pts:3},{id:'prod',title:'VI. Production de l’écrit',pts:7}],
+  2:[{id:'count',title:'العد والحساب',pts:13},{id:'geo',title:'الهندسة',pts:11},{id:'measure',title:'القياس',pts:13},{id:'data',title:'تنظيم ومعالجة المعطيات',pts:3}]
+ }[si]||[];
+ var html=r.html,token='<div style="margin:14px 0 6px;break-after:avoid;page-break-after:avoid">',found=[];
+ specs.forEach(function(sp,i){var p=html.indexOf('>'+sp.title+' (');if(p<0)return;var start=html.lastIndexOf(token,p);if(start>=0)found.push({start:start,index:i,spec:sp})});
+ found.sort(function(a,b){return a.start-b.start});
+ if(!found.length)return r;
+ var out=html.slice(0,found[0].start),total=0,keys=[];
+ if(chosen.indexOf('read')<0){
+  var preambles=['<div style="font-weight:700;text-align:center;margin:6px 0">أَقْرَأُ النَّصَّ قِرَاءَةً مُتَأَنِّيَةً ثُمَّ أُجِيبُ</div>','<div style="font-weight:700;text-decoration:underline;text-align:center;margin:8px 0">Lisez attentivement le texte avant de répondre aux questions.</div>'];
+  preambles.forEach(function(m){var p=out.indexOf(m);if(p>=0)out=out.slice(0,p)});
+ }
+ found.forEach(function(f,i){var end=i+1<found.length?found[i+1].start:html.length;if(chosen.indexOf(f.spec.id)>-1){out+=html.slice(f.start,end);total+=f.spec.pts;if(r.key&&r.key[f.index])keys.push(r.key[f.index])}});
+ r.html=examTotal(out,total);r.key=keys;r.total=total;return r;
+}
+function filterQuestionExam(r,si,chosen){
+ var maps={
+  3:{history:[1,2,3,6],geography:[3,4],civic:[3,5]},
+  4:{air:[1,2,3],nervous:[4],movement:[5],health:[6],environment:[7,8,9]},
+  5:{quran:[1],hadith:[2],fasting:[3],seerah:[4],values:[3,5],pillars:[3,6]}
+ };
+ var points={
+  3:[2,1.5,2,1.5,1.5,1.5],
+  4:[1,1,1,1,1,1,2,1.5,.5],
+  5:[2,1.5,2,2,1.5,1]
+ };
+ var allowed={};(maps[si]||{});chosen.forEach(function(id){((maps[si]||{})[id]||[]).forEach(function(n){allowed[n]=true})});
+ var html=r.html,H1='<div style="font-weight:800;text-decoration:underline;margin:6px 0">أولا: العلوم الفيزيائية</div>',H2='<div style="font-weight:800;text-decoration:underline;margin:10px 0 6px">ثانيا: علوم الحياة</div>';
+ html=html.replace(H1,'').replace(H2,'');
+ var marker='<div style="display:flex;gap:8px;margin:7px 0;break-inside:avoid"><div style="flex:1;line-height:1.9">',starts=[],p=0;
+ while((p=html.indexOf(marker,p))>-1){starts.push(p);p+=marker.length}
+ if(!starts.length)return r;
+ var blocks=starts.map(function(s,i){return html.slice(s,i+1<starts.length?starts[i+1]:html.length)}),out=html.slice(0,starts[0]),total=0,kept=[];
+ function addQuestion(n){if(!allowed[n]||!blocks[n-1])return;out+=blocks[n-1];total+=points[si][n-1];kept.push(n)}
+ if(si===4){
+  if([1,2,3].some(function(n){return allowed[n]}))out+=H1;
+  [1,2,3].forEach(addQuestion);
+  if([4,5,6,7,8,9].some(function(n){return allowed[n]}))out+=H2;
+  [4,5,6,7,8,9].forEach(addQuestion);
+ }else{
+  for(var n=1;n<=blocks.length;n++)addQuestion(n);
+ }
+ var keys=(r.key||[]).filter(function(x){var m=String(x).match(/^\s*(\d+)[).]/);return m&&allowed[+m[1]]});
+ r.html=examTotal(out,total);r.key=keys;r.total=total;return r;
+}
+function filterExamResult(r,si,chosen){return si<=2?filterBandExam(r,si,chosen):filterQuestionExam(r,si,chosen)}
 function runExam(){
+ var chosen=selectedExamLessons(),si=+$('f-xs').value;
+ if(!chosen.length){show$($('f-out'),'<div class="note">اختر درساً أو محوراً واحداً على الأقل قبل إنشاء الامتحان.</div>');show(exAgain,false);return}
+ examSelections[si]=chosen.slice();
  var SB=$('f-sub'),m0=mode,sb0=SB.value,no0=NO.selectedIndex,parts=[],keys=[],miss=[],PB='<div style="page-break-before:always;break-before:page"></div>';
  mode='n';
+ examSeed=(examSeed+7919)>>>0;
  window.EX6.cfg={acad:$('f-xa').value.trim(),dir:$('f-xd').value.trim(),school:$('f-xsc').value.trim(),month:$('f-xm').value,year:$('f-xy').value};
  try{var DD={};try{DD=JSON.parse(localStorage.getItem('muh.doc')||'{}')}catch(e){}DD.acad=EX6.cfg.acad;DD.dir=EX6.cfg.dir;DD.school=EX6.cfg.school;localStorage.setItem('muh.doc',JSON.stringify(DD))}catch(e){}
  try{SUBS.forEach(function(s){
   var si=SUBS.indexOf(s),sel=$('f-xs').value;if(+sel!==si)return;
   var B6=window.EX6&&window.EX6[['ar','fr','math','soc','sci','isl'][si]];
-  if(B6){var r=B6((Date.now()+parts.length*7919)%2147483647),hh=r.html;if(KIND!='loc')hh=hh.replace('الامتحان الموحد المحلي','الامتحان الموحد الإقليمي').replace('Examen normalisé local','Examen normalisé provincial');parts.push(hh);keys.push('<div style="font-weight:700;margin:10px 0 4px;text-align:center">'+s+'</div>'+r.key.map(function(k){return '<div style="margin:4px 0;line-height:1.8">'+k+'</div>'}).join(''));return}
+  var r=window.EX6&&window.EX6.buildSourceExam?window.EX6.buildSourceExam(si,chosen,examSeed):null;
+  if(!r&&B6)r=filterExamResult(B6(examSeed,chosen),si,chosen);
+  if(r){if(!r.total){miss.push(s);return}var hh=r.html;if(KIND!='loc')hh=hh.replace('الامتحان الموحد المحلي','الامتحان الموحد الإقليمي').replace('Examen normalisé local','Examen normalisé provincial');parts.push(hh);if(r.key&&r.key.length)keys.push('<div style="font-weight:700;margin:10px 0 4px;text-align:center">'+s+'</div>'+r.key.map(function(k){return '<div style="margin:4px 0;line-height:1.8">'+k+'</div>'}).join(''));return}
   var o=[].filter.call(SB.options,function(x){return x.value==s})[0];if(!o||o.disabled){miss.push(s);return}
   SB.value=s;SB.dispatchEvent(new Event('change'));
   ch(0);var A=checked();ch(1);var B=checked();
@@ -7059,8 +7548,9 @@ function runExam(){
   h=h.replace('المراقبة المستمرة',KIND=='loc'?'الامتحان المحلي':'الامتحان الإقليمي');
   parts.push(h)})}
  finally{mode=m0;SB.value=sb0;ch(no0)}
- show$($('f-out'),parts.join(PB)+(keys.length?PB+'<div style="text-align:center;font-weight:700;font-size:18px;margin:8px 0">سلّم التصحيح والإجابات</div>'+keys.join(''):'')+(miss.length?'<div class="note no-print" contenteditable="false" style="margin-top:8px">لم يُنشأ نموذج لـ: '+miss.join('، ')+' (لا توجد دروس كافية بعد).</div>':''))}
+ show$($('f-out'),parts.join(PB)+(keys.length?PB+'<div style="text-align:center;font-weight:700;font-size:18px;margin:8px 0">سلّم التصحيح والإجابات</div>'+keys.join(''):'')+(miss.length?'<div class="note no-print" contenteditable="false" style="margin-top:8px">لم يُنشأ نموذج لـ: '+miss.join('، ')+' (لا توجد دروس كافية بعد).</div>':''));show(exAgain,parts.length>0)}
 function show$(el,h){window.show?window.show(el.id,h):el.innerHTML=h}
+exAgain.onclick=function(){runExam()};
 $('f-go').onclick=function(){if(!EXM)return orig.apply(this,arguments);
  runExam()};
 apply();
