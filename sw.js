@@ -1,5 +1,5 @@
 /* يعمل التطبيق دون إنترنت مع تحديث موثوق للنسخة المخزنة */
-const CACHE = 'mouin-v82';
+const CACHE = 'mouin-v84';
 const REM_CACHE = 'mouin-rem';
 const CORE = ['./', './index.html', './manifest.webmanifest', './privacy.html', './ministry-logo.jpg', './icon-192.png', './icon-512.png', './maskable-192.png', './maskable-512.png', './apple-touch-icon.png'];
 const APP_URL = new URL('./index.html', self.registration.scope).href;
